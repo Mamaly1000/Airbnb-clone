@@ -23,7 +23,7 @@ const Modal = ({
     close?: () => void;
     icon?: any;
   };
-  body?: ReactNode | ReactElement;
+  body?: ReactNode | ReactElement ;
   footer?: {
     primary?: {
       label: string;
@@ -31,7 +31,7 @@ const Modal = ({
       onClick: () => void;
     };
     secondary?: {
-      label: string;
+      label?: string;
       icon?: any;
       onClick: () => void;
     };
@@ -113,7 +113,7 @@ const Modal = ({
               {/* footer */}
               <div className="flex flex-col gap-2 p-6 capitalize">
                 <div className="flex flex-row items-center gap-4 w-full capitalize">
-                  {footer?.secondary && (
+                  {footer?.secondary && footer.secondary.label && (
                     <Button
                       label={footer?.secondary.label}
                       Icon={footer?.secondary?.icon}

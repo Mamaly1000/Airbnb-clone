@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "./Avatar";
 import MenuItem from "./MenuItem";
@@ -9,21 +9,32 @@ import useLoginModal from "@/hooks/useLoginModal";
 import { User } from "@prisma/client";
 import { signOut } from "next-auth/react";
 import { safeUserType } from "@/types/safeuser";
+import toast from "react-hot-toast";
+import useRentModal from "@/hooks/useRentModal";
 const UserMenu = ({ user }: { user: safeUserType | null }) => {
   const [isOpen, setOpen] = useState(false);
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
+  const rentmodal = useRentModal();
 
   const toggleOpen = () => {
     setOpen((prev) => !prev);
   };
+
+  const onRent = useCallback(() => {
+    if (!user) {
+      toast.error("please login to your account!");
+      loginModal.onOpen();
+    }
+    rentmodal.onOpen();
+  }, [user, loginModal, rentmodal]);
 
   return (
     <div className="relative capitalize">
       <div className="flex flex-row items-center gap-3 ">
         <div
           className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
-          onClick={toggleOpen}
+          onClick={onRent}
         >
           Airbnb your home
         </div>
@@ -62,7 +73,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                       },
                       {
                         label: "Airbnb my home",
-                        onClick: () => {},
+                        onClick: onRent,
                         hr: true,
                       },
                       {

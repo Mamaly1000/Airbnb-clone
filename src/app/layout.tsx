@@ -5,7 +5,7 @@ import Navbar from "@/components/navbar/Navbar";
 import ModalProvider from "@/providers/ModalProvider";
 import ToastProvider from "@/providers/ToastProvider";
 import getCurrentUser from "@/actions/getCurrentUser";
-
+import 'react-tooltip/dist/react-tooltip.css'
 export const metadata: Metadata = {
   title: "Airbnb",
   description: "wellcome to Airbnb",
