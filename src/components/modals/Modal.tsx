@@ -23,7 +23,7 @@ const Modal = ({
     close?: () => void;
     icon?: any;
   };
-  body?: ReactNode | ReactElement ;
+  body?: ReactNode | ReactElement;
   footer?: {
     primary?: {
       label: string;
@@ -34,6 +34,7 @@ const Modal = ({
       label?: string;
       icon?: any;
       onClick: () => void;
+      type?: "form";
     };
     AdditionalActions?: ReactNode;
   };
@@ -117,7 +118,11 @@ const Modal = ({
                     <Button
                       label={footer?.secondary.label}
                       Icon={footer?.secondary?.icon}
-                      onClick={() => handleClose(handleSecondary)}
+                      onClick={() =>
+                        footer.secondary?.type === "form"
+                          ? handleSecondary()
+                          : handleClose(handleSecondary)
+                      }
                       disabled={disable}
                       outline
                     />

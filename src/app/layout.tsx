@@ -5,7 +5,7 @@ import Navbar from "@/components/navbar/Navbar";
 import ModalProvider from "@/providers/ModalProvider";
 import ToastProvider from "@/providers/ToastProvider";
 import getCurrentUser from "@/actions/getCurrentUser";
-import 'react-tooltip/dist/react-tooltip.css'
+import "react-tooltip/dist/react-tooltip.css";
 export const metadata: Metadata = {
   title: "Airbnb",
   description: "wellcome to Airbnb",
@@ -24,7 +24,7 @@ export default async function RootLayout({
       <body className={font.className}>
         <ModalProvider />
         <Navbar user={user} />
-        {children}
+        <div className="pb-32 pt-40">{children}</div>
         <ToastProvider />
       </body>
     </html>
