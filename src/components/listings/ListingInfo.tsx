@@ -6,7 +6,9 @@ import Avatar from "../navbar/Avatar";
 import ListingCategory from "./listingCategory";
 import { IconType } from "react-icons";
 import dynamic from "next/dynamic";
-
+const Map = dynamic(() => import("@/components/Map/Map"), {
+  ssr: false,
+});
 const ListingInfo = ({
   user,
   listing,
@@ -26,9 +28,6 @@ const ListingInfo = ({
   };
   user?: safeUserType | null;
 }) => {
-  const Map = dynamic(() => import("@/components/Map/Map"), {
-    ssr: false,
-  });
   const { getByValue } = useCountry();
   const location = useMemo(() => {
     if (listing.locationVlaue) {

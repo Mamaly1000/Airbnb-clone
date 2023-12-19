@@ -5,7 +5,7 @@ import Container from "@/components/ui/Container";
 import EmptyState from "@/components/ui/EmptyState";
 
 export default async function Home() {
-  const listings = await getListings();
+  const listings = (await getListings()) || [];
   const currentUser = await getCurrentUser();
   if (listings.length === 0) {
     return <EmptyState showReset />;

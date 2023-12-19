@@ -2,21 +2,20 @@
 import React, { useCallback, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "./Avatar";
-import MenuItem from "./MenuItem";
 import MenuItems from "./MenuItems";
 import useRegisterModal from "@/hooks/useAuthModal";
 import useLoginModal from "@/hooks/useLoginModal";
-import { User } from "@prisma/client";
 import { signOut } from "next-auth/react";
 import { safeUserType } from "@/types/safeuser";
 import toast from "react-hot-toast";
 import useRentModal from "@/hooks/useRentModal";
+import { useRouter } from "next/navigation";
 const UserMenu = ({ user }: { user: safeUserType | null }) => {
   const [isOpen, setOpen] = useState(false);
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const rentmodal = useRentModal();
-
+  const router = useRouter();
   const toggleOpen = () => {
     setOpen((prev) => !prev);
   };
@@ -57,19 +56,27 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                   ? [
                       {
                         label: "My trips",
-                        onClick: () => {},
+                        onClick: () => {
+                          router.push("/trips");
+                        },
                       },
                       {
                         label: "My favorites",
-                        onClick: () => {},
+                        onClick: () => {
+                          router.push("/favorites");
+                        },
                       },
                       {
                         label: "My reservations",
-                        onClick: () => {},
+                        onClick: () => {
+                          router.push("/reservations");
+                        },
                       },
                       {
                         label: "My properties",
-                        onClick: () => {},
+                        onClick: () => {
+                          router.push("/properties");
+                        },
                       },
                       {
                         label: "Airbnb my home",

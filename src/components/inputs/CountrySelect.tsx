@@ -7,7 +7,7 @@ const CountrySelect = ({
   onChange,
   value,
 }: {
-  value: SingleCountryType;
+  value?: SingleCountryType;
   onChange: (value: SingleCountryType) => void;
 }) => {
   const { getAll } = useCountry();

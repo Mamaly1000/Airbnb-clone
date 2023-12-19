@@ -36,6 +36,7 @@ const RegisterModal = () => {
       .post("/api/register", data)
       .then((res) => {
         onClose();
+        loginModal.onOpen();
         toast.success("wellcome to Airbnb " + res.data.name);
       })
       .catch((err) => {
@@ -85,7 +86,7 @@ const RegisterModal = () => {
         </div>
       }
       header={{
-        title: "register",
+        title: "Join us!",
       }}
       footer={{
         primary: {

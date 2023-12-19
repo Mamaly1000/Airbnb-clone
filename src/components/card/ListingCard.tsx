@@ -10,6 +10,7 @@ import { twMerge } from "tailwind-merge";
 import HeartButton from "../inputs/HeartButton";
 import Button from "../inputs/Button";
 import { safeListingType } from "@/types/safeListing";
+import { safeReservationType } from "@/types/safeReservation";
 
 const ListingCard = ({
   listing,
@@ -20,7 +21,7 @@ const ListingCard = ({
   disabled,
 }: {
   disabled?: boolean;
-  reservation?: Reservation;
+  reservation?: safeReservationType;
   user?: safeUserType | null;
   className?: string;
   listing: safeListingType;
