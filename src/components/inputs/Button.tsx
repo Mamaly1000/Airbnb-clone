@@ -36,5 +36,5 @@ const Button = forwardRef<HTMLButtonElement, ButtonInterface>(
     );
   }
 );
-
+Button.displayName = "Button";
 export default Button;
