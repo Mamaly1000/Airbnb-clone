@@ -24,7 +24,7 @@ const ListingHead = ({
     if (listing.locationValue) {
       return getByValue(listing.locationValue);
     }
-  }, [listing.locationValue]);
+  }, [listing.locationValue, getByValue]);
   return (
     <>
       <Heading

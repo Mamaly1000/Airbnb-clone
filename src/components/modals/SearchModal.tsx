@@ -29,11 +29,13 @@ const SearchModal = () => {
   const params = useSearchParams();
   const router = useRouter();
   const searchModal = useSearchModal();
+  // @ts-ignore
   const Map = useMemo(
     () =>
       dynamic(() => import("@/components/Map/Map"), {
         ssr: false,
       }),
+    //@ts-ignore
     [location]
   );
 

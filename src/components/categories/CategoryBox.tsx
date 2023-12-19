@@ -49,7 +49,7 @@ const CategoryBox = ({
     } else {
       onClick(category);
     }
-  }, [category.label, params, router, onClick]);
+  }, [params, router, onClick, category]);
   return (
     <div
       id={category.label}

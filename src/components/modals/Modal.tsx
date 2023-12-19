@@ -57,14 +57,14 @@ const Modal = ({
         onChange(false);
       }, 300);
     },
-    [disable]
+    [disable, onChange]
   );
   const handleSubmit = useCallback(() => {
     if (disable || !footer || !footer.primary || !footer.primary.onClick) {
       return;
     }
     footer?.primary?.onClick();
-  }, [disable, footer, footer?.primary]);
+  }, [disable, footer]);
   const handleSecondary = useCallback(() => {
     if (!footer || disable || !footer.secondary) {
       return;

@@ -35,7 +35,7 @@ const TripesClient = ({
           setDeletingId("");
         });
     },
-    [deletingId, setDeletingId, router]
+    [setDeletingId, router]
   );
   return (
     <Container>

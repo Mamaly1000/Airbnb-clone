@@ -57,12 +57,13 @@ const RentModal = () => {
   const watchingRoomCount = watch("roomCount");
   const watchingBathroomCount = watch("bathroomCount");
   const watchingImageSrc = watch("imageSrc");
-
+  // @ts-ignore
   const Map = useMemo(
     () =>
       dynamic(() => import("@/components/Map/Map"), {
         ssr: false,
       }),
+    // @ts-ignore
     [watchingLocation]
   );
   const setCustomValue = (id: string, value: any) => {
