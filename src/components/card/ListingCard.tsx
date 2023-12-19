@@ -9,6 +9,7 @@ import React, { useCallback, useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import HeartButton from "../inputs/HeartButton";
 import Button from "../inputs/Button";
+import { safeListingType } from "@/types/safeListing";
 
 const ListingCard = ({
   listing,
@@ -22,7 +23,7 @@ const ListingCard = ({
   reservation?: Reservation;
   user?: safeUserType | null;
   className?: string;
-  listing: Listing;
+  listing: safeListingType;
   action?: {
     onAction: (id: string) => void;
     actionLabel: string;
@@ -65,8 +66,8 @@ const ListingCard = ({
 
   return (
     <div
-      onClick={() => router.push(`/listing/${listing.id}`)}
-      className={twMerge("col-span-1 cursor-pointer group ", className)}
+      onClick={() => router.push(`/listings/${listing.id}`)}
+      className={twMerge("col-span-1 cursor-pointer group drop-shadow-2xl", className)}
     >
       <div className="flex flex-col gap-2 w-full">
         <div className="aspect-square w-full relative rounded-xl overflow-hidden">

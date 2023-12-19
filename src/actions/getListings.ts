@@ -1,4 +1,6 @@
+"use server";
 import prisma from "@/libs/prismadb";
+import { safeListingType } from "@/types/safeListing";
 import { Listing } from "@prisma/client";
 export default async function getListings() {
   try {
@@ -7,7 +9,10 @@ export default async function getListings() {
         createdAt: "desc",
       },
     });
-    return listings;
+    return listings.map((listing) => ({
+      ...listing,
+      createdAt: listing.createdAt.toISOString(),
+    })) as safeListingType[];
   } catch (error: any) {
     throw new Error(error);
   }
