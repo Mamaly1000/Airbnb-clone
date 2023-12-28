@@ -4,6 +4,7 @@ import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useCallback } from "react";
 import { TbPhotoPlus } from "react-icons/tb";
+import toast from "react-hot-toast";
 declare global {
   var cloudinary: any;
 }
@@ -34,10 +35,8 @@ const ImageUpload = ({
         return (
           <div
             className="relative cursor-pointer hover:opacity-70 transition border-2 p-20 border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-600 "
-            onClick={() => {
-              if (open) open?.();
-            }}
-          >
+            onClick={ ()=> { if (!!open){ open!()}else{toast.error("Please wait for Cloudinary Service!")} }} >
+
             <TbPhotoPlus size={50} />
             <div className="font-semibold text-lg">click to upload</div>
             {value && (
