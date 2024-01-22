@@ -8,6 +8,7 @@ import Heading from "../form/Heading";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useUpdateProperty } from "@/hooks/useUpdateProperty";
 
 const PropertiesClient = ({
   properties,
@@ -16,6 +17,8 @@ const PropertiesClient = ({
   properties: safeListingType[];
   user?: safeUserType | null;
 }) => {
+  const updateProperyModal = useUpdateProperty();
+
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
 
@@ -50,6 +53,12 @@ const PropertiesClient = ({
                 actionId: property.id,
                 actionLabel: "Delete Property",
                 onAction: onDelete,
+              }}
+              updateAction={{
+                label: "update your property data",
+                onClick: () => {
+                  updateProperyModal.onOpen(property.id);
+                },
               }}
               listing={property}
               key={property.id}

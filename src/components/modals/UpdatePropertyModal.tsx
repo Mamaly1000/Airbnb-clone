@@ -1,32 +1,31 @@
-"use client";
-import useRentModal from "@/hooks/useRentModal";
-import React, { useMemo, useState } from "react";
+import { useUpdateProperty } from "@/hooks/useUpdateProperty";
+import React, { useEffect, useMemo, useState } from "react";
 import Modal from "./Modal";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { STEPS } from "./RentModal";
+import dynamic from "next/dynamic";
 import Heading from "../form/Heading";
 import { categories } from "../categories/Categories";
 import CategoryBox from "../categories/CategoryBox";
 import { twMerge } from "tailwind-merge";
-import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
 import CountrySelect from "../inputs/CountrySelect";
-import dynamic from "next/dynamic";
 import Counter from "../inputs/Counter";
 import ImageUpload from "../inputs/ImageUpload";
 import toast from "react-hot-toast";
 import Input from "../inputs/Input";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import useProperty from "@/hooks/useProperty";
+import Loader from "../ui/Loader";
+import useCountry from "@/hooks/useCountry";
 
-export enum STEPS {
-  CATEGORY = 0,
-  LOCATION = 1,
-  INFO = 2,
-  IMAGES = 3,
-  DESCRIPTION = 4,
-  PRICE = 5,
-}
-const RentModal = () => {
+const UpdatePropertyModal = () => {
+  const { id, onClose } = useUpdateProperty();
+  const { property, mutate, isLoading: propertyLoading } = useProperty(id);
+
+  const { getByValue } = useCountry();
+
   const router = useRouter();
-  const rentModal = useRentModal();
   const [step, setSteps] = useState(STEPS.CATEGORY);
   const [isLoading, setLoading] = useState(false);
   const {
@@ -35,7 +34,7 @@ const RentModal = () => {
     formState: { errors },
     setValue,
     watch,
-    reset, 
+    reset,
   } = useForm<FieldValues>({
     defaultValues: {
       title: "",
@@ -74,6 +73,17 @@ const RentModal = () => {
   };
 
   const body = () => {
+    if (propertyLoading) {
+      return (
+        <>
+          <Heading
+            title="Please wait"
+            subtitle="please wait for loading your property data"
+          />
+          <Loader className="min-w-full h-[200px] max-h-[200px] min-h-[200px] flex items-center justify-center" />
+        </>
+      );
+    }
     if (step === STEPS.CATEGORY) {
       return (
         <div className="flex flex-col gap-8">
@@ -219,23 +229,24 @@ const RentModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setLoading(true);
-    axios
-      .post("/api/listings", data)
-      .then((res) => {
-        console.log(res.data.listing);
-        toast.success(res.data.message);
-        reset();
-        setSteps(STEPS.CATEGORY);
-        rentModal.onClose();
-        router.refresh();
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("something went wrong!");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    if (property)
+      axios
+        .post(`/api/properties/${property.id}`, data)
+        .then((res) => {
+          toast.success(res.data.message);
+          reset();
+          setSteps(STEPS.CATEGORY);
+          onClose();
+          mutate();
+          router.refresh();
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("something went wrong!");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
   };
 
   const onForward = () => {
@@ -251,7 +262,7 @@ const RentModal = () => {
 
   const primaryLabel = useMemo(() => {
     if (step === STEPS.PRICE) {
-      return "create";
+      return "update";
     }
     return "next";
   }, [step]);
@@ -262,16 +273,25 @@ const RentModal = () => {
     return "back";
   }, [step]);
 
+  useEffect(() => {
+    if (!!id && !!property) {
+      reset({
+        ...property,
+        location: getByValue(property.locationValue),
+      });
+    }
+  }, [property, id]);
+
   return (
     <Modal
-      isOpen={rentModal.isOpen}
+      isOpen={!!id}
       onChange={(val) => {
         if (!val) {
-          rentModal.onClose();
+          onClose();
         }
       }}
       header={{
-        title: "Airbnb your home!",
+        title: "Update your property information!",
       }}
       footer={{
         primary: {
@@ -290,4 +310,4 @@ const RentModal = () => {
   );
 };
 
-export default RentModal;
+export default UpdatePropertyModal;

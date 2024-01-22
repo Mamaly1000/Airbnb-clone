@@ -13,7 +13,7 @@ const MenuItem = ({
 }) => {
   return (
     <div
-      className="flex items-center justify-between gap-2 px-4 py-3 hover:bg-neutral-100 transition font-semibold"
+      className="flex items-center justify-between gap-2 px-4 py-3 hover:bg-neutral-100 transition font-semibold min-w-fit whitespace-nowrap"
       onClick={onClick}
     >
       {label}{" "}

@@ -6,15 +6,16 @@ import { twMerge } from "tailwind-merge";
 interface ButtonInterface
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
-  onClick: (e: MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   outline?: boolean;
   small?: boolean;
   Icon?: IconType;
+  className?: string;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonInterface>(
-  ({ label, onClick, disabled, outline, small, Icon }, ref) => {
+  ({ label, onClick, disabled, outline, small, Icon, className }, ref) => {
     return (
       <button
         onClick={onClick}
@@ -27,7 +28,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonInterface>(
             : "text-white bg-rose-500 border-rose-500",
           small
             ? "py-1 text-sm font-light border-[1px]"
-            : "py-3 text-base font-semibold border-[2px] "
+            : "py-3 text-base font-semibold border-[2px] ",
+          className
         )}
       >
         {Icon && <Icon className="absolute start-2 " size={30} />}

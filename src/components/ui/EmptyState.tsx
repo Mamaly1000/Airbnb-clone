@@ -8,7 +8,9 @@ const EmptyState = ({
   showReset = false,
   subTitle = "Try Changing or Removing some of your filters.",
   title = "No exact matches",
+  refresh = false,
 }: {
+  refresh?: boolean;
   title?: string;
   subTitle?: string;
   showReset?: boolean;
@@ -24,6 +26,13 @@ const EmptyState = ({
             outline
             label="Remove all filters"
             onClick={() => router.push("/")}
+          />
+        )}{" "}
+        {refresh && (
+          <Button
+            outline
+            label="Refresh the page?"
+            onClick={() => router.refresh()}
           />
         )}
       </div>

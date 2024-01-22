@@ -17,6 +17,7 @@ const Trips = async () => {
       <EmptyState
         title="No trips found"
         subTitle="Looks like you haven`t reserved any trips!"
+        refresh
       />
     );
   }

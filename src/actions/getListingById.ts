@@ -3,7 +3,7 @@ import prisma from "@/libs/prismadb";
 import { safeListingType } from "@/types/safeListing";
 import { safeUserType } from "@/types/safeuser";
 
-export async function getListingById(id: string) {
+export async function getListingById(id?: string) {
   try {
     if (!id) {
       return null;

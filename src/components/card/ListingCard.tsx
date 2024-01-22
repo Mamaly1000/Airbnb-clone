@@ -19,6 +19,7 @@ const ListingCard = ({
   reservation,
   action,
   disabled,
+  updateAction,
 }: {
   disabled?: boolean;
   reservation?: safeReservationType;
@@ -29,6 +30,10 @@ const ListingCard = ({
     onAction: (id: string) => void;
     actionLabel: string;
     actionId: string;
+  };
+  updateAction?: {
+    label: string;
+    onClick: () => void;
   };
 }) => {
   const { getByValue } = useCountry();
@@ -68,7 +73,10 @@ const ListingCard = ({
   return (
     <div
       onClick={() => router.push(`/listings/${listing.id}`)}
-      className={twMerge("col-span-1 cursor-pointer group drop-shadow-2xl", className)}
+      className={twMerge(
+        "col-span-1 cursor-pointer group drop-shadow-2xl",
+        className
+      )}
     >
       <div className="flex flex-col gap-2 w-full">
         <div className="aspect-square w-full relative rounded-xl overflow-hidden">
@@ -84,7 +92,7 @@ const ListingCard = ({
             <HeartButton id={listing.id} user={user} />
           </div>
         </div>
-        <div className="font-semibold text-lg ">
+        <div className="font-semibold text-lg line-clamp-1">
           {!!location(listing.locationValue) &&
             location(listing.locationValue)?.region +
               ", " +
@@ -104,6 +112,18 @@ const ListingCard = ({
             disabled={disabled}
             small
             onClick={hanleCancel}
+          />
+        )}{" "}
+        {!!updateAction && (
+          <Button
+            label={updateAction.label}
+            className="bg-yellow-500 border-yellow-500 text-white"
+            disabled={disabled}
+            small
+            onClick={(e) => {
+              e.stopPropagation();
+              updateAction.onClick();
+            }}
           />
         )}
       </div>

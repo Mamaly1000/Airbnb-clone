@@ -1,11 +1,14 @@
-import React from "react";
+import React, { Fragment } from "react";
 import MenuItem from "./MenuItem";
 import { IconType } from "react-icons";
 
 const MenuItems = ({
   items = [],
+  onClose,
 }: {
+  onClose?: () => void;
   items?: {
+    id: number;
     label: string;
     Icon?: IconType | string;
     onClick: () => void;
@@ -16,15 +19,14 @@ const MenuItems = ({
     <>
       {items?.map((item) => {
         return (
-          <>
+          <Fragment key={item.id}>
             <MenuItem
-              key={item.label + item.onClick.toString()}
               label={item.label}
               onClick={item.onClick}
               Icon={item.Icon}
             />
             {item.hr && <hr />}
-          </>
+          </Fragment>
         );
       })}
     </>

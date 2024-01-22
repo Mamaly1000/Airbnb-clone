@@ -12,7 +12,9 @@ const ListingReservation = ({
   price,
   totalPrice,
   disabled,
+  rebook = false,
 }: {
+  rebook?: boolean;
   price: number;
   totalPrice: number;
   dateRange: Range;
@@ -34,9 +36,11 @@ const ListingReservation = ({
         onChnage={(value) => onChangeDate(value.selection)}
       />
       <hr />
-      <div className="p-4 ">
-        <Button disabled={disabled} label="Reserve" onClick={onSubmit} />
-      </div>
+      {!rebook && (
+        <div className="p-4 ">
+          <Button disabled={disabled} label="Reserve" onClick={onSubmit} />
+        </div>
+      )}
       <div className=" capitalize p-4 flex flex-row items-center justify-between font-semibold text-lg ">
         <div>total</div>
         <div>$ {totalPrice}</div>

@@ -2,10 +2,16 @@
 import { PuffLoader } from "react-spinners";
 
 import React from "react";
+import { twMerge } from "tailwind-merge";
 
-const Loader = () => {
+const Loader = ({ className }: { className?: string }) => {
   return (
-    <div className="h-[70vh] flex flex-col justify-center items-center gap-3">
+    <div
+      className={twMerge(
+        "h-[70vh] flex flex-col justify-center items-center gap-3",
+        className
+      )}
+    >
       <PuffLoader size={100} color="red" />
     </div>
   );

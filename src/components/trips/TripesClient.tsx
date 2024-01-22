@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ListingCard from "../card/ListingCard";
+import { useUpdateReservationModal } from "@/hooks/useUpdateReservationModal";
+import useLoginModal from "@/hooks/useLoginModal";
 
 const TripesClient = ({
   trips,
@@ -16,6 +18,9 @@ const TripesClient = ({
   trips: safeReservationType[];
   user?: safeUserType | null;
 }) => {
+  const LoginModal = useLoginModal();
+
+  const updateReservationModal = useUpdateReservationModal();
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
   const onCancel = useCallback(
@@ -56,6 +61,19 @@ const TripesClient = ({
                 actionId: trip.id,
                 onAction: onCancel,
                 actionLabel: "Cancel reservation",
+              }}
+              updateAction={{
+                label: "update your reservation",
+                onClick: () => {
+                  if (user) {
+                    updateReservationModal.onOpen({
+                      id: trip.id,
+                      reservations: trips,
+                    });
+                  } else {
+                    LoginModal.onOpen();
+                  }
+                },
               }}
             />
           );

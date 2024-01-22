@@ -1,6 +1,9 @@
 import prisma from "@/libs/prismadb";
 import getCurrentUser from "@/actions/getCurrentUser";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { getReservations } from "@/actions/getReservations";
+import { request } from "http";
+import qs from "query-string";
 
 export async function POST(request: Request) {
   const currentUser = await getCurrentUser();
@@ -35,4 +38,21 @@ export async function POST(request: Request) {
       startDate
     ).toLocaleDateString()} untill ${new Date(endDate).toLocaleDateString()}`,
   });
+}
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { listingId: string } }
+) {
+  const searchParams = request.nextUrl.searchParams;
+
+  const listingId = searchParams.get("listingId") as string;
+  if (!listingId || typeof listingId !== "string") {
+    return NextResponse.error();
+  }
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    return NextResponse.error();
+  }
+  const reservations = await getReservations({ listing_id: listingId });
+  return NextResponse.json(reservations);
 }

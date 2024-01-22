@@ -24,8 +24,9 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
     if (!user) {
       toast.error("please login to your account!");
       loginModal.onOpen();
+    } else {
+      rentmodal.onOpen();
     }
-    rentmodal.onOpen();
   }, [user, loginModal, rentmodal]);
 
   return (
@@ -48,42 +49,59 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
         </div>
       </div>
       {isOpen && (
-        <div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
-          <div className="flex flex-col cursor-pointer">
+        <div
+          onMouseLeave={() => setOpen(false)}
+          className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm"
+        >
+          <div className="flex flex-col cursor-pointer min-w-fit">
             <MenuItems
               items={
                 user
                   ? [
                       {
+                        id: 2340,
                         label: "My trips",
                         onClick: () => {
                           router.push("/trips");
                         },
                       },
                       {
+                        id: 67754,
                         label: "My favorites",
                         onClick: () => {
                           router.push("/favorites");
                         },
                       },
                       {
+                        id: 63453,
                         label: "My reservations",
                         onClick: () => {
                           router.push("/reservations");
                         },
                       },
                       {
+                        id: 63345,
                         label: "My properties",
                         onClick: () => {
                           router.push("/properties");
                         },
                       },
                       {
+                        id: 4345,
                         label: "Airbnb my home",
                         onClick: onRent,
                         hr: true,
                       },
                       {
+                        id: 456,
+                        label: "Outdated Reservations",
+                        onClick: () => {
+                          router.push(`/outdated/${user.id}`);
+                        },
+                        hr: true,
+                      },
+                      {
+                        id: 7455345,
                         label: "log out",
                         onClick: () => {
                           signOut();
@@ -92,12 +110,14 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                     ]
                   : [
                       {
+                        id: 125435,
                         label: "Login",
                         onClick: () => {
                           loginModal.onOpen();
                         },
                       },
                       {
+                        id: 654645,
                         label: "SignUp",
                         onClick: () => {
                           registerModal.onOpen();
