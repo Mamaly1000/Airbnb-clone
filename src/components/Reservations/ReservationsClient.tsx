@@ -8,6 +8,7 @@ import Heading from "../form/Heading";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ListingCard from "../card/ListingCard";
+import EmptyState from "../ui/EmptyState";
 
 const ReservationsClient = ({
   user,
@@ -37,6 +38,14 @@ const ReservationsClient = ({
     },
     [router]
   );
+  if (reservations.length === 0) {
+    return (
+      <EmptyState
+        subTitle="Looks like you have no reservations on your properties."
+        title="No reservations found!"
+      />
+    );
+  }
   return (
     <Container>
       <Heading title="Reservations" subtitle="Booking on your properties" />

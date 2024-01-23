@@ -20,7 +20,9 @@ const ListingCard = ({
   action,
   disabled,
   updateAction,
+  Outdated = false,
 }: {
+  Outdated?: boolean;
   disabled?: boolean;
   reservation?: safeReservationType;
   user?: safeUserType | null;
@@ -78,8 +80,13 @@ const ListingCard = ({
         className
       )}
     >
-      <div className="flex flex-col gap-2 w-full">
-        <div className="aspect-square w-full relative rounded-xl overflow-hidden">
+      <div className="flex flex-col gap-2 w-full relative">
+        {!!Outdated && (
+          <div className="absolute z-10 top-0 left-0 w-[50px] h-[50px]  flex items-center justify-center whitespace-pre-wrap gap-1 capitalize bg-rose-500 bg-opacity-80 rounded-br-md rounded-tl-md drop-shadow-2xl text-[10px] text-white font-bold ">
+            Outdated
+          </div>
+        )}
+        <div className="aspect-square w-full relative rounded-xl overflow-hidden z-0">
           <Image
             src={listing.imageSrc}
             alt={listing.title}
@@ -108,7 +115,7 @@ const ListingCard = ({
         {action && (
           <Button
             label={action.actionLabel}
-            className=""
+            className="relative z-20"
             disabled={disabled}
             small
             onClick={hanleCancel}
@@ -117,7 +124,7 @@ const ListingCard = ({
         {!!updateAction && (
           <Button
             label={updateAction.label}
-            className="bg-yellow-500 border-yellow-500 text-white"
+            className="bg-yellow-500 border-yellow-500 text-white relative z-20"
             disabled={disabled}
             small
             onClick={(e) => {

@@ -10,21 +10,29 @@ import axios from "axios";
 import { initialDateRange } from "../listings/ListingClient";
 import { Range } from "react-date-range";
 import { useRouter } from "next/navigation";
+import useProperty from "@/hooks/useProperty";
+import useReservation from "@/hooks/useReservation";
+import useUser from "@/hooks/useUser";
+import useReservations from "@/hooks/useReservations";
+import Loader from "../ui/Loader";
 
 const RebookReservationModal = () => {
-  const { listing, user, reservations, isOpen, onClose, reservationId } =
-    useRebookModal();
+  const { isOpen, onClose, reservationId, listingId } = useRebookModal();
   const loginModal = useLoginModal();
+
+  const { property, mutate: propertyMutate } = useProperty(listingId);
+  const { reservations, mutate: reservationsMutate } =
+    useReservations(listingId);
+  const { user, mutate: userMutate } = useUser();
 
   const router = useRouter();
 
   const [isLoading, setLoading] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(listing?.price || 0);
+  const [totalPrice, setTotalPrice] = useState(property?.price || 0);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
 
-  const createReservation = useCallback(
+  const rebookReservation = useCallback(
     async (e: any) => {
-      e.preventDefault();
       if (!user) {
         return loginModal.onOpen();
       }
@@ -34,11 +42,17 @@ const RebookReservationModal = () => {
           totalPrice,
           startDate: dateRange.startDate,
           endDate: dateRange.endDate,
-          listingId: listing!.id,
+          listingId: property?.id,
         })
         .then((res: { data: any }) => {
           toast.success(res.data.message);
           setDateRange(initialDateRange);
+          propertyMutate();
+          reservationsMutate();
+          userMutate();
+          setTotalPrice(0);
+          onClose();
+          router.refresh();
         })
         .catch((error: any) => {
           if (error.response.data.message) {
@@ -52,7 +66,7 @@ const RebookReservationModal = () => {
           setLoading(false);
         });
     },
-    [user, loginModal, dateRange, router, listing, totalPrice]
+    [user, loginModal, dateRange, router, property, totalPrice]
   );
 
   return (
@@ -64,14 +78,11 @@ const RebookReservationModal = () => {
         }
       }}
       body={
-        <form
-          onSubmit={createReservation}
-          className="min-w-full flex flex-col items-start justify-start gap-8"
-        >
-          {listing && reservations && user && (
+        <div className="min-w-full flex flex-col items-start justify-start gap-8  ">
+          {property && reservations && user ? (
             <RebookCalendar
               setTotalPrice={setTotalPrice}
-              listing={listing}
+              listing={property}
               reservations={reservations}
               setLoading={(val) => setLoading(val)}
               user={user}
@@ -80,14 +91,25 @@ const RebookReservationModal = () => {
               setDateRange={setDateRange}
               totalPrice={totalPrice}
             />
+          ) : (
+            <Loader className="min-w-full h-[300px] max-h-[300px] flex items-center justify-center" />
           )}
-          <Button disabled={isLoading} label="rebook now" type="submit" />
-        </form>
+        </div>
       }
       disable={isLoading}
       header={{
         title: "Rebook your reservation",
-        close: () => {},
+        close: () => {
+          setDateRange(initialDateRange);
+          router.refresh();
+          onClose();
+        },
+      }}
+      footer={{
+        primary: {
+          label: "rebook now",
+          onClick: (e: any) => rebookReservation(e),
+        },
       }}
     />
   );

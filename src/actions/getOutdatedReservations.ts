@@ -1,22 +1,37 @@
 "use server";
 import prisma from "@/libs/prismadb";
+import getCurrentUser from "./getCurrentUser";
 
-export default async function getOutdatedReservations(id?: string) {
-  if (!id || typeof id !== "string") {
-    console.log("invalid id for showing outdated reservations");
+export default async function getOutdatedReservations(params?: {
+  outherId?: string;
+}) {
+  let query: any = {
+    endDate: {
+      lt: new Date(),
+    },
+  };
+  const user = await getCurrentUser();
+  if (!user) {
+    return { reservations: [] };
+  }
+
+  if (params && params.outherId) {
+    query = {
+      ...query,
+      listing: {
+        userId: params?.outherId,
+      },
+    };
+  } else {
+    query = { ...query, userId: user.id };
   }
 
   const outdatedReservations = await prisma.reservation.findMany({
-    where: {
-      userId:    id,
-      endDate: {
-        lt: new Date(), // Filter for reservations where the endDate is in the past
-      },
-    },
+    where: query,
     include: {
-      listing: true, // Include the listing information for each reservation
+      listing: true,
     },
-  });
+  }); 
 
   return { reservations: outdatedReservations || [] };
 }

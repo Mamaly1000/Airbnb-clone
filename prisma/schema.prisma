@@ -23,6 +23,8 @@ model User {
   accounts Account[] 
   listings Listing[] 
   reservations Reservation[]
+  feedbacks Feedback[]
+  comments Comment[]
 
 }
 
@@ -56,7 +58,9 @@ model Listing{
   userId String @db.ObjectId
   price Int 
   user User @relation(fields: [userId],references: [id] ,onDelete: Cascade)
+  feedbacks Feedback[]
   reservations Reservation[] 
+  comments Comment[]
 }
 model Reservation{
   id String @id @default(auto()) @map("_id") @db.ObjectId
@@ -69,4 +73,32 @@ model Reservation{
   
   user User @relation(fields: [userId],references: [id] ,onDelete: Cascade)
   listing Listing @relation(fields: [listingId],references: [id] ,onDelete: Cascade)
+}
+
+model Feedback{
+id String @id @default(auto()) @map("_id") @db.ObjectId
+userId String @db.ObjectId
+body String 
+likingIds String[] @db.ObjectId
+rating Int @default(0)
+createdAt DateTime @default(now())
+listingId String @db.ObjectId
+
+listing Listing @relation(fields: [listingId],references: [id],onDelete:Cascade)
+user User @relation(fields:[userId], references:[id],onDelete:Cascade)
+comments Comment[]
+}
+
+model Comment{
+id String @id @default(auto()) @map("_id") @db.ObjectId
+authorId String @db.ObjectId
+feedbackId String  @db.ObjectId
+message String
+listingId String @db.ObjectId
+createdAt DateTime @default(now())
+likingIds String[] @db.ObjectId
+
+listing Listing @relation(fields: [listingId],references: [id],onDelete:Cascade)
+feedback Feedback @relation(fields: [feedbackId],references: [id],onDelete:Cascade)
+author User @relation(fields: [authorId], references: [id],onDelete:Cascade)
 }

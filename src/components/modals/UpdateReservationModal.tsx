@@ -41,43 +41,39 @@ const UpdateReservationModal = () => {
       : initialDateRange
   );
 
-  const createReservation = useCallback(
-    async (e: any) => {
-      e.preventDefault();
-      if (!user) {
-        return loginModal.onOpen();
-      }
-      if (reservation && reservation.listing) {
-        setLoading(true);
-        await axios
-          .patch(`/api/reservations/${reservation.id}`, {
-            totalPrice,
-            startDate: dateRange.startDate,
-            endDate: dateRange.endDate,
-            listingId: reservation?.listing?.id,
-          })
-          .then((res: { data: any }) => {
-            toast.success(res.data.message);
-            setDateRange(initialDateRange);
-            onClose();
-            router.refresh();
-            mutate();
-          })
-          .catch((error: any) => {
-            if (error.response.data.message) {
-              toast.error(error.response.data.message);
-            } else {
-              toast.error("something went wrong!");
-            }
-            console.log(error);
-          })
-          .finally(() => {
-            setLoading(false);
-          });
-      }
-    },
-    [user, loginModal, dateRange, router, reservation?.listing, totalPrice]
-  );
+  const updateReservation = useCallback(async () => {
+    if (!user) {
+      return loginModal.onOpen();
+    }
+    if (reservation && reservation.listing) {
+      setLoading(true);
+      await axios
+        .patch(`/api/reservations/${reservation.id}`, {
+          totalPrice,
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
+          listingId: reservation?.listing?.id,
+        })
+        .then((res: { data: any }) => {
+          toast.success(res.data.message);
+          setDateRange(initialDateRange);
+          onClose();
+          router.refresh();
+          mutate();
+        })
+        .catch((error: any) => {
+          if (error.response.data.message) {
+            toast.error(error.response.data.message);
+          } else {
+            toast.error("something went wrong!");
+          }
+          console.log(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [user, loginModal, dateRange, router, reservation?.listing, totalPrice]);
   return (
     <Modal
       isOpen={!!id}
@@ -85,10 +81,7 @@ const UpdateReservationModal = () => {
         if (!val) onClose();
       }}
       body={
-        <form
-          onSubmit={createReservation}
-          className="min-w-full flex flex-col items-start justify-start gap-8"
-        >
+        <div className="min-w-full flex flex-col items-start justify-start gap-8">
           <Heading
             title="Update reservation date"
             subtitle="you can update your reservation date to your choosen date."
@@ -107,10 +100,24 @@ const UpdateReservationModal = () => {
             />
           ) : (
             <Loader className="min-w-full min-h-[200px] h-[200px] max-w-[200px] flex items-center justify-center" />
-          )}
-          <Button disabled={isLoading} label="update now" type="submit" />
-        </form>
+          )} 
+        </div>
       }
+      header={{
+        title: "Update reservation",
+        close: () => {
+          setDateRange(initialDateRange);
+          setTotalPrice(0);
+          onClose();
+          router.refresh();
+        },
+      }}
+      footer={{
+        primary: {
+          label: "update now",
+          onClick: updateReservation,
+        },
+      }}
     />
   );
 };

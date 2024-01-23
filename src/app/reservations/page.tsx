@@ -1,5 +1,7 @@
 import getCurrentUser from "@/actions/getCurrentUser";
+import getOutdatedReservations from "@/actions/getOutdatedReservations";
 import { getReservations } from "@/actions/getReservations";
+import OutDatedReservationsClient from "@/components/Reservations/OutDatedReservationsClient";
 import ReservationsClient from "@/components/Reservations/ReservationsClient";
 import EmptyState from "@/components/ui/EmptyState";
 import React from "react";
@@ -17,15 +19,19 @@ const Reservations = async () => {
   const reservatoins = await getReservations({
     authorId: user.id,
   });
-  if (reservatoins.length === 0) {
-    return (
-      <EmptyState
-        subTitle="Looks like you have no reservations on your properties."
-        title="No reservations found!"
+  const { reservations: outdatedReservations } = await getOutdatedReservations({
+    outherId: user.id,
+  });
+
+  return (
+    <section className="flex items-center justify-center min-w-full flex-col gap-8">
+      <ReservationsClient user={user} reservations={reservatoins || []} />
+      <OutDatedReservationsClient
+        user={user}
+        reservations={outdatedReservations || []}
       />
-    );
-  }
-  return <ReservationsClient user={user} reservations={reservatoins} />;
+    </section>
+  );
 };
 
 export default Reservations;

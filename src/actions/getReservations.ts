@@ -12,7 +12,11 @@ export async function getReservations({
   authorId?: string;
 }) {
   try {
-    const query: any = {};
+    const query: any = {
+      endDate: {
+        gte: new Date(),
+      },
+    };
     if (listing_id) {
       query.listingId = listing_id;
     }

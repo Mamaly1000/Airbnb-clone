@@ -96,7 +96,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                         id: 456,
                         label: "Outdated Reservations",
                         onClick: () => {
-                          router.push(`/outdated/${user.id}`);
+                          router.push(`/outdated`);
                         },
                         hr: true,
                       },

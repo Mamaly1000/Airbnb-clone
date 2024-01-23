@@ -28,7 +28,7 @@ const Modal = ({
     primary?: {
       label: string;
       icon?: any;
-      onClick: () => void;
+      onClick: (e?: any) => void;
     };
     secondary?: {
       label?: string;
@@ -110,7 +110,9 @@ const Modal = ({
                 </button>
               </div>
               {/* body */}
-              <div className="relative p-6 flex-auto">{body}</div>
+              <div className="relative p-6 flex-auto md:max-h-[80vh] md:overflow-auto">
+                {body}
+              </div>
               {/* footer */}
               <div className="flex flex-col gap-2 p-6 capitalize">
                 <div className="flex flex-row items-center gap-4 w-full capitalize">
