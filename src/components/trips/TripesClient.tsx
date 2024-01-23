@@ -55,6 +55,7 @@ const TripesClient = ({
               listing={trip.listing}
               key={trip.id}
               reservation={trip}
+              feedback
               disabled={deletingId === trip.id}
               user={user}
               action={{

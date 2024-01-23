@@ -57,6 +57,7 @@ model Listing{
   locationValue String
   userId String @db.ObjectId
   price Int 
+  rate Int @default(0)
   user User @relation(fields: [userId],references: [id] ,onDelete: Cascade)
   feedbacks Feedback[]
   reservations Reservation[] 
@@ -70,7 +71,8 @@ model Reservation{
   endDate DateTime
   totalPrice Int 
   createdAt DateTime @default(now())
-  
+  status String @default("PENDING")
+
   user User @relation(fields: [userId],references: [id] ,onDelete: Cascade)
   listing Listing @relation(fields: [listingId],references: [id] ,onDelete: Cascade)
 }

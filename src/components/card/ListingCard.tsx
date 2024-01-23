@@ -11,6 +11,7 @@ import HeartButton from "../inputs/HeartButton";
 import Button from "../inputs/Button";
 import { safeListingType } from "@/types/safeListing";
 import { safeReservationType } from "@/types/safeReservation";
+import { useFeedbackModal } from "@/hooks/useFeedbackModal";
 
 const ListingCard = ({
   listing,
@@ -21,7 +22,9 @@ const ListingCard = ({
   disabled,
   updateAction,
   Outdated = false,
+  feedback = false,
 }: {
+  feedback?: boolean;
   Outdated?: boolean;
   disabled?: boolean;
   reservation?: safeReservationType;
@@ -40,6 +43,8 @@ const ListingCard = ({
 }) => {
   const { getByValue } = useCountry();
   const router = useRouter();
+
+  const feedbackModal = useFeedbackModal();
 
   const location = (location: string) => {
     return getByValue(location);
@@ -130,6 +135,21 @@ const ListingCard = ({
             onClick={(e) => {
               e.stopPropagation();
               updateAction.onClick();
+            }}
+          />
+        )}
+        {feedback && reservation?.status === "PENDING" && (
+          <Button
+            label={"Feedback to your trip"}
+            className="bg-green-700 border-green-700 text-white relative z-20"
+            disabled={disabled}
+            small
+            onClick={(e) => {
+              e.stopPropagation();
+              feedbackModal.onOpen({
+                reservationId: reservation.id,
+                listingId: reservation.listing.id,
+              });
             }}
           />
         )}

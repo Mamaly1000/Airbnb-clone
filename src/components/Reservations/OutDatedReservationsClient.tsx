@@ -65,6 +65,7 @@ const OutDatedReservationsClient = ({
           return (
             <ListingCard
               Outdated
+              feedback
               listing={reservation.listing}
               action={{
                 actionId: reservation.id,
