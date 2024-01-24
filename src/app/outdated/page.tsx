@@ -10,7 +10,14 @@ export const revalidate = 0;
 const Outdated = async () => {
   const { reservations } = await getOutdatedReservations();
   const user = await getCurrentUser();
-
+  if (!user) {
+    return (
+      <EmptyState
+        title="Unauthorized!"
+        subTitle="Please login to your account."
+      />
+    );
+  }
   if (!!!reservations || reservations.length === 0 || !!!user) {
     return <EmptyState showReset subTitle="loading outdated reservations" />;
   }

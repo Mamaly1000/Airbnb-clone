@@ -1,0 +1,20 @@
+import { NextResponse } from "next/server";
+import getCurrentUser from "./getCurrentUser";
+import prisma from "@/libs/prismadb";
+
+export async function getFeedbacks() {
+  const user = await getCurrentUser();
+  if (!user) {
+    return [];
+  }
+  const feedBacks = await prisma.feedback.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      user: true,
+      listing: true,
+    },
+  });
+  return feedBacks;
+}

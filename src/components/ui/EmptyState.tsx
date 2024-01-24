@@ -9,7 +9,9 @@ const EmptyState = ({
   subTitle = "Try Changing or Removing some of your filters.",
   title = "No exact matches",
   refresh = false,
+  redirect,
 }: {
+  redirect?: boolean;
   refresh?: boolean;
   title?: string;
   subTitle?: string;
@@ -33,6 +35,14 @@ const EmptyState = ({
             outline
             label="Refresh the page?"
             onClick={() => router.refresh()}
+          />
+        )}
+        {redirect && (
+          <Button
+            outline
+            className="capitalize"
+            label="go to homepage"
+            onClick={() => router.push("/")}
           />
         )}
       </div>

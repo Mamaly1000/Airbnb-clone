@@ -27,3 +27,7 @@ html,
   font-size: 16px !important;
   width: 100% !important;
 }
+
+.star-container path {
+  fill: rgb(244 63 94 / var(--tw-bg-opacity));
+}

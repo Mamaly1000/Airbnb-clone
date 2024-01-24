@@ -1,7 +1,15 @@
+"use client";
 import React from "react";
-import { Rating } from "@smastrom/react-rating";
-import "@smastrom/react-rating/style.css";
+import StarRatings from "react-star-ratings";
 import { twMerge } from "tailwind-merge";
+
+const defaultTooltipArray = [
+  "not acceptable",
+  "good",
+  "very good",
+  "excelent",
+  "extra ordinary",
+];
 
 const RateInput = ({
   val,
@@ -9,34 +17,60 @@ const RateInput = ({
   readOnly = false,
   tooltipArray,
   disabled,
+  size,
+  id,
+  tooltip = false,
+  className,
 }: {
+  className?: string;
+  tooltip?: boolean;
+  size?: string;
   disabled?: boolean;
   tooltipArray?: string[];
   readOnly?: boolean;
   val: number;
-  onChange: (val: number) => void;
+  id: string;
+  onChange?: (val: number) => void;
 }) => {
   return (
     <div
-      style={{
-        direction: "ltr",
-        fontFamily: "sans-serif",
-        touchAction: "none",
+      className={twMerge(
+        "flex items-center justify-between gap-3 min-w-full transition-all max-h-fit",
+        disabled ? "opacity-50 cursor-not-allowed" : "",
+        className
+      )}
+      onClick={(e) => {
+        if (!readOnly || !disabled) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
       }}
     >
-      <Rating
-        readOnly={readOnly}
-        value={val}
-        isDisabled={disabled}
-        className="min-w-full"
-        onChange={onChange}
-        transition="colors"
-        style={{
-          fill: "rgb(244 63 94 / var(--tw-bg-opacity))",
-          color: "rgb(244 63 94 / var(--tw-bg-opacity))",
-          stroke: "rgb(244 63 94 / var(--tw-bg-opacity))",
+      <StarRatings
+        rating={val}
+        starRatedColor="rgb(244 63 94 / var(--tw-bg-opacity))"
+        changeRating={(val) => {
+          if (!disabled || !readOnly) {
+            onChange!(val);
+          }
         }}
+        numberOfStars={5}
+        name={id}
+        starEmptyColor="#bab5b5ab"
+        starHoverColor="rgb(244 63 94 / var(--tw-bg-opacity))"
+        starDimension={size || "50px"}
+        starSpacing="5px"
       />
+      {!!(tooltipArray && val && tooltip) && (
+        <span className=" px-3 py-2 rounded-md flex capitalize font-semibold text-white bg-rose-500 text-[10px] max-w-fit">
+          {tooltipArray[val - 1]}
+        </span>
+      )}
+      {!!(tooltip && !!!tooltipArray && val) && (
+        <span className=" px-3 py-2 rounded-md flex capitalize font-semibold text-white bg-rose-500 text-[10px] max-w-fit">
+          {defaultTooltipArray[val - 1]}
+        </span>
+      )}
     </div>
   );
 };

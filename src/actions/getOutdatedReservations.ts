@@ -9,6 +9,7 @@ export default async function getOutdatedReservations(params?: {
     endDate: {
       lt: new Date(),
     },
+    status: "PENDING",
   };
   const user = await getCurrentUser();
   if (!user) {
@@ -31,7 +32,7 @@ export default async function getOutdatedReservations(params?: {
     include: {
       listing: true,
     },
-  }); 
+  });
 
   return { reservations: outdatedReservations || [] };
 }

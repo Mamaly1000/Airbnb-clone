@@ -12,6 +12,7 @@ import Button from "../inputs/Button";
 import { safeListingType } from "@/types/safeListing";
 import { safeReservationType } from "@/types/safeReservation";
 import { useFeedbackModal } from "@/hooks/useFeedbackModal";
+import RateInput from "../inputs/RateInput";
 
 const ListingCard = ({
   listing,
@@ -153,6 +154,9 @@ const ListingCard = ({
             }}
           />
         )}
+        <div className=" fill-rose-500">
+          <RateInput id={listing.id}  size="15px" val={listing.rate || 0} readOnly />
+        </div>
       </div>
     </div>
   );

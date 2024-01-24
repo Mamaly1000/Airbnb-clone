@@ -51,7 +51,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
       {isOpen && (
         <div
           onMouseLeave={() => setOpen(false)}
-          className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm"
+          className="absolute rounded-xl shadow-md  min-w-fit w-[40vw] md:w-3/4 md:min-w-fit bg-white overflow-hidden right-0 top-12 text-sm"
         >
           <div className="flex flex-col cursor-pointer min-w-fit">
             <MenuItems
@@ -90,13 +90,26 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                         id: 4345,
                         label: "Airbnb my home",
                         onClick: onRent,
-                        hr: true,
                       },
                       {
                         id: 456,
                         label: "Outdated Reservations",
                         onClick: () => {
                           router.push(`/outdated`);
+                        },
+                      },
+                      {
+                        id: 67453564,
+                        label: "Feedbacks",
+                        onClick: () => {
+                          router.push("/feedbacks");
+                        },
+                      },
+                      {
+                        id: 324534565,
+                        label: "Completed Reservations",
+                        onClick: () => {
+                          router.push(`/completed-reservations`);
                         },
                         hr: true,
                       },

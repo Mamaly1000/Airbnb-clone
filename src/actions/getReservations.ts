@@ -16,6 +16,7 @@ export async function getReservations({
       endDate: {
         gte: new Date(),
       },
+      status: "PENDING",
     };
     if (listing_id) {
       query.listingId = listing_id;
