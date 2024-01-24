@@ -14,6 +14,11 @@ export async function getFeedbacks() {
     include: {
       user: true,
       listing: true,
+      comments: {
+        select: {
+          authorId: true,
+        },
+      },
     },
   });
   return feedBacks;

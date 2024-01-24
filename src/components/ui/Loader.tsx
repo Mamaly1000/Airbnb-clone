@@ -4,7 +4,7 @@ import { PuffLoader } from "react-spinners";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-const Loader = ({ className }: { className?: string }) => {
+const Loader = ({ className, size }: { size?: number; className?: string }) => {
   return (
     <div
       className={twMerge(
@@ -12,7 +12,7 @@ const Loader = ({ className }: { className?: string }) => {
         className
       )}
     >
-      <PuffLoader size={100} color="red" />
+      <PuffLoader size={size || 100} color="red" />
     </div>
   );
 };
