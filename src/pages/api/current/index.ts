@@ -11,15 +11,9 @@ export default async function handler(
       .status(405)
       .json({ message: `Method ${req.method} not allowed` });
   }
-  try {
-    const user = await serverAuth(req, res);
-    if (!user) {
-      return res.status(401).json({ message: "unAuthorized" });
-    }
-    return res.status(200).json(user.currentUser);
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "error in getting user profile", error });
+  const user = await serverAuth(req, res);
+  if (!user) {
+    return res.status(401).json({ message: "unAuthorized" });
   }
+  return res.status(200).json(user.currentUser);
 }
