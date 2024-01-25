@@ -24,20 +24,20 @@ const CommentCard = ({
   }, [comment.createdAt]);
 
   return (
-    <article className="min-w-full flex flex-col gap-1 justify-between p-2 border-b-[1px] border-b-neutral-400">
-      <section className="min-w-full flex items-start justify-start gap-3">
+    <article className="min-w-full flex flex-col gap-3 justify-between p-2 border-b-[1px] border-b-neutral-400">
+      <section className="min-w-full flex items-start justify-start gap-3 flex-col">
         <div className="flex items-center justify-start gap-1">
           <Avatar userId={comment.authorId} />
           <div className="flex flex-col items-start justify-start  ">
-            <p className="text-rose-500 font-bold text-[15px]">
+            <p className="text-rose-500 font-bold text-[13px]">
               {comment.author.name}
             </p>
-            <p className="text-neutral-400 text-[11px] ">
+            <p className="text-neutral-400 text-[10px] ">
               {comment.author.email}
             </p>
           </div>
         </div>
-        <p className="min-w-full text-left capitalize font-semibold text-[13px] font-sans text-neutral-200 min-h-fit">
+        <p className="min-w-full text-left capitalize font-semibold text-[13px] font-sans text-neutral-700 min-h-fit">
           {comment.message}
         </p>
       </section>
@@ -47,6 +47,7 @@ const CommentCard = ({
           {createdAt} ago
         </span>
         <CommentLikeButton
+          listingId={comment.listingId}
           commentId={comment.id}
           feedbackId={feedbackId}
           user={user}

@@ -14,11 +14,13 @@ const CommentLikeButton = ({
   user,
   commentId,
   feedbackId,
+  listingId,
 }: {
   feedbackId: string;
   commentId: string;
   likingIds?: string[];
   user: User | safeUserType;
+  listingId: string;
 }) => {
   const { mutate } = useComments(feedbackId);
   const [isLoading, setLoading] = useState(false);
@@ -29,10 +31,12 @@ const CommentLikeButton = ({
       try {
         if (user.id && commentId) {
           setLoading(true);
-          await axios.patch(`/api/comments/${commentId}`).then((res) => {
-            toast.success(res.data.message);
-            mutate();
-          });
+          await axios
+            .patch(`/api/comments/${commentId}`, { listingId })
+            .then((res) => {
+              toast.success(res.data.message);
+              mutate();
+            });
         }
       } catch (error) {
         console.log(error);

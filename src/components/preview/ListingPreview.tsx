@@ -1,7 +1,7 @@
 "use client";
 import { Listing } from "@prisma/client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { BiHome } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import RateInput from "../inputs/RateInput";

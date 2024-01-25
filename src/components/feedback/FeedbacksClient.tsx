@@ -23,7 +23,7 @@ const FeedbacksClient = ({
     );
   }
   return (
-    <Container classname="min-w-full">
+    <Container classname="min-w-full relative z-0">
       <Heading
         title="properties feedbacks"
         subtitle="here you can see users feedbacks about properties and their reservations experiences."

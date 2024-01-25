@@ -12,6 +12,7 @@ import ListingPreview from "../preview/ListingPreview";
 import { twMerge } from "tailwind-merge";
 import FeedBackLikeButton from "../inputs/FeedBackLikeButton";
 import CommentPreview from "../preview/CommentPreview";
+import { useFeedBackCommentsPreview } from "@/hooks/useFeedBackCommentsPreview";
 
 const FeedbackCard = ({
   feedback,
@@ -21,7 +22,11 @@ const FeedbackCard = ({
   feedback: Feedback & { user: User; listing: Listing; comments: Comment[] };
 }) => {
   const [ListingExpand, setListingExpand] = useState(false);
-  const [commentExpand, setCommentExpand] = useState(false);
+  const {
+    isOpen: commentPreview,
+    listingId: mainListingId,
+    feedbackId: mainFeedbackId,
+  } = useFeedBackCommentsPreview();
 
   const createdAt = useMemo(() => {
     if (!feedback.createdAt) {
@@ -30,14 +35,27 @@ const FeedbackCard = ({
     return formatDistanceToNowStrict(new Date(feedback.createdAt));
   }, [feedback.createdAt]);
 
+  const isUnique = useMemo(() => {
+    return !!(
+      !!(
+        feedback.listingId === mainListingId && feedback.id === mainFeedbackId
+      ) && !!commentPreview
+    );
+  }, [feedback.listingId, mainListingId, feedback.id, mainFeedbackId]);
+
   return (
     <article
       className={twMerge(
         "p-3 rounded-md drop-shadow-2xl flex flex-col items-start justify-between relative gap-2 bg-neutral-50 cursor-default z-0  ",
-        ListingExpand ? "z-[2]" : "z-0"
+        ListingExpand || isUnique ? "z-20" : "z-0"
       )}
     >
-      <section className="flex flex-col gap-3 items-start justify-start relative z-10">
+      <section
+        className={twMerge(
+          "flex flex-col gap-3 items-start justify-start relative",
+          ListingExpand ? "z-20" : "z-0"
+        )}
+      >
         <div className="min-w-full flex items-center justify-between  gap-1   z-0">
           <div className="flex items-center justify-start gap-1">
             <Avatar userId={feedback.userId} />
@@ -60,10 +78,15 @@ const FeedbackCard = ({
           {feedback.body}
         </p>
       </section>
-      <section className="w-full flex items-center justify-between gap-2 relative z-0 pe-2">
+      <section
+        className={twMerge(
+          "w-full flex items-center justify-between gap-2 relative pe-2",
+          isUnique ? "z-[2]" : "z-0"
+        )}
+      >
         <section className="w-1/3 flex flex-wrap md:flex-nowrap items-center justify-start gap-1">
           <RateInput
-            className="p-0 max-w-fit relative "
+            className="p-0 max-w-[120px] min-w-[120px] relative "
             val={feedback.rating}
             readOnly
             size="15px"
