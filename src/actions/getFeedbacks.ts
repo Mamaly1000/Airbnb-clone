@@ -12,7 +12,14 @@ export async function getFeedbacks() {
       createdAt: "desc",
     },
     include: {
-      user: true,
+      user: {
+        select: {
+          name: true,
+          email: true,
+          id: true,
+          createdAt: true,
+        },
+      },
       listing: true,
       comments: {
         select: {

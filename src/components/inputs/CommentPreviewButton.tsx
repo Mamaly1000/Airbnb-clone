@@ -22,7 +22,7 @@ const CommentPreviewButton = ({
     <button
       className={twMerge(
         isOpen
-          ? "sticky top-0 left-0 min-w-full flex items-center justify-center gap-2 p-3 border-b-[1px]  bg-neutral-200 "
+          ? "sticky top-0 left-0 z-10 min-w-full flex items-center justify-center gap-2 p-3 border-b-[1px]  bg-neutral-200 "
           : " min-w-fit text-[15px] rounded-md drop-shadow-2xl flex items-center justify-center gap-1  "
       )}
     >

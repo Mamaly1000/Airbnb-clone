@@ -72,6 +72,12 @@ const CommentPreview = ({
             ? "md:w-[350px] md:h-[300px] md:max-h-[300px] overflow-y-auto absolute top-0 w-[calc(60vw+100px)] -end-4 md:-end-2 bg-neutral-100 z-40"
             : "w-[45px] h-fit absolute  py-1 rounded-md flex items-center justify-center gap-1 text-white bg-blue-500 "
         )}
+        onMouseLeave={(e) => {
+          e.stopPropagation();
+          if (isOpen) {
+            onClose();
+          }
+        }}
       >
         <CommentPreviewButton
           commentsIds={commentsIds}

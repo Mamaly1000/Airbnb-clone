@@ -1,4 +1,5 @@
 "use client";
+import EditprofileModal from "@/components/modals/EditprofileModal";
 import FeedbackModal from "@/components/modals/FeedbackModal";
 import LoginModal from "@/components/modals/LoginModal";
 import RebookReservationModal from "@/components/modals/RebookReservationModal";
@@ -26,7 +27,8 @@ const ModalProvider = () => {
       <RebookReservationModal />
       <UpdateReservationModal />
       <UpdatePropertyModal />
-      <FeedbackModal /> 
+      <FeedbackModal />
+      <EditprofileModal />
     </>
   );
 };

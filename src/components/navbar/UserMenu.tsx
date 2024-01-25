@@ -10,11 +10,13 @@ import { safeUserType } from "@/types/safeuser";
 import toast from "react-hot-toast";
 import useRentModal from "@/hooks/useRentModal";
 import { useRouter } from "next/navigation";
+import { useProfileModal } from "@/hooks/useProfileModal";
 const UserMenu = ({ user }: { user: safeUserType | null }) => {
   const [isOpen, setOpen] = useState(false);
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const rentmodal = useRentModal();
+  const EditprofileModal = useProfileModal();
   const router = useRouter();
   const toggleOpen = () => {
     setOpen((prev) => !prev);
@@ -106,12 +108,19 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                         },
                       },
                       {
-                        id: 324534565,
+                        id: 7456345,
                         label: "Completed Reservations",
                         onClick: () => {
                           router.push(`/completed-reservations`);
                         },
                         hr: true,
+                      },
+                      {
+                        id: 324534565,
+                        label: "edit your profile",
+                        onClick: () => {
+                          EditprofileModal.onOpen();
+                        },
                       },
                       {
                         id: 7455345,

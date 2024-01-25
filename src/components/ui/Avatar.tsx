@@ -24,6 +24,7 @@ const Avatar = ({
       <Image
         src={!!profile?.image ? profile.image : placeholder.src}
         fill
+        unoptimized={true}
         alt={profile?.name || "profile image"}
         className="object-cover w-full"
       />

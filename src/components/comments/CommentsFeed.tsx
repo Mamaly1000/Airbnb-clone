@@ -13,7 +13,7 @@ const CommentsFeed = ({
   comments: Comment[];
 }) => {
   return (
-    <section className="animate-slideIn min-w-full flex flex-col items-start justify-start border-t-[1px] border-t-neutral-400">
+    <section className="animate-slideIn min-w-full flex flex-col items-start justify-start border-t-[1px] border-t-neutral-400 relative z-0">
       {comments.map((c) => (
         <CommentCard
           feedbackId={feedbackId}

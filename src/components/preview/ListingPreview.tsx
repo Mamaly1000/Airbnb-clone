@@ -27,12 +27,18 @@ const ListingPreview = ({
         setExpand(true);
       }}
       className={twMerge(
-        "transition-all absolute top-0 end-0 z-20 ",
+        "transition-all duration-300 absolute top-0 end-0 z-20 ",
         expand
           ? "py-2 absolute top-[10px] md:top-[-10px] -end-2 md:end-0 w-full min-h-fit  md:w-[300px] md:h-[300px] rounded-md drop-shadow-2xl flex flex-col items-start justify-start gap-2"
           : " cursor-pointer w-[40px] h-[40px] rounded-full flex items-center justify-center",
         !expand ? "bg-rose-500" : "bg-neutral-100"
       )}
+      onMouseLeave={(e) => {
+        e.stopPropagation();
+        if (expand) {
+          setExpand(false);
+        }
+      }}
     >
       <section
         className={twMerge(
