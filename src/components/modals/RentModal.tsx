@@ -35,7 +35,7 @@ const RentModal = () => {
     formState: { errors },
     setValue,
     watch,
-    reset, 
+    reset,
   } = useForm<FieldValues>({
     defaultValues: {
       title: "",
@@ -63,7 +63,7 @@ const RentModal = () => {
         ssr: false,
       }),
     // @ts-ignore
-    [watchingLocation]
+    []
   );
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -222,7 +222,6 @@ const RentModal = () => {
     axios
       .post("/api/listings", data)
       .then((res) => {
-        console.log(res.data.listing);
         toast.success(res.data.message);
         reset();
         setSteps(STEPS.CATEGORY);

@@ -62,7 +62,7 @@ const UpdatePropertyModal = () => {
         ssr: false,
       }),
     // @ts-ignore
-    [watchingLocation]
+    []
   );
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -280,7 +280,7 @@ const UpdatePropertyModal = () => {
         location: getByValue(property.locationValue),
       });
     }
-  }, [property, id]);
+  }, [property, id, getByValue, reset]);
 
   return (
     <Modal

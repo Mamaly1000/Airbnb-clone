@@ -9,12 +9,15 @@ import { TfiCommentAlt } from "react-icons/tfi";
 const CommentPreviewButton = ({
   isOpen,
   commentsIds,
+  feedbackId,
+  listingId,
 }: {
+  feedbackId: string;
+  listingId: string;
   commentsIds: string[];
   isOpen: boolean;
 }) => {
-  const { onOpen, onClose, feedbackId, listingId } =
-    useFeedBackCommentsPreview();
+  const { onOpen, onClose } = useFeedBackCommentsPreview();
 
   const Icon: IconType = isOpen ? IoMdClose : TfiCommentAlt;
 
@@ -25,23 +28,26 @@ const CommentPreviewButton = ({
           ? "sticky top-0 left-0 z-10 min-w-full flex items-center justify-center gap-2 p-3 border-b-[1px]  bg-neutral-200 "
           : " min-w-fit text-[15px] rounded-md drop-shadow-2xl flex items-center justify-center gap-1  "
       )}
+      onClick={(e) => {
+        if (!isOpen) {
+          onOpen({ feedbackId, listingId });
+        } else {
+          e.stopPropagation();
+          onClose();
+        }
+      }}
     >
       {isOpen && (
-        <span className="capitalize font-bold w-fit  ca">others thoughts</span>
+        <span className="capitalize font-bold w-fit  text-blue-500">others thoughts</span>
       )}
       {!isOpen && commentsIds.length}
       <Icon
         className={twMerge(
           " transition-all cursor-pointer",
           isOpen
-            ? "text-black hover:scale-125 border-[1px] border-black hover:border-blue-500 hover:text-blue-500 rounded-full  "
-            : "text-blue border-black"
+            ? " hover:scale-125 border-[1px] border-blue-500 text-blue-500 rounded-full  "
+            : "text-white  "
         )}
-        onClick={() => {
-          if (!isOpen && !!feedbackId && !!listingId) {
-            onOpen({ feedbackId, listingId });
-          } else onClose();
-        }}
         size={isOpen ? 25 : 15}
       />
     </button>

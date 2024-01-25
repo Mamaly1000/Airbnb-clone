@@ -1,7 +1,6 @@
 "use client";
 import useCountry from "@/hooks/useCountry";
 import { safeUserType } from "@/types/safeuser";
-import { Listing, Reservation } from "@prisma/client";
 import { format } from "date-fns";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -13,6 +12,7 @@ import { safeListingType } from "@/types/safeListing";
 import { safeReservationType } from "@/types/safeReservation";
 import { useFeedbackModal } from "@/hooks/useFeedbackModal";
 import RateInput from "../inputs/RateInput";
+import placeholder from "../../images/placeholder-image.jpg";
 
 const ListingCard = ({
   listing,
@@ -94,10 +94,11 @@ const ListingCard = ({
         )}
         <div className="aspect-square w-full relative rounded-xl overflow-hidden z-0">
           <Image
-            src={listing.imageSrc}
+            src={!!listing.imageSrc ? listing.imageSrc : placeholder.src}
             alt={listing.title}
             className="object-cover h-full group-hover:scale-110 transition w-full"
             fill
+            loading="lazy"
             placeholder={"blur"}
             blurDataURL={listing.imageSrc}
           />
@@ -155,7 +156,12 @@ const ListingCard = ({
           />
         )}
         <div className=" fill-rose-500">
-          <RateInput id={listing.id}  size="15px" val={listing.rate || 0} readOnly />
+          <RateInput
+            id={listing.id}
+            size="15px"
+            val={listing.rate || 0}
+            readOnly
+          />
         </div>
       </div>
     </div>

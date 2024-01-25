@@ -37,7 +37,7 @@ const UseImageUpload = ({
       };
       reader.readAsDataURL(file);
     },
-    [handleChange, setBase64, type]
+    [handleChange, setBase64]
   );
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -127,7 +127,7 @@ const UseImageUpload = ({
           <input
             value={value}
             onChange={(e) => {
-              setBase64(e.target.value  );
+              setBase64(e.target.value);
               handleChange(e.target.value);
             }}
             className={twMerge(

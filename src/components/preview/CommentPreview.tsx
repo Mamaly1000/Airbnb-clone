@@ -3,13 +3,10 @@ import useComments from "@/hooks/useComments";
 import { useFeedBackCommentsPreview } from "@/hooks/useFeedBackCommentsPreview";
 import React, { useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { twMerge } from "tailwind-merge";
-import Loader from "../ui/Loader";
+import { twMerge } from "tailwind-merge"; 
 import useUser from "@/hooks/useUser";
 import CommentPreviewButton from "../inputs/CommentPreviewButton";
-import CommentsFeed from "../comments/CommentsFeed";
-import Button from "../inputs/Button";
-import { VscSend } from "react-icons/vsc";
+import CommentsFeed from "../comments/CommentsFeed"; 
 import CreateCommentForm from "../form/CreateCommentForm";
 
 const CommentPreview = ({
@@ -62,51 +59,28 @@ const CommentPreview = ({
     >
       <article
         onClick={() => {
-          if (!isOpen) {
-            onOpen({ feedbackId, listingId });
-          }
+          onOpen({ feedbackId, listingId });
         }}
         className={twMerge(
           "transition-all  duration-300",
           isOpen && isUnique
-            ? "md:w-[350px] md:h-[300px] md:max-h-[300px] overflow-y-auto absolute top-0 w-[calc(60vw+100px)] -end-4 md:-end-2 bg-neutral-100 z-40"
+            ? "md:w-[350px] rounded-md md:h-[300px] md:max-h-[300px] fixed   w-screen max-w-full md:max-w-[340px] h-[400px] max-h-[400px] overflow-y-auto md:absolute md:top-0 md:-end-2 top-[-0] end-0 bg-neutral-100 z-40"
             : "w-[45px] h-fit absolute  py-1 rounded-md flex items-center justify-center gap-1 text-white bg-blue-500 "
         )}
-        onMouseLeave={(e) => {
-          e.stopPropagation();
-          if (isOpen) {
-            onClose();
-          }
-        }}
       >
         <CommentPreviewButton
+          feedbackId={feedbackId}
+          listingId={listingId}
           commentsIds={commentsIds}
           isOpen={isOpen && isUnique}
         />
         {isOpen && isUnique && <CreateCommentForm />}
-        {isOpen &&
-          isUnique &&
-          (user ? (
-            <>
-              {!commentLoading ? (
-                <CommentsFeed
-                  feedbackId={feedbackId}
-                  user={user}
-                  comments={comments}
-                />
-              ) : (
-                <Loader
-                  className="min-w-full flex items-center justify-center h-[200px]"
-                  size={30}
-                />
-              )}
-            </>
-          ) : (
-            <Loader
-              className="min-w-full flex items-center justify-center h-[200px]"
-              size={30}
-            />
-          ))}
+        {isOpen && isUnique && (
+          <CommentsFeed
+            feedbackId={feedbackId} 
+            comments={comments || []}
+          />
+        )}
       </article>
     </section>
   );

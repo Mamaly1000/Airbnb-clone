@@ -116,6 +116,8 @@ const ListingClient = ({
               guestCount: listing.guestCount,
               bathroomCount: listing.bathroomCount,
               locationVlaue: listing.locationValue,
+              id: listing.id,
+              rate: listing.rate,
             }}
             user={user}
           />

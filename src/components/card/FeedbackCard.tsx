@@ -2,17 +2,17 @@
 
 import { safeUserType } from "@/types/safeuser";
 import { Comment, Feedback, Listing, User } from "@prisma/client";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import Avatar from "../ui/Avatar";
 import RateInput from "../inputs/RateInput";
 import { formatDistanceToNowStrict } from "date-fns";
-import Button from "../inputs/Button";
-import { BiCalendar, BiHome } from "react-icons/bi";
+import { BiCalendar } from "react-icons/bi";
 import ListingPreview from "../preview/ListingPreview";
 import { twMerge } from "tailwind-merge";
 import FeedBackLikeButton from "../inputs/FeedBackLikeButton";
 import CommentPreview from "../preview/CommentPreview";
 import { useFeedBackCommentsPreview } from "@/hooks/useFeedBackCommentsPreview";
+import { useListingPreview } from "@/hooks/useListingPreview";
 
 const FeedbackCard = ({
   feedback,
@@ -21,7 +21,11 @@ const FeedbackCard = ({
   user: User | safeUserType;
   feedback: Feedback & { user: User; listing: Listing; comments: Comment[] };
 }) => {
-  const [ListingExpand, setListingExpand] = useState(false);
+  const { id } = useListingPreview();
+  const isUniqueListing = useMemo(() => {
+    return id === feedback.listingId ? true : false;
+  }, [id, feedback.listingId]);
+
   const {
     isOpen: commentPreview,
     listingId: mainListingId,
@@ -41,19 +45,25 @@ const FeedbackCard = ({
         feedback.listingId === mainListingId && feedback.id === mainFeedbackId
       ) && !!commentPreview
     );
-  }, [feedback.listingId, mainListingId, feedback.id, mainFeedbackId]);
+  }, [
+    feedback.listingId,
+    mainListingId,
+    feedback.id,
+    mainFeedbackId,
+    commentPreview,
+  ]);
 
   return (
     <article
       className={twMerge(
         "p-3 rounded-md drop-shadow-2xl flex flex-col items-start justify-between relative gap-2 bg-neutral-50 cursor-default z-0  ",
-        ListingExpand || isUnique ? "z-20" : "z-0"
+        isUniqueListing || isUnique ? "z-20" : "z-0"
       )}
     >
       <section
         className={twMerge(
           "flex flex-col gap-3 items-start justify-start relative",
-          ListingExpand ? "z-20" : "z-0"
+          isUniqueListing ? "z-20" : "z-0"
         )}
       >
         <div className="min-w-full flex items-center justify-between  gap-1   z-0">
@@ -69,9 +79,8 @@ const FeedbackCard = ({
             </div>
           </div>
           <ListingPreview
-            expand={ListingExpand}
-            setExpand={setListingExpand}
             Listing={feedback.listing}
+            listingId={feedback.listingId}
           />
         </div>
         <p className="text-[15px] font-semibold font-sans leading-1 capitalize text-left line-clamp-4 text-black">

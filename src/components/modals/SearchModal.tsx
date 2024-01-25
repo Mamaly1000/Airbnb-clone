@@ -36,7 +36,7 @@ const SearchModal = () => {
         ssr: false,
       }),
     //@ts-ignore
-    [location]
+    []
   );
 
   const onBackward = useCallback(() => {

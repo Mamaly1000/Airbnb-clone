@@ -2,16 +2,14 @@
 import { useRebookModal } from "@/hooks/useRebookModal";
 import React, { useCallback, useState } from "react";
 import Modal from "./Modal";
-import useLoginModal from "@/hooks/useLoginModal";
-import Button from "../inputs/Button";
+import useLoginModal from "@/hooks/useLoginModal"; 
 import RebookCalendar from "../Reservations/RebookCalendar";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { initialDateRange } from "../listings/ListingClient";
 import { Range } from "react-date-range";
 import { useRouter } from "next/navigation";
-import useProperty from "@/hooks/useProperty";
-import useReservation from "@/hooks/useReservation";
+import useProperty from "@/hooks/useProperty"; 
 import useUser from "@/hooks/useUser";
 import useReservations from "@/hooks/useReservations";
 import Loader from "../ui/Loader";
@@ -32,7 +30,7 @@ const RebookReservationModal = () => {
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
 
   const rebookReservation = useCallback(
-    async (e: any) => {
+    async (_e: any) => {
       if (!user) {
         return loginModal.onOpen();
       }
@@ -66,7 +64,19 @@ const RebookReservationModal = () => {
           setLoading(false);
         });
     },
-    [user, loginModal, dateRange, router, property, totalPrice]
+    [
+      user,
+      loginModal,
+      dateRange,
+      router,
+      property,
+      totalPrice,
+      onClose,
+      propertyMutate,
+      reservationId,
+      reservationsMutate,
+      userMutate,
+    ]
   );
 
   return (

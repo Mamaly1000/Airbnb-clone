@@ -37,6 +37,8 @@ const CommentLikeButton = ({
               toast.success(res.data.message);
               mutate();
             });
+        } else {
+          toast.error("something went wrong");
         }
       } catch (error) {
         console.log(error);
@@ -45,7 +47,7 @@ const CommentLikeButton = ({
         setLoading(false);
       }
     },
-    [user, commentId, mutate, setLoading]
+    [user, commentId, mutate, setLoading, listingId]
   );
 
   const isLike = useMemo(() => {

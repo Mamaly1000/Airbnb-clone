@@ -73,7 +73,17 @@ const UpdateReservationModal = () => {
           setLoading(false);
         });
     }
-  }, [user, loginModal, dateRange, router, reservation?.listing, totalPrice]);
+  }, [
+    user,
+    loginModal,
+    dateRange,
+    router,
+    reservation?.listing,
+    totalPrice,
+    mutate,
+    onClose,
+    reservation,
+  ]);
   return (
     <Modal
       isOpen={!!id}
@@ -100,7 +110,7 @@ const UpdateReservationModal = () => {
             />
           ) : (
             <Loader className="min-w-full min-h-[200px] h-[200px] max-w-[200px] flex items-center justify-center" />
-          )} 
+          )}
         </div>
       }
       header={{

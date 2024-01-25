@@ -72,7 +72,7 @@ const EditprofileModal = () => {
         image: user.image || "",
       });
     }
-  }, [user]);
+  }, [user, form]);
 
   return (
     <Modal
@@ -88,7 +88,7 @@ const EditprofileModal = () => {
             e.preventDefault();
             e.stopPropagation();
           }}
-          className="min-w-full max-w-full overflow-hidden flex flex-col items-start justify-start gap-8"
+          className="min-w-full max-w-full overflow-hidden flex flex-col items-start justify-start gap-8 max-h-[70vh] overflow-y-auto"
         >
           <Input
             errors={form.formState.errors}

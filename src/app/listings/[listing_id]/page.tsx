@@ -5,6 +5,8 @@ import ListingClient from "@/components/listings/ListingClient";
 import EmptyState from "@/components/ui/EmptyState";
 import React from "react";
 
+export const revalidate = 0;
+
 const SingleListingPage = async ({
   params,
 }: {
@@ -22,7 +24,9 @@ const SingleListingPage = async ({
       />
     );
   }
-  return <ListingClient listing={listing} user={user} reservations={reservations} />;
+  return (
+    <ListingClient listing={listing} user={user} reservations={reservations} />
+  );
 };
 
 export default SingleListingPage;

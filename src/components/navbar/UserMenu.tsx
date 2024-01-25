@@ -61,6 +61,13 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                 user
                   ? [
                       {
+                        id: 6323454567856,
+                        label: "Home",
+                        onClick: () => {
+                          router.push("/");
+                        },
+                      },
+                      {
                         id: 2340,
                         label: "My trips",
                         onClick: () => {

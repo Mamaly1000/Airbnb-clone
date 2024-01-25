@@ -6,16 +6,16 @@ import Avatar from "../ui/Avatar";
 import { BiCalendar } from "react-icons/bi";
 import { formatDistanceToNowStrict } from "date-fns";
 import CommentLikeButton from "../inputs/CommentLikeButton";
+import useUser from "@/hooks/useUser";
 
 const CommentCard = ({
   comment,
-  user,
   feedbackId,
 }: {
   feedbackId: string;
   comment: Comment & { author: User };
-  user: User | safeUserType;
 }) => {
+  const { user } = useUser();
   const createdAt = useMemo(() => {
     if (!comment.createdAt) {
       return null;
@@ -50,7 +50,7 @@ const CommentCard = ({
           listingId={comment.listingId}
           commentId={comment.id}
           feedbackId={feedbackId}
-          user={user}
+          user={user as any}
           likingIds={comment.likingIds}
         />
       </section>

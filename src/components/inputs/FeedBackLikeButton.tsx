@@ -38,7 +38,7 @@ const FeedBackLikeButton = ({
         setLoading(false);
       }
     },
-    [setLoading]
+    [setLoading, listingId, feedBackId]
   );
 
   const isLike = useMemo(() => {
@@ -60,7 +60,10 @@ const FeedBackLikeButton = ({
       {likingIds.length}
       <BiLike
         size={15}
-        className={twMerge(isLike ? " text-white" : " text-rose-500 ","transition-all")}
+        className={twMerge(
+          isLike ? " text-white" : " text-rose-500 ",
+          "transition-all"
+        )}
       />
     </button>
   );

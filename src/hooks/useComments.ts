@@ -1,3 +1,4 @@
+"use client"
 import fetcher from "@/libs/fetcher"; 
 import { Comment } from "@prisma/client";
 import useSWR from "swr";

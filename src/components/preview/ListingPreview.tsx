@@ -1,52 +1,50 @@
 "use client";
 import { Listing } from "@prisma/client";
 import Image from "next/image";
-import React from "react";
+import React, { useMemo } from "react";
 import { BiHome } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import RateInput from "../inputs/RateInput";
 import Link from "next/link";
 import { IconType } from "react-icons";
 import { IoMdClose } from "react-icons/io";
+import { safeListingType } from "@/types/safeListing";
+import { useListingPreview } from "@/hooks/useListingPreview";
 
 const ListingPreview = ({
+  listingId,
   Listing,
-  expand,
-  setExpand,
 }: {
-  setExpand: React.Dispatch<React.SetStateAction<boolean>>;
-  expand: boolean;
-  Listing: Listing;
+  Listing: Listing | safeListingType;
+  listingId: string;
 }) => {
-  const Icon: IconType = expand ? IoMdClose : BiHome;
+  const { id, onOpen, onClose } = useListingPreview();
+  const isUnique = useMemo(() => {
+    return listingId === id ? true : false;
+  }, [listingId, id]);
+  const Icon: IconType = isUnique ? IoMdClose : BiHome;
 
   return (
     <article
       onClick={(e) => {
         e.stopPropagation();
-        setExpand(true);
+        onOpen({ id: listingId });
       }}
       className={twMerge(
         "transition-all duration-300 absolute top-0 end-0 z-20 ",
-        expand
-          ? "py-2 absolute top-[10px] md:top-[-10px] -end-2 md:end-0 w-full min-h-fit  md:w-[300px] md:h-[300px] rounded-md drop-shadow-2xl flex flex-col items-start justify-start gap-2"
+        isUnique
+          ? "py-2 overflow-hidden fixed md:absolute top-[10px] md:top-[-10px] -end-2 md:end-0 w-full min-h-fit  md:w-[300px] md:h-[300px] rounded-md drop-shadow-2xl flex flex-col items-start justify-start gap-2"
           : " cursor-pointer w-[40px] h-[40px] rounded-full flex items-center justify-center",
-        !expand ? "bg-rose-500" : "bg-neutral-100"
+        !isUnique ? "bg-rose-500" : "bg-neutral-100"
       )}
-      onMouseLeave={(e) => {
-        e.stopPropagation();
-        if (expand) {
-          setExpand(false);
-        }
-      }}
     >
       <section
         className={twMerge(
-          expand ? "p-3" : "p-0",
+          isUnique ? "p-3 border-b-[1px] border-b-neutral-300" : "p-0",
           "min-w-full max-w-full gap-2 flex items-center justify-center "
         )}
       >
-        {!!expand && (
+        {!!isUnique && (
           <h2 className="capitalize font-bold text-rose-500 max-w-[70%] line-clamp-1">
             {Listing.title}
           </h2>
@@ -54,23 +52,27 @@ const ListingPreview = ({
         <Icon
           className={twMerge(
             "max-w-[25px] max-h-[25px] min-w-[25px] min-h-[25px] transition-all cursor-pointer",
-            expand
+            isUnique
               ? "text-rose-500 hover:scale-125 border-[1px] border-white hover:border-rose-500 rounded-full "
               : "text-white"
           )}
           onClick={(e) => {
             e.stopPropagation();
-            setExpand((prev) => !prev);
+            if (isUnique) {
+              onClose();
+            } else {
+              onOpen({ id: listingId });
+            }
           }}
         />
       </section>
-      {!!expand && (
+      {!!isUnique && (
         <>
-          <section className="animate-slideIn delay-75 min-w-full relative aspect-video h-[150px] px-3 drop-shadow-2xl overflow-hidden">
+          <section className="animate-slideIn delay-75 min-w-full relative aspect-video h-[150px] px-3 drop-shadow-2xl overflow-hidden pt-0">
             <Image
               alt={Listing.title}
               src={Listing.imageSrc}
-              className="object-cover w-full"
+              className="object-cover sm:object-contain md:object-cover w-full"
               fill
             />
           </section>

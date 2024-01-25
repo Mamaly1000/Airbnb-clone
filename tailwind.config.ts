@@ -8,6 +8,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        slideIn: {
+          from: {
+            opacity: "0",
+            transform: "translateY('50px')",
+          },
+          to: {
+            opacity: "1",
+            transform: "translateY('0')",
+          },
+        },
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -15,18 +27,6 @@ const config: Config = {
       },
       animation: {
         slideIn: "slideIn 1s linear 1",
-      },
-    },
-    keyframes: {
-      slideIn: {
-        from: {
-          opacity: "0",
-          transform: "translateY('50px')",
-        },
-        to: {
-          opacity: "1",
-          transform: "translateY('0')",
-        },
       },
     },
   },

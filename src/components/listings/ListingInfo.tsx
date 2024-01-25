@@ -6,6 +6,7 @@ import Avatar from "../navbar/Avatar";
 import ListingCategory from "./listingCategory";
 import { IconType } from "react-icons";
 import dynamic from "next/dynamic";
+import RateInput from "../inputs/RateInput";
 const Map = dynamic(() => import("@/components/Map/Map"), {
   ssr: false,
 });
@@ -24,7 +25,7 @@ const ListingInfo = ({
     roomCount: number;
     guestCount: number;
     bathroomCount: number;
-    locationVlaue: string;
+    locationVlaue: string;id:string;rate:number
   };
   user?: safeUserType | null;
 }) => {
@@ -53,6 +54,7 @@ const ListingInfo = ({
       <div className="text-lg font-light text-neutral-500">
         {listing.description}
       </div>
+      <RateInput id={listing.id} val={listing.rate} readOnly size="20px" />
       <hr />
       {location && <Map center={location.latlng} />}
     </div>
