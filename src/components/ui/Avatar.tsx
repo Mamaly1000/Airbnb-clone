@@ -13,6 +13,11 @@ const Avatar = ({
   userId: string;
 }) => {
   const { profile, isLoading } = useProfileImage(userId);
+  if (!profile && isLoading) {
+    return (
+      <div className="min-w-[45px] min-h-[45px] rounded-full bg-neutral-500 drop-shadow-2xl"></div>
+    );
+  }
   return (
     <div
       className={twMerge(

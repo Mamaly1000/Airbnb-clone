@@ -3,10 +3,11 @@
 @tailwind utilities;
 
 :root {
+  --background: #31b1f0;
+  --dark-background: #1e1e1e;
 }
+
 @media (prefers-color-scheme: dark) {
-  :root {
-  }
 }
 body,
 html,
@@ -30,4 +31,19 @@ html,
 
 .star-container path {
   fill: rgb(244 63 94 / var(--tw-bg-opacity));
+}
+* {
+  @apply transition-all;
+}
+button {
+  @apply hover:scale-105 active:scale-95;
+}
+*::-webkit-scrollbar {
+  @apply bg-neutral-400 max-w-[3px] min-w-[3px];
+}
+*::-webkit-scrollbar-thumb {
+  @apply bg-rose-300;
+}
+.scroll-hidden::-webkit-scrollbar {
+  @apply hidden;
 }

@@ -1,18 +1,24 @@
+"use client";
 import Image from "next/image";
 import React from "react";
-import { IconType } from "react-icons";
+import { motion } from "framer-motion";
 
 const MenuItem = ({
   label,
   onClick,
   Icon,
+  index,
 }: {
+  index?: number;
   Icon?: any;
   label: string;
   onClick: () => void;
 }) => {
   return (
-    <div
+    <motion.button
+      initial={{ opacity: 0, translateX: 10 }}
+      animate={{ opacity: 1, translateX: 0 }}
+      transition={{ delay: (index || 0) / 10 + 0.01, ease: "linear" }}
       className="flex items-center justify-between gap-2 px-4 py-3 hover:bg-neutral-100 transition font-semibold min-w-fit whitespace-nowrap"
       onClick={onClick}
     >
@@ -22,7 +28,7 @@ const MenuItem = ({
       ) : (
         Icon
       )}
-    </div>
+    </motion.button>
   );
 };
 

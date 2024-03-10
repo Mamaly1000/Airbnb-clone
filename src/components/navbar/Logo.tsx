@@ -10,7 +10,7 @@ const Logo = () => {
       onClick={() => router.push("/")}
       alt="airbnb logo"
       src={logo.src}
-      className="hidden md:block cursor-pointer "
+      className="hidden md:block cursor-pointer max-w-[200px] max-h-[200px] overflow-hidden drop-shadow-2xl"
       height={100}
       width={100}
     />

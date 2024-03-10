@@ -28,8 +28,13 @@ const config: Config = {
       animation: {
         slideIn: "slideIn 1s linear 1",
       },
+      colors: {
+        background: "var(--background)",
+        dark_background: "var(--dark-background)",
+      },
     },
   },
+  darkMode: "class",
   plugins: [],
 };
 export default config;

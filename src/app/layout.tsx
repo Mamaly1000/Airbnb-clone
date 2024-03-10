@@ -6,6 +6,7 @@ import ModalProvider from "@/providers/ModalProvider";
 import ToastProvider from "@/providers/ToastProvider";
 import getCurrentUser from "@/actions/getCurrentUser";
 import "react-tooltip/dist/react-tooltip.css";
+import { twMerge } from "tailwind-merge";
 export const metadata: Metadata = {
   title: "Airbnb",
   description: "wellcome to Airbnb",
@@ -21,7 +22,7 @@ export default async function RootLayout({
   const user = await getCurrentUser();
   return (
     <html lang="en">
-      <body className={font.className}>
+      <body className={twMerge(font.className, "light")}>
         <ModalProvider />
         <Navbar user={user} />
         <div className="pb-32 pt-40">{children}</div>

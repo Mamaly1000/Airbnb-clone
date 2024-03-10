@@ -1,3 +1,4 @@
+"use client";
 import React, { Fragment } from "react";
 import MenuItem from "./MenuItem";
 import { IconType } from "react-icons";
@@ -17,12 +18,16 @@ const MenuItems = ({
 }) => {
   return (
     <>
-      {items?.map((item) => {
+      {items?.map((item, i) => {
         return (
           <Fragment key={item.id}>
             <MenuItem
+              index={i}
               label={item.label}
-              onClick={item.onClick}
+              onClick={() => {
+                item.onClick();
+                onClose!();
+              }}
               Icon={item.Icon}
             />
             {item.hr && <hr />}
