@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback, useState } from "react";
-import { AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineLogin, AiOutlineMenu } from "react-icons/ai";
 import Avatar from "./Avatar";
 import MenuItems from "./MenuItems";
 import useRegisterModal from "@/hooks/useAuthModal";
@@ -12,8 +12,15 @@ import useRentModal from "@/hooks/useRentModal";
 import { useRouter } from "next/navigation";
 import { useProfileModal } from "@/hooks/useProfileModal";
 import { AnimatePresence, motion } from "framer-motion";
+import ToggleTheme from "./ToggleTheme";
+import { useTheme } from "@/hooks/useTheme";
+import { LuMoonStar } from "react-icons/lu";
+import { GoSun } from "react-icons/go";
+import { RiLogoutCircleLine } from "react-icons/ri";
 const UserMenu = ({ user }: { user: safeUserType | null }) => {
   const [isOpen, setOpen] = useState(false);
+
+  const { mode, setTheme } = useTheme();
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const rentmodal = useRentModal();
@@ -34,13 +41,14 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
 
   return (
     <div className="relative capitalize">
-      <div className="flex flex-row items-center gap-3 ">
+      <div className="flex flex-row items-center gap-3 [&>button:hover]:border-rose-500 [&>button:hover]:text-rose-500">
         <button
-          className="hidden border-[1px] border-neutral-200 md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
+          className="hidden border-[1px] border-neutral-200 md:block text-sm font-semibold py-3 px-4 rounded-full transition cursor-pointer"
           onClick={onRent}
         >
           Airbnb your home
         </button>
+        <ToggleTheme className="hidden md:flex" />
         <button
           className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-sm transition"
           onClick={toggleOpen}
@@ -59,7 +67,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
             animate={{ opacity: 1, translateY: 0 }}
             transition={{ ease: "linear", duration: 0.12 }}
             onMouseLeave={() => setOpen(false)}
-            className="absolute rounded-xl shadow-md  min-w-fit w-[40vw] md:w-3/4 md:min-w-fit bg-white max-[400px]:scroll-hidden max-h-[60vh] md:max-w-[90vh] overflow-x-hidden overflow-y-auto right-0 top-[55px] md:top-12 text-sm"
+            className="absolute rounded-xl min-w-fit w-[40vw] md:w-3/4 md:min-w-fit bg-white dark:bg-neutral-900  shadow-md text-inherit max-[400px]:scroll-hidden max-h-[60vh] md:max-w-[90vh] overflow-x-hidden overflow-y-auto right-0 top-[55px] md:top-12 text-sm"
           >
             <div className="flex flex-col cursor-pointer min-w-fit">
               <MenuItems
@@ -141,6 +149,14 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                           onClick: () => {
                             signOut();
                           },
+                          Icon: RiLogoutCircleLine,
+                        },
+                        {
+                          label: (mode === "dark" ? "light" : "dark") + " mode",
+                          onClick: () => setTheme(),
+                          Icon: mode !== "dark" ? LuMoonStar : GoSun,
+                          id: 23984219412039,
+                          mobileOnly: true,
                         },
                       ]
                     : [
@@ -150,6 +166,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                           onClick: () => {
                             loginModal.onOpen();
                           },
+                          Icon: AiOutlineLogin,
                         },
                         {
                           id: 654645,
@@ -157,6 +174,13 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                           onClick: () => {
                             registerModal.onOpen();
                           },
+                        },
+                        {
+                          label: (mode === "dark" ? "light" : "dark") + " mode",
+                          onClick: () => setTheme(),
+                          Icon: mode !== "dark" ? LuMoonStar : GoSun,
+                          id: 23984219412039,
+                          mobileOnly: true,
                         },
                       ]
                 }

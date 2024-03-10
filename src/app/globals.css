@@ -2,13 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #31b1f0;
-  --dark-background: #1e1e1e;
-}
-
-@media (prefers-color-scheme: dark) {
-}
 body,
 html,
 :root {
@@ -39,10 +32,10 @@ button {
   @apply hover:scale-105 active:scale-95;
 }
 *::-webkit-scrollbar {
-  @apply bg-neutral-400 max-w-[3px] min-w-[3px];
+  @apply bg-neutral-200 max-w-[3px] min-w-[3px] max-h-[3px] min-h-[3px] border-none;
 }
 *::-webkit-scrollbar-thumb {
-  @apply bg-rose-300;
+  @apply bg-rose-500;
 }
 .scroll-hidden::-webkit-scrollbar {
   @apply hidden;

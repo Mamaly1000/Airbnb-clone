@@ -14,6 +14,7 @@ const MenuItems = ({
     Icon?: IconType | string;
     onClick: () => void;
     hr?: boolean;
+    mobileOnly?: boolean;
   }[];
 }) => {
   return (
@@ -28,6 +29,7 @@ const MenuItems = ({
                 item.onClick();
                 onClose!();
               }}
+              mobileOnly={item.mobileOnly}
               Icon={item.Icon}
             />
             {item.hr && <hr />}

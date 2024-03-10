@@ -18,7 +18,7 @@ const Navbar = ({
   return (
     <div
       className={twMerge(
-        "fixed min-w-full max-w-full min-h-[50px] z-10 bg-inherit shadow-sm shadow-gray-400 dark:shadow-gray-500 dark:bg-red-900 ",
+        "fixed min-w-full max-w-full min-h-[50px] z-10 bg-inherit shadow-sm shadow-gray-400 ",
         !!Categories ? "py-0" : "py-4"
       )}
     >

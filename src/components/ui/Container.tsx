@@ -12,7 +12,7 @@ const Container = ({
   return (
     <div
       className={twMerge(
-        `max-w-[2520px] mx-auto xl:px-20 md:px-10 sm:px-2 px-4 `,
+        `max-w-[2520px] mx-auto xl:px-20 md:px-10 sm:px-2 px-4 bg-white text-black dark:bg-neutral-800 dark:text-[#e7e9ea]`,
         classname
       )}
     >
