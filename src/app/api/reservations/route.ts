@@ -53,6 +53,6 @@ export async function GET(
   if (!currentUser) {
     return NextResponse.error();
   }
-  const reservations = await getReservations({ listing_id: listingId });
+  const { reservations } = await getReservations({ listing_id: listingId });
   return NextResponse.json(reservations);
 }

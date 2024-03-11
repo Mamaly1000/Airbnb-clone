@@ -14,6 +14,7 @@ import { useFeedbackModal } from "@/hooks/useFeedbackModal";
 import RateInput from "../inputs/RateInput";
 import placeholder from "../../images/placeholder-image.jpg";
 import { motion } from "framer-motion";
+import { listingActionsType } from "@/types/ListingActions";
 
 const ListingCard = ({
   listing,
@@ -25,6 +26,10 @@ const ListingCard = ({
   updateAction,
   Outdated = false,
   feedback = false,
+  Edit,
+  Remove,
+  Review,
+  Cancel,
   index = 0,
 }: {
   feedback?: boolean;
@@ -44,7 +49,7 @@ const ListingCard = ({
     onClick: () => void;
   };
   index?: number;
-}) => {
+} & listingActionsType) => {
   const { getByValue } = useCountry();
   const router = useRouter();
 
@@ -133,7 +138,31 @@ const ListingCard = ({
             small
             onClick={hanleCancel}
           />
-        )}{" "}
+        )}
+        {Cancel && (
+          <Button
+            label={Cancel.label}
+            className={twMerge("relative z-20", Cancel.className)}
+            disabled={disabled}
+            small
+            onClick={(e) => {
+              e.stopPropagation();
+              Cancel.onClick(listing, reservation);
+            }}
+          />
+        )}
+        {Remove && (
+          <Button
+            label={Remove.label}
+            className={twMerge("relative z-20", Remove.className)}
+            disabled={disabled}
+            small
+            onClick={(e) => {
+              e.stopPropagation();
+              Remove.onClick(listing, reservation);
+            }}
+          />
+        )}
         {!!updateAction && (
           <Button
             label={updateAction.label}
@@ -143,6 +172,21 @@ const ListingCard = ({
             onClick={(e) => {
               e.stopPropagation();
               updateAction.onClick();
+            }}
+          />
+        )}
+        {!!Edit && (
+          <Button
+            label={Edit.label}
+            className={twMerge(
+              "bg-yellow-500 border-yellow-500 text-white relative z-20",
+              Edit.className
+            )}
+            disabled={disabled}
+            small
+            onClick={(e) => {
+              e.stopPropagation();
+              Edit.onClick(listing, reservation);
             }}
           />
         )}
@@ -158,6 +202,21 @@ const ListingCard = ({
                 reservationId: reservation.id,
                 listingId: reservation.listing.id,
               });
+            }}
+          />
+        )}
+        {Review && reservation?.status === "PENDING" && (
+          <Button
+            label={"Feedback to your trip"}
+            className={twMerge(
+              "bg-green-700 border-green-700 text-white relative z-20",
+              Review.className
+            )}
+            disabled={disabled}
+            small
+            onClick={(e) => {
+              e.stopPropagation();
+              Review.onClick(listing, reservation);
             }}
           />
         )}

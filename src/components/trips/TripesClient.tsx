@@ -2,21 +2,25 @@
 import { safeReservationType } from "@/types/safeReservation";
 import { safeUserType } from "@/types/safeuser";
 import React, { useCallback, useState } from "react";
-import Container from "../ui/Container";
-import Heading from "../form/Heading";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
-import ListingCard from "../card/ListingCard";
 import { useUpdateReservationModal } from "@/hooks/useUpdateReservationModal";
 import useLoginModal from "@/hooks/useLoginModal";
+import ReservationList from "../lists/ReservationList";
+import { reservertionReturnDataType } from "@/actions/getReservations";
+import { safeListingType } from "@/types/safeListing";
+import ReservationPagination from "../pagination/ReservationPagination";
+import { reservationQueryType } from "../../actions/getReservations";
 
 const TripesClient = ({
-  trips,
+  reservationsData,
   user,
+  params,
 }: {
-  trips: safeReservationType[];
-  user?: safeUserType | null;
+  params?: reservationQueryType;
+  reservationsData: reservertionReturnDataType;
+  user?: safeUserType;
 }) => {
   const LoginModal = useLoginModal();
 
@@ -24,63 +28,83 @@ const TripesClient = ({
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
   const onCancel = useCallback(
-    (id: string) => {
-      setDeletingId(id);
-      axios
-        .delete(`/api/reservations/${id}`)
-        .then((res) => {
-          toast.success(res.data.message);
-          router.refresh();
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.error("something went wrong!");
-        })
-        .finally(() => {
-          setDeletingId("");
-        });
+    (_listing: safeListingType, reservation?: safeReservationType) => {
+      if (reservation) {
+        axios;
+        setDeletingId(reservation.id);
+        axios
+          .delete(`/api/reservations/${reservation.id}`)
+          .then((res) => {
+            toast.success(res.data.message);
+            router.refresh();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error("something went wrong!");
+          })
+          .finally(() => {
+            setDeletingId("");
+          });
+      }
     },
     [setDeletingId, router]
   );
+  const onUpdate = useCallback(
+    (_listing: safeListingType, reservation?: safeReservationType) => {
+      if (user) {
+        if (reservation) {
+          updateReservationModal.onOpen({
+            id: reservation?.id,
+            reservations: reservationsData.reservations,
+          });
+        } else {
+          toast.error("something went wrong!");
+        }
+      } else {
+        LoginModal.onOpen();
+      }
+    },
+    []
+  );
   return (
-    <Container main classname="min-w-full max-w-full">
-      <Heading
-        title="trips"
-        subtitle="Where you`ve been and where you`re going"
+    <>
+      <ReservationList
+        pagination={reservationsData.pagination}
+        reservations={reservationsData.reservations}
+        deletingId={deletingId}
+        className="pt-44"
+        user={user}
+        Cancel={{
+          onClick: onCancel,
+          label: "Cancel reservation",
+        }}
+        Edit={{
+          label: "update your reservation",
+          onClick: onUpdate,
+        }}
+        empty={{
+          title: "No trips found",
+          subTitle: "Looks like you haven`t reserved any trips!",
+        }}
+        header={{
+          title: "trips",
+          subTitle: "Where you`ve been and where you`re going",
+        }}
       />
-      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
-        {trips.map((trip) => {
-          return (
-            <ListingCard
-              listing={trip.listing}
-              key={trip.id}
-              reservation={trip}
-              feedback
-              disabled={deletingId === trip.id}
-              user={user}
-              action={{
-                actionId: trip.id,
-                onAction: onCancel,
-                actionLabel: "Cancel reservation",
-              }}
-              updateAction={{
-                label: "update your reservation",
-                onClick: () => {
-                  if (user) {
-                    updateReservationModal.onOpen({
-                      id: trip.id,
-                      reservations: trips,
-                    });
-                  } else {
-                    LoginModal.onOpen();
-                  }
-                },
-              }}
-            />
-          );
-        })}
-      </div>
-    </Container>
+      <ReservationPagination
+        user={user}
+        params={params}
+        pagination={reservationsData.pagination}
+        Cancel={{
+          onClick: onCancel,
+          label: "Cancel reservation",
+        }}
+        Edit={{
+          label: "update your reservation",
+          onClick: onUpdate,
+        }}
+      />
+    </>
   );
 };
 

@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { categories } from "../categories/Categories";
 import ListingReservation from "../listings/ListingReservation";
+import EmptyState from "../ui/EmptyState";
 
 const RebookCalendar = ({
   reservations,
@@ -24,7 +25,7 @@ const RebookCalendar = ({
   setDateRange,
   setTotalPrice,
 }: {
-  setTotalPrice: React.Dispatch<React.SetStateAction<number>>; 
+  setTotalPrice: React.Dispatch<React.SetStateAction<number>>;
   dateRange: Range;
   totalPrice: number;
   setDateRange: React.Dispatch<React.SetStateAction<Range>>;
@@ -94,17 +95,21 @@ const RebookCalendar = ({
       }
     }
   }, [dateRange, listing!.price]);
+  if (!reservations && !listing && !user) {
+    return (
+      <EmptyState
+        subTitle="something went wrong."
+        title="please refresh your page!"
+      />
+    );
+  }
   return (
     <div className="min-w-full">
       <ListingReservation
-        price={listing!.price}
-        totalPrice={totalPrice}
-        dateRange={dateRange}
-        disabled={isLoading}
-        onChangeDate={(value: typeof dateRange) => setDateRange(value)}
-        onSubmit={createReservation}
-        disabledDate={disableDate}
         rebook={true}
+        listing={listing as any}
+        reservations={reservations as any}
+        user={user as any}
       />
     </div>
   );

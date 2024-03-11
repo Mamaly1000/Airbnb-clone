@@ -2,33 +2,65 @@
 import prisma from "@/libs/prismadb";
 import { safeReservationType } from "@/types/safeReservation";
 
-export async function getReservations({
-  authorId,
-  listing_id,
-  userId,
-}: {
+export type reservationQueryType = {
   listing_id?: string;
   userId?: string;
   authorId?: string;
-}) {
-  const query: any = {
-    endDate: {
-      gte: new Date(),
-    },
-    status: "PENDING",
+  status?: "PENDING" | "COMPLETED";
+  type?: "OUTDATED" | "ACTIVE";
+  page?: number;
+};
+export type reservertionReturnDataType = {
+  reservations: safeReservationType[];
+  pagination: {
+    hasMore: boolean;
+    total: number;
+    maxPages: number;
   };
-  if (listing_id) {
-    query.listingId = listing_id;
+};
+export async function getReservations(params?: reservationQueryType) {
+  let query: any = {
+    status: params?.status || "PENDING",
+  };
+  const limit = 10;
+  const page = params?.page || 1;
+  const skip = (page - 1) * limit;
+  if (params?.listing_id) {
+    query.listingId = params.listing_id;
   }
 
-  if (userId) {
-    query.userId = userId;
+  if (params?.userId) {
+    query.userId = params.userId;
   }
 
-  if (authorId) {
-    query.listing = { userId: authorId };
+  if (params?.authorId) {
+    query.listing = { userId: params.authorId };
   }
-
+  if (params?.type) {
+    if (params.type === "ACTIVE") {
+      query = {
+        ...query,
+        endDate: {
+          gte: new Date(),
+        },
+      };
+    }
+    if (params.type === "OUTDATED") {
+      query = {
+        ...query,
+        endDate: {
+          lt: new Date(),
+        },
+      };
+    }
+  } else {
+    query = {
+      ...query,
+      endDate: {
+        gte: new Date(),
+      },
+    };
+  }
   const reservation = await prisma.reservation.findMany({
     where: query,
     include: {
@@ -37,7 +69,19 @@ export async function getReservations({
     orderBy: {
       createdAt: "desc",
     },
+    skip,
+    take: limit + 1,
   });
+  const totalReservations = await prisma.reservation.count({ where: query });
+  const maxPages = Math.ceil(totalReservations / limit);
+  const pagination = {
+    hasMore: reservation.length > limit,
+    maxPages,
+    total: totalReservations,
+  };
+  if (pagination.hasMore) {
+    reservation.pop();
+  }
 
   const safeReservations = reservation.map((reservation) => ({
     ...reservation,
@@ -49,5 +93,8 @@ export async function getReservations({
       createdAt: reservation.listing.createdAt.toISOString(),
     },
   }));
-  return safeReservations as safeReservationType[];
+  return {
+    reservations: safeReservations || [],
+    pagination,
+  } as reservertionReturnDataType;
 }

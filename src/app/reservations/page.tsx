@@ -17,7 +17,7 @@ const Reservations = async () => {
       />
     );
   }
-  const reservatoins = await getReservations({
+  const { reservations } = await getReservations({
     authorId: user.id,
   });
   const { reservations: outdatedReservations } = await getOutdatedReservations({
@@ -26,7 +26,7 @@ const Reservations = async () => {
 
   return (
     <Container main classname="min-w-full max-w-full">
-      <ReservationsClient user={user} reservations={reservatoins || []} />
+      <ReservationsClient user={user} reservations={reservations || []} />
       <OutDatedReservationsClient
         user={user}
         reservations={outdatedReservations || []}

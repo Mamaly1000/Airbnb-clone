@@ -16,7 +16,7 @@ export default async function SingleListingPage({
 }) {
   const listingData = await getListingById(params.listing_id);
   const user = await getCurrentUser();
-  const reservations = await getReservations(params);
+  const { reservations } = await getReservations(params);
   const reviewsData = await getFeedbacks({
     listingId: listingData?.id,
     limit: 5,
