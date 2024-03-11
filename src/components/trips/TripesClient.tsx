@@ -71,7 +71,7 @@ const TripesClient = ({
         pagination={reservationsData.pagination}
         reservations={reservationsData.reservations}
         deletingId={deletingId}
-        className="pt-44"
+        className="pt-32"
         user={user}
         feedback
         Cancel={{

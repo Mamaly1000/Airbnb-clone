@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Range } from "react-date-range";
+import { Range, RangeKeyDict } from "react-date-range";
 import Calendar from "../inputs/Calendar";
 import Button from "../inputs/Button";
 import useLoginModal from "@/hooks/useLoginModal";
@@ -19,7 +19,9 @@ const ListingReservation = ({
   reservations,
   user,
   setTotalPrice: onPriceChange,
+  setCustomDaterange,
 }: {
+  setCustomDaterange?: (value: RangeKeyDict) => void;
   setTotalPrice?: (val: number) => void;
   user?: safeUserType | null;
   reservations: safeReservationType[];
@@ -31,6 +33,7 @@ const ListingReservation = ({
   const [totalPrice, setTotalPrice] = useState(listing?.price);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
   const loginModal = useLoginModal();
+
   const disableDate = useMemo(() => {
     let dates: Date[] = [];
     reservations?.forEach((reservation) => {
@@ -102,7 +105,12 @@ const ListingReservation = ({
       <Calendar
         value={dateRange}
         disabledDates={disableDate}
-        onChnage={(value) => setDateRange(value.selection)}
+        onChnage={(value) => {
+          if (setCustomDaterange) {
+            setCustomDaterange(value);
+          }
+          setDateRange(value.selection);
+        }}
       />
       <hr className="border-black dark:border-neutral-400" />
       {!rebook && (

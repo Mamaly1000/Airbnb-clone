@@ -3,7 +3,10 @@ import { getReservations } from "@/actions/getReservations";
 import TripesClient from "@/components/trips/TripesClient";
 import EmptyState from "@/components/ui/EmptyState";
 import { isNull } from "lodash";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+
+export const revalidate = 0;
 
 const Trips = async () => {
   const currentUser = await getCurrentUser();

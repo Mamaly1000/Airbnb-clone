@@ -123,7 +123,7 @@ const ListingCard = ({
               ", " +
               location(listing.locationValue)?.label}
         </div>
-        <div className="font-light text-neutral-500">
+        <div className="font-light text-neutral-500 dark:text-neutral-400">
           {resrevationData || listing.category}
         </div>
         <div className="flex flex-row items-center gap-1">

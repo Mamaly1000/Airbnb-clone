@@ -10,6 +10,7 @@ import {
 } from "@/actions/getReservations";
 import ReservationList from "../lists/ReservationList";
 import { listingActionsType } from "@/types/ListingActions";
+import { useRouter } from "next/navigation";
 
 const ReservationPagination = ({
   user,
@@ -34,6 +35,8 @@ const ReservationPagination = ({
   params?: reservationQueryType;
   user?: safeUserType;
 } & listingActionsType) => {
+  const router = useRouter();
+
   const [isLoading, setLoading] = useState(false);
   const [page, setPage] = useState(2);
   const [pagination, setPagination] = useState(reservationPagination);
@@ -47,6 +50,7 @@ const ReservationPagination = ({
       }).then((res) => {
         setPagination(res.pagination);
         setPage(page + 1);
+        router.refresh();
         if (res.reservations.length > 0) {
           setLists([
             ...lists,
@@ -79,7 +83,7 @@ const ReservationPagination = ({
     <>
       {lists}
       <AnimatePresence>
-        {reservationPagination.hasMore && (
+        {pagination.hasMore && (
           <motion.section
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

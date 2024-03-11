@@ -34,7 +34,7 @@ const ListingClient = ({
       return categories.find((c) => c.label === listing.category);
   }, [listing.category]);
   return (
-    <Container main classname="min-w-full max-w-full pt-44 overflow-x-visible">
+    <Container main classname="min-w-full max-w-full pt-32 overflow-x-visible">
       <div className="max-w-screen-lg mx-auto flex flex-col gap-6  overflow-x-visible">
         <ListingHead
           listing={{

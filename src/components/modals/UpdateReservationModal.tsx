@@ -49,8 +49,8 @@ const UpdateReservationModal = () => {
       await axios
         .patch(`/api/reservations/${reservation.id}`, {
           totalPrice,
-          startDate: dateRange.startDate?.toISOString(),
-          endDate: dateRange.endDate?.toISOString(),
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
           listingId: reservation?.listing?.id,
         })
         .then((res: { data: any }) => {
@@ -103,6 +103,7 @@ const UpdateReservationModal = () => {
               listing={reservation.listing}
               reservations={reservations}
               user={user}
+              setCustomDaterange={(range) => setDateRange(range.selection)}
             />
           ) : (
             <Loader className="min-w-full min-h-[200px] h-[200px] max-w-[200px] flex items-center justify-center bg-neutral-900" />

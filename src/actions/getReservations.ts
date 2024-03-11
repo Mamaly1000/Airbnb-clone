@@ -1,14 +1,16 @@
 "use server";
 import prisma from "@/libs/prismadb";
 import { safeReservationType } from "@/types/safeReservation";
+import { revalidatePath } from "next/cache";
 
 export type reservationQueryType = {
   listing_id?: string;
   userId?: string;
   authorId?: string;
   status?: "PENDING" | "COMPLETED";
-  type?: "OUTDATED" | "ACTIVE";
+  type?: "OUTDATED" | "ACTIVE" | "ALL";
   page?: number;
+  pathname?: string | null;
 };
 export type reservertionReturnDataType = {
   reservations: safeReservationType[];
@@ -18,7 +20,9 @@ export type reservertionReturnDataType = {
     maxPages: number;
   };
 };
-export async function getReservations(params?: reservationQueryType) {
+export async function getReservations(
+  params?: reservationQueryType
+): Promise<reservertionReturnDataType> {
   let query: any = {
     status: params?.status || "PENDING",
   };
@@ -28,11 +32,9 @@ export async function getReservations(params?: reservationQueryType) {
   if (params?.listing_id) {
     query.listingId = params.listing_id;
   }
-
   if (params?.userId) {
     query.userId = params.userId;
   }
-
   if (params?.authorId) {
     query.listing = { userId: params.authorId };
   }
@@ -50,6 +52,34 @@ export async function getReservations(params?: reservationQueryType) {
         ...query,
         endDate: {
           lt: new Date(),
+        },
+      };
+    }
+    if (params.type === "ALL" && params.listing_id) {
+      const allReservations = await prisma.reservation.findMany({
+        where: {
+          listingId: params.listing_id,
+        },
+        include: {
+          listing: true,
+        },
+      });
+      const safeReservations = allReservations.map((reservation) => ({
+        ...reservation,
+        createdAt: reservation.createdAt.toISOString(),
+        endDate: reservation.endDate.toISOString(),
+        startDate: reservation.startDate.toISOString(),
+        listing: {
+          ...reservation.listing,
+          createdAt: reservation.listing.createdAt.toISOString(),
+        },
+      }));
+      return {
+        reservations: safeReservations || [],
+        pagination: {
+          hasMore: false,
+          maxPages: 1,
+          total: safeReservations.length,
         },
       };
     }
@@ -74,6 +104,7 @@ export async function getReservations(params?: reservationQueryType) {
   });
   const totalReservations = await prisma.reservation.count({ where: query });
   const maxPages = Math.ceil(totalReservations / limit);
+
   const pagination = {
     hasMore: reservation.length > limit,
     maxPages,
@@ -93,6 +124,9 @@ export async function getReservations(params?: reservationQueryType) {
       createdAt: reservation.listing.createdAt.toISOString(),
     },
   }));
+  if (params?.pathname) {
+    revalidatePath(params?.pathname);
+  }
   return {
     reservations: safeReservations || [],
     pagination,

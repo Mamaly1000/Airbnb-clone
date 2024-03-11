@@ -62,23 +62,14 @@ export async function PATCH(
     console.log("missing fields");
     return NextResponse.error();
   }
-  const updatedReservation = await prisma.listing.update({
+  const updatedReservation = await prisma.reservation.update({
     where: {
-      id: listingId,
+      id: params.reservation_id,
     },
     data: {
-      reservations: {
-        update: {
-          where: {
-            id: params.reservation_id as string,
-          },
-          data: {
-            endDate,
-            startDate,
-            totalPrice,
-          },
-        },
-      },
+      endDate,
+      startDate,
+      totalPrice,
     },
   });
 
