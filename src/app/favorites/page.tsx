@@ -23,7 +23,7 @@ const Favorites = async () => {
       />
     );
   }
-  return <FavoritesClient favorites={favorites} user={user} />;
+  return <FavoritesClient  favorites={favorites} user={user} />;
 };
 
 export default Favorites;

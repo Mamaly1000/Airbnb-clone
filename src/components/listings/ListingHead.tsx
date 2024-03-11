@@ -5,6 +5,7 @@ import React, { useMemo } from "react";
 import Heading from "../form/Heading";
 import Image from "next/image";
 import HeartButton from "../inputs/HeartButton";
+import { motion } from "framer-motion";
 
 const ListingHead = ({
   listing,
@@ -27,11 +28,22 @@ const ListingHead = ({
   }, [listing.locationValue, getByValue]);
   return (
     <>
-      <Heading
-        title={listing.title}
-        subtitle={`${location?.region}, ${location?.label}`}
-      />
-      <div className="w-full h-[60vh] overflow-hidden rounded-xl relative">
+      <motion.div
+        initial={{ opacity: 0, translateX: -100 }}
+        animate={{ opacity: 1, translateX: 0 }}
+        transition={{ duration: 1, ease: "linear" }} 
+      >
+        <Heading
+          title={listing.title}
+          subtitle={`${location?.region}, ${location?.label}`}
+        />
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, translateY: 10 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ ease: "linear", duration: 1 }}
+        className="w-full h-[60vh] overflow-hidden rounded-xl relative"
+      >
         <Image
           src={listing.image}
           alt={listing.title}
@@ -43,7 +55,7 @@ const ListingHead = ({
         <div className="absolute top-5 end-5">
           <HeartButton id={listing.id} user={user} />
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

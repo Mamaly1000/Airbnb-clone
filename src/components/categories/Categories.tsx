@@ -2,7 +2,7 @@
 import Container from "@/components/ui/Container";
 import { usePathname, useSearchParams } from "next/navigation";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TbBeach, TbMountain, TbPool } from "react-icons/tb";
 import {
   GiBarn,
@@ -20,6 +20,7 @@ import { IoDiamond } from "react-icons/io5";
 import { MdOutlineVilla } from "react-icons/md";
 import CategoryBox from "./CategoryBox";
 import { twMerge } from "tailwind-merge";
+import useScrollAnimation from "@/hooks/useScroll";
 export const categories = [
   {
     label: "Beach",
@@ -102,22 +103,42 @@ const Categories = () => {
   const params = useSearchParams();
   const category = params?.get("category");
   const pathname = usePathname();
+  const [displayLabels, setDisplayLabels] = useState(true);
+  const { scrolled, isScrolling } = useScrollAnimation({});
 
   const isMain = pathname === "/";
+
+  useEffect(() => {
+    if (scrolled) {
+      setDisplayLabels(false);
+    } else {
+      setDisplayLabels(true);
+    }
+  }, [scrolled]);
+
   if (!isMain) {
     return null;
   }
 
   return (
-    <Container classname="pt-4 flex flex-row items-center justify-between overflow-x-auto gap-2 max-w-full z-0">
+    <Container
+      classname={twMerge(
+        `pt-4 flex flex-row items-center 
+        justify-between overflow-x-auto 
+        gap-2 max-w-full z-0`,
+        isScrolling && "sticky top-0 left-0",
+        scrolled && " z-10 py-2 "
+      )}
+    >
       {categories.map((c) => {
         return (
           <CategoryBox
             className={twMerge(
               category?.toLowerCase() === c.label.toLowerCase()
-                ? "border-b-neutral-800 text-neutral-800"
-                : "border-transparent text-neutral-500"
+                ? "border-b-neutral-800 text-neutral-800 dark:border-b-rose-500 dark:text-rose-500"
+                : "border-transparent text-neutral-500 dark:text-gray-500"
             )}
+            displayLabel={displayLabels}
             category={c}
             key={c.description}
           />

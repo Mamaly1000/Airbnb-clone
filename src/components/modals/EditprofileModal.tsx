@@ -5,8 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Modal from "./Modal";
 import useUser from "@/hooks/useUser";
-import Input from "../inputs/Input";
-import UseImageUpload from "../inputs/UseImageUpload";
+import Input from "../inputs/Input"; 
 import { useProfileModal } from "@/hooks/useProfileModal";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -88,7 +87,7 @@ const EditprofileModal = () => {
             e.preventDefault();
             e.stopPropagation();
           }}
-          className="min-w-full max-w-full overflow-hidden flex flex-col items-start justify-start gap-8 max-h-[70vh] overflow-y-auto"
+          className=" flex flex-col items-start justify-start gap-8 "
         >
           <Input
             errors={form.formState.errors}
@@ -106,14 +105,7 @@ const EditprofileModal = () => {
             disabled={isLoading}
             required
           />
-          <UseImageUpload
-            label="your profile image"
-            onChange={(base64) => {
-              form.setValue("image", base64);
-            }}
-            value={form.watch("image")}
-            disabled={isLoading}
-          />
+         
         </form>
       }
       header={{

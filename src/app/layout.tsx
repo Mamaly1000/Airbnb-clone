@@ -23,12 +23,12 @@ export default async function RootLayout({
   const user = await getCurrentUser();
   return (
     <html lang="en">
-      <Body className={twMerge(font.className, "light")}>
+      <Body className={twMerge(font.className)}>
         <ModalProvider />
         <Navbar user={user} />
-        <div className="pb-32 pt-40 bg-white dark:bg-neutral-800">
+        <main className="z-0  relative bg-white dark:bg-neutral-800">
           {children}
-        </div>
+        </main>
         <ToastProvider />
       </Body>
     </html>

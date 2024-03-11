@@ -15,10 +15,10 @@ const ListingCategory = ({
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-row items-center gap-4">
-        <Icon size={40} className="text-neutral-600" />
+        <Icon size={40} className="text-neutral-600 dark:text-neutral-500" />
         <div className="flex flex-col">
           <div className="text-lg font-semibold">{category?.label}</div>
-          <div className="text-neutral-500 font-light">
+          <div className="text-neutral-500 font-light dark:text-neutral-400">
             {category?.description}
           </div>
         </div>

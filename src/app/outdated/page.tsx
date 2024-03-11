@@ -18,9 +18,6 @@ const Outdated = async () => {
       />
     );
   }
-  if (!!!reservations || reservations.length === 0 || !!!user) {
-    return <EmptyState showReset subTitle="loading outdated reservations" />;
-  }
 
   return (
     <OutDatedReservationsClient

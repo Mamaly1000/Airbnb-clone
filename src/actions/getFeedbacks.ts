@@ -1,13 +1,28 @@
-import { NextResponse } from "next/server";
-import getCurrentUser from "./getCurrentUser";
+"use server";
 import prisma from "@/libs/prismadb";
+import { listingReviewQueryType } from "@/components/listings/ListingReviews";
+import { Feedback, Listing } from "@prisma/client";
+import { safeReviewType } from "@/types/safeReviewType";
 
-export async function getFeedbacks() {
-  const user = await getCurrentUser();
-  if (!user) {
-    return [];
+export async function getFeedbacks(params?: listingReviewQueryType) {
+  let where: any = {};
+
+  if (params?.userId) {
+    where = {
+      ...where,
+      userId: params.userId,
+    };
   }
+  if (params?.listingId) {
+    where = {
+      ...where,
+      listingId: params.listingId,
+    };
+  }
+
   const feedBacks = await prisma.feedback.findMany({
+    where,
+    take: 5,
     orderBy: {
       createdAt: "desc",
     },
@@ -28,5 +43,5 @@ export async function getFeedbacks() {
       },
     },
   });
-  return feedBacks;
+  return (feedBacks || []) as Array<safeReviewType>;
 }

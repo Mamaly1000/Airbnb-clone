@@ -14,7 +14,7 @@ const Properties = async () => {
       />
     );
   }
-  const listings = (await getListings({ userId: user.id })) || [];
+  const { listings } = (await getListings({ userId: user.id })) || [];
   if (listings.length === 0) {
     return (
       <EmptyState

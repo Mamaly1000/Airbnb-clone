@@ -9,8 +9,12 @@ export default async function getListings(params?: {
   endDate?: string;
   category?: string;
   locationValue?: string;
+  page?: number;
 }) {
   let query: any = {};
+  const limit = 10;
+  const page = params?.page || 1;
+  const skip = (page - 1) * limit; // Pr
   if (params) {
     const {
       userId,
@@ -72,17 +76,33 @@ export default async function getListings(params?: {
     }
   }
 
+  const totalListings = await prisma.listing.count({
+    where: query,
+  });
+  const maxPages = Math.ceil(totalListings / limit);
+
   const listings = await prisma.listing.findMany({
     where: query,
     orderBy: {
       createdAt: "desc",
     },
+    skip,
+    take: limit + 1,
   });
 
+  const isNextPage = listings.length > limit; // Check if there are more items than the limit
+  if (isNextPage) {
+    listings.pop();
+  }
   const safeListings = listings.map((listing) => ({
     ...listing,
     createdAt: listing.createdAt.toISOString(),
   }));
-
-  return safeListings;
+  return {
+    listings: safeListings || [],
+    pagination: {
+      hasMore: isNextPage,
+      maxPages,
+    },
+  };
 }

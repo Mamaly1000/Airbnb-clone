@@ -5,11 +5,14 @@ import { IconType } from "react-icons";
 import { twMerge } from "tailwind-merge";
 import qs from "query-string";
 import { Tooltip } from "react-tooltip";
+import { AnimatePresence, motion } from "framer-motion";
 const CategoryBox = ({
   category,
   onClick,
   className,
+  displayLabel = true,
 }: {
+  displayLabel?: boolean;
   className?: string;
   onClick?: (category: {
     label: string;
@@ -51,7 +54,7 @@ const CategoryBox = ({
     }
   }, [params, router, onClick, category]);
   return (
-    <div
+    <motion.button
       id={category.label}
       onClick={() => {
         handleClick();
@@ -62,8 +65,19 @@ const CategoryBox = ({
       )}
     >
       <Icon size={26} />
-      <div className="font-medium text-sm">{category.label}</div>
-    </div>
+      <AnimatePresence>
+        {displayLabel && (
+          <motion.div
+            animate={{ opacity: 1, translateY: 0 }}
+            initial={{ opacity: 0, translateY: 5 }}
+            exit={{ opacity: 0, translateY: 5 }}
+            className="font-medium text-sm"
+          >
+            {category.label}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
   );
 };
 

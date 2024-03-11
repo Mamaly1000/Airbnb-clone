@@ -1,7 +1,7 @@
 "use server";
 import prisma from "@/libs/prismadb";
 import { safeListingType } from "@/types/safeListing";
-import { safeUserType } from "@/types/safeuser";
+import { safeUserType } from "@/types/safeuser"; 
 
 export async function getListingById(id?: string) {
   if (!id) {
@@ -13,9 +13,10 @@ export async function getListingById(id?: string) {
       user: true,
     },
   });
+
   if (!listing) {
     return null;
-  }
+  } 
   return {
     ...listing,
     createdAt: listing.createdAt.toISOString(),

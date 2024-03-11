@@ -8,6 +8,10 @@ html,
   height: 100%;
 }
 
+.rdrDayNumber span {
+  @apply text-black dark:text-white;
+}
+
 .leaflet-bottom,
 .leaflet-control,
 .leaflet-pane,
@@ -26,7 +30,7 @@ html,
   fill: rgb(244 63 94 / var(--tw-bg-opacity));
 }
 * {
-  @apply transition-all;
+  @apply transition-all duration-150;
 }
 button {
   @apply hover:scale-105 active:scale-95;

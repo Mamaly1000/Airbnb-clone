@@ -180,7 +180,7 @@ const SearchModal = () => {
           searchModal.onClose();
         }
       }}
-      header={{ title: "Filters" }}
+      header={{ title: "Where to?" }}
       footer={{
         primary: {
           label: ActionLabel,

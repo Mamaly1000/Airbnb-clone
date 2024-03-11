@@ -11,7 +11,17 @@ const Body = ({
   className?: string;
 }) => {
   const { mode } = useTheme();
-  return <body className={twMerge("bg-white dark:bg-neutral-800", mode, className)}>{children}</body>;
+  return (
+    <body
+      className={twMerge(
+        "min-h-screen bg-white dark:bg-neutral-800 text-black dark:text-[#e7e9ea] relative",
+        mode,
+        className
+      )}
+    >
+      {children}
+    </body>
+  );
 };
 
 export default Body;

@@ -11,6 +11,7 @@ import EmptyState from "../ui/EmptyState";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { isEmpty } from "lodash";
 
 const OutDatedReservationsClient = ({
   reservations,
@@ -45,17 +46,18 @@ const OutDatedReservationsClient = ({
     [router]
   );
 
-  if (reservations.length === 0) {
+  if (isEmpty(reservations)) {
     return (
       <EmptyState
-        subTitle="Looks like you have no outdated reservations on your properties."
+        subTitle="Looks like you have no outdated reservations on your properties or trips."
         title="No outdated reservations found!"
+        redirect
       />
     );
   }
 
   return (
-    <Container classname="min-w-full" >
+    <Container main classname="min-w-full">
       <Heading
         title="outdated reservations"
         subtitle="here you can observe outdated reservations and rebook your outdated reservations"

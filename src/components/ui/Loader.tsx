@@ -8,7 +8,7 @@ const Loader = ({ className, size }: { size?: number; className?: string }) => {
   return (
     <div
       className={twMerge(
-        "h-[70vh] flex flex-col justify-center items-center gap-3",
+        "h-[70vh] flex flex-col justify-center items-center gap-3 bg-white dark:bg-neutral-800",
         className
       )}
     >

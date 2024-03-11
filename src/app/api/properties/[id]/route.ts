@@ -16,6 +16,9 @@ export async function GET(
     return NextResponse.error();
   }
   const property = await getListingById(propertyId);
+  if (!property) {
+    return NextResponse.error();
+  }
   return NextResponse.json(property);
 }
 export async function POST(

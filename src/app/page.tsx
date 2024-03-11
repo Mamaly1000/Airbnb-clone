@@ -1,27 +1,28 @@
 import getCurrentUser from "@/actions/getCurrentUser";
 import getListings from "@/actions/getListings";
-import ListingCard from "@/components/card/ListingCard";
-import Container from "@/components/ui/Container";
+import ListingList from "@/components/lists/ListingList";
+import ListingLoadMore from "@/components/pagination/ListingLoadMore";
 import EmptyState from "@/components/ui/EmptyState";
+import { isNull } from "lodash";
 
-export default async function Home(params: any) { 
-
-  const listings = await getListings(params.searchParams);
+export default async function Home(params: any) {
+  const { listings } = await getListings(params.searchParams);
   const currentUser = await getCurrentUser();
 
-  if (!listings) {
-    return;
-  }
-  if (listings.length === 0) {
+  if (isNull(currentUser)) {
     return <EmptyState showReset />;
   }
   return (
-    <Container classname="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
-      {listings?.map((listing) => {
-        return (
-          <ListingCard user={currentUser} listing={listing} key={listing.id} />
-        );
-      })}
-    </Container>
+    <>
+      <ListingList
+        className="pt-44 pb-0"
+        main
+        listings={listings}
+        user={currentUser}
+      />
+      {listings.length === 10 && (
+        <ListingLoadMore params={params.searchParams} user={currentUser} />
+      )}
+    </>
   );
 }

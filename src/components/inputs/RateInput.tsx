@@ -21,6 +21,7 @@ const RateInput = ({
   id,
   tooltip = false,
   className,
+  space = "5px",
 }: {
   className?: string;
   tooltip?: boolean;
@@ -31,6 +32,7 @@ const RateInput = ({
   val: number;
   id: string;
   onChange?: (val: number) => void;
+  space?: string;
 }) => {
   return (
     <div
@@ -59,7 +61,7 @@ const RateInput = ({
         starEmptyColor="#bab5b5ab"
         starHoverColor="rgb(244 63 94 / var(--tw-bg-opacity))"
         starDimension={size || "50px"}
-        starSpacing="5px"
+        starSpacing={space}
       />
       {!!(tooltipArray && val && tooltip) && (
         <span className=" px-3 py-2 rounded-md flex capitalize font-semibold text-white bg-rose-500 text-[10px] max-w-fit">

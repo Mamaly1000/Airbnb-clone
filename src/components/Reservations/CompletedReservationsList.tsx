@@ -23,7 +23,7 @@ const CompletedReservationsList = ({
     );
   }
   return (
-    <Container classname="min-w-full">
+    <Container main classname="min-w-full max-w-full ">
       <Heading
         title="Completed Reservations"
         subtitle="here you can observe your completed reservations"

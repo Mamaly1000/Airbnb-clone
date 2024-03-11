@@ -32,7 +32,9 @@ const MenuItems = ({
               mobileOnly={item.mobileOnly}
               Icon={item.Icon}
             />
-            {item.hr && <hr />}
+            {item.hr && (
+              <hr className="border-black dark:border-neutral-600   " />
+            )}
           </Fragment>
         );
       })}

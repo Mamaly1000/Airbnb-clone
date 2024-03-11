@@ -13,6 +13,7 @@ import { safeReservationType } from "@/types/safeReservation";
 import { useFeedbackModal } from "@/hooks/useFeedbackModal";
 import RateInput from "../inputs/RateInput";
 import placeholder from "../../images/placeholder-image.jpg";
+import { motion } from "framer-motion";
 
 const ListingCard = ({
   listing,
@@ -24,6 +25,7 @@ const ListingCard = ({
   updateAction,
   Outdated = false,
   feedback = false,
+  index = 0,
 }: {
   feedback?: boolean;
   Outdated?: boolean;
@@ -41,6 +43,7 @@ const ListingCard = ({
     label: string;
     onClick: () => void;
   };
+  index?: number;
 }) => {
   const { getByValue } = useCountry();
   const router = useRouter();
@@ -79,7 +82,10 @@ const ListingCard = ({
   }, [reservation]);
 
   return (
-    <div
+    <motion.article
+      initial={{ opacity: 0, translateX: 10 }}
+      animate={{ opacity: 1, translateX: 0 }}
+      transition={{ duration: 1, delay: index / 10 + 0.01 }}
       onClick={() => router.push(`/listings/${listing.id}`)}
       className={twMerge(
         "col-span-1 cursor-pointer group drop-shadow-2xl",
@@ -164,7 +170,7 @@ const ListingCard = ({
           />
         </div>
       </div>
-    </div>
+    </motion.article>
   );
 };
 

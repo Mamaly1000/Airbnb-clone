@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import Heading from "../form/Heading";
 import Button from "../inputs/Button";
+import { twMerge } from "tailwind-merge";
 
 const EmptyState = ({
   showReset = false,
@@ -10,17 +11,26 @@ const EmptyState = ({
   title = "No exact matches",
   refresh = false,
   redirect,
+  small,
 }: {
   redirect?: boolean;
   refresh?: boolean;
   title?: string;
   subTitle?: string;
   showReset?: boolean;
+  small?: boolean;
 }) => {
   const router = useRouter();
 
   return (
-    <div className="h-[60vh] flex flex-col items-center justify-center gap-2 ">
+    <div
+      className={twMerge(
+        `h-screen flex flex-col items-center 
+        justify-center gap-2 bg-white
+      dark:bg-neutral-800 px-3`,
+        small && "h-[20vh]"
+      )}
+    >
       <Heading title={title} center subtitle={subTitle} />
       <div className="w-48 mt-4 flex items-center justify-center">
         {showReset && (
@@ -29,7 +39,7 @@ const EmptyState = ({
             label="Remove all filters"
             onClick={() => router.push("/")}
           />
-        )}{" "}
+        )}
         {refresh && (
           <Button
             outline

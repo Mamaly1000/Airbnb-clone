@@ -24,18 +24,20 @@ const ListingReservation = ({
   disabledDate: Date[];
 }) => {
   return (
-    <div className="bg-white rounded-xl border-[1px] border-neutral-200 overflow-hidden drop-shadow-2xl">
+    <div className="bg-white dark:bg-neutral-900 rounded-xl border-[1px] border-neutral-200 dark:border-neutral-500 overflow-hidden drop-shadow-2xl">
       <div className="flex flex-row gap-1 items-center p-4">
         <div className="text-2xl font-semibold">$ {price}</div>
-        <div className="font-light text-neutral-600">night</div>
+        <div className="font-light text-neutral-600 dark:text-neutral-300">
+          night
+        </div>
       </div>
-      <hr />
+      <hr className="border-black dark:border-neutral-400" />
       <Calendar
         value={dateRange}
         disabledDates={disabledDate}
         onChnage={(value) => onChangeDate(value.selection)}
       />
-      <hr />
+      <hr className="border-black dark:border-neutral-400" />
       {!rebook && (
         <div className="p-4 ">
           <Button disabled={disabled} label="Reserve" onClick={onSubmit} />

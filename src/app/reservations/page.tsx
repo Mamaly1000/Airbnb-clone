@@ -3,6 +3,7 @@ import getOutdatedReservations from "@/actions/getOutdatedReservations";
 import { getReservations } from "@/actions/getReservations";
 import OutDatedReservationsClient from "@/components/Reservations/OutDatedReservationsClient";
 import ReservationsClient from "@/components/Reservations/ReservationsClient";
+import Container from "@/components/ui/Container";
 import EmptyState from "@/components/ui/EmptyState";
 import React from "react";
 
@@ -24,13 +25,13 @@ const Reservations = async () => {
   });
 
   return (
-    <section className="flex items-center justify-center min-w-full flex-col gap-8">
+    <Container main classname="min-w-full max-w-full">
       <ReservationsClient user={user} reservations={reservatoins || []} />
       <OutDatedReservationsClient
         user={user}
         reservations={outdatedReservations || []}
       />
-    </section>
+    </Container>
   );
 };
 

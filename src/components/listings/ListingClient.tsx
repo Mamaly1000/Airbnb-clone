@@ -1,7 +1,6 @@
 "use client";
 import { safeListingType } from "@/types/safeListing";
 import { safeUserType } from "@/types/safeuser";
-import { Reservation } from "@prisma/client";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { categories } from "../categories/Categories";
 import Container from "../ui/Container";
@@ -15,6 +14,10 @@ import toast from "react-hot-toast";
 import { Range } from "react-date-range";
 import ListingReservation from "./ListingReservation";
 import { safeReservationType } from "@/types/safeReservation";
+import { motion } from "framer-motion";
+import ListingReviews from "./ListingReviews";
+import { Feedback } from "@prisma/client";
+import { safeReviewType } from "@/types/safeReviewType";
 export const initialDateRange = {
   startDate: new Date(),
   endDate: new Date(),
@@ -25,7 +28,9 @@ const ListingClient = ({
   listing,
   user,
   reservations = [],
+  reviews,
 }: {
+  reviews?: safeReviewType[];
   listing: safeListingType & {
     user: safeUserType;
   };
@@ -94,7 +99,7 @@ const ListingClient = ({
   }, [dateRange, listing.price]);
 
   return (
-    <Container>
+    <Container main classname="min-w-full max-w-full pt-44">
       <div className="max-w-screen-lg mx-auto flex flex-col gap-6">
         <ListingHead
           listing={{
@@ -106,7 +111,13 @@ const ListingClient = ({
           }}
           user={user}
         />
-        <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
+        <motion.div
+          initial={{ opacity: 0, translateX: -100 }}
+          whileInView={{ opacity: 1, translateX: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6"
+        >
           <ListingInfo
             listing={{
               user: listing.user,
@@ -121,7 +132,13 @@ const ListingClient = ({
             }}
             user={user}
           />
-          <div className="order-first mb-10 md:order-last md:col-span-3">
+          <motion.div
+            initial={{ opacity: 0, translateX: 100 }}
+            whileInView={{ opacity: 1, translateX: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="order-first mb-10 md:order-last md:col-span-3"
+          >
             <ListingReservation
               price={listing.price}
               totalPrice={totalPrice}
@@ -131,8 +148,14 @@ const ListingClient = ({
               onSubmit={createReservation}
               disabledDate={disableDate}
             />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
+        <ListingReviews
+          initialData={reviews}
+          params={{
+            listingId: listing.id,
+          }}
+        />
       </div>
     </Container>
   );

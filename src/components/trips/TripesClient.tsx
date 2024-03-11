@@ -43,7 +43,7 @@ const TripesClient = ({
     [setDeletingId, router]
   );
   return (
-    <Container>
+    <Container main classname="min-w-full max-w-full">
       <Heading
         title="trips"
         subtitle="Where you`ve been and where you`re going"

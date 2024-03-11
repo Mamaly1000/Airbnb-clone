@@ -25,7 +25,9 @@ const ListingInfo = ({
     roomCount: number;
     guestCount: number;
     bathroomCount: number;
-    locationVlaue: string;id:string;rate:number
+    locationVlaue: string;
+    id: string;
+    rate: number;
   };
   user?: safeUserType | null;
 }) => {
@@ -42,7 +44,7 @@ const ListingInfo = ({
           <div className="capitalize">hosted by {listing.user.name}</div>
           <Avatar src={listing.user.image} />
         </div>
-        <div className="flex flex-row items-center gap-4 font-light text-neutral-500">
+        <div className="flex flex-row items-center gap-4 font-light text-neutral-500 dark:text-neutral-400">
           <div>{listing.guestCount} guests</div>
           <div>{listing.roomCount} rooms</div>
           <div>{listing.bathroomCount} bathrooms</div>
@@ -51,7 +53,7 @@ const ListingInfo = ({
       <hr />
       {listing.category && <ListingCategory category={listing.category} />}
       <hr />
-      <div className="text-lg font-light text-neutral-500">
+      <div className="text-lg font-light text-neutral-500 dark:text-neutral-400">
         {listing.description}
       </div>
       <RateInput id={listing.id} val={listing.rate} readOnly size="20px" />
