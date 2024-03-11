@@ -11,7 +11,6 @@ import useReservation from "@/hooks/useReservation";
 import useUser from "@/hooks/useUser";
 import toast from "react-hot-toast";
 import RebookCalendar from "../Reservations/RebookCalendar";
-import Button from "../inputs/Button";
 import Heading from "../form/Heading";
 import Loader from "../ui/Loader";
 import useReservations from "@/hooks/useReservations";
@@ -50,8 +49,8 @@ const UpdateReservationModal = () => {
       await axios
         .patch(`/api/reservations/${reservation.id}`, {
           totalPrice,
-          startDate: dateRange.startDate,
-          endDate: dateRange.endDate,
+          startDate: dateRange.startDate?.toISOString(),
+          endDate: dateRange.endDate?.toISOString(),
           listingId: reservation?.listing?.id,
         })
         .then((res: { data: any }) => {
@@ -83,6 +82,7 @@ const UpdateReservationModal = () => {
     mutate,
     onClose,
     reservation,
+    setLoading,
   ]);
   return (
     <Modal
@@ -90,26 +90,22 @@ const UpdateReservationModal = () => {
       onChange={(val) => {
         if (!val) onClose();
       }}
+      disable={isLoading}
       body={
-        <div className="min-w-full flex flex-col items-start justify-start gap-8">
+        <div className="min-w-full max-w-full min-h-fit flex flex-col items-start justify-start gap-8 bg-white dark:bg-neutral-900">
           <Heading
             title="Update reservation date"
             subtitle="you can update your reservation date to your choosen date."
           />
           {reservation && reservation.listing && reservations && user ? (
             <RebookCalendar
-              setTotalPrice={setTotalPrice}
+              setTotalPrice={(price) => setTotalPrice(price)}
               listing={reservation.listing}
               reservations={reservations}
-              setLoading={(val) => setLoading(val)}
               user={user}
-              isLoading={isLoading}
-              dateRange={dateRange}
-              setDateRange={setDateRange}
-              totalPrice={totalPrice}
             />
           ) : (
-            <Loader className="min-w-full min-h-[200px] h-[200px] max-w-[200px] flex items-center justify-center" />
+            <Loader className="min-w-full min-h-[200px] h-[200px] max-w-[200px] flex items-center justify-center bg-neutral-900" />
           )}
         </div>
       }

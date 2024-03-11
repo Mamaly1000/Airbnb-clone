@@ -6,7 +6,12 @@ interface useThemeStore {
   setTheme: () => void;
 }
 export const useTheme = create<useThemeStore>((set) => ({
-  mode: "dark",
+  mode:
+    // (window !== undefined &&
+    //   window.localStorage !== undefined &&
+    //   (localStorage?.getItem("airbnb_theme_mode") as any)) ||
+    // "dark",
+    "dark",
   setTheme: () => {
     if (
       localStorage.getItem("airbnb_theme_mode") === null ||

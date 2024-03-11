@@ -8,7 +8,7 @@ import EmptyState from "../ui/EmptyState";
 import { isEmpty } from "lodash";
 import { safeUserType } from "@/types/safeuser";
 import { motion } from "framer-motion";
-import { twMerge } from "tailwind-merge"; 
+import { twMerge } from "tailwind-merge";
 
 const ReservationList = ({
   reservations,
@@ -23,6 +23,7 @@ const ReservationList = ({
   header,
   deletingId,
   className,
+  feedback,
 }: reservertionReturnDataType &
   listingActionsType & {
     empty?: {
@@ -37,6 +38,7 @@ const ReservationList = ({
     user?: safeUserType;
     deletingId?: string;
     className?: string;
+    feedback?: boolean;
   }) => {
   if (isEmpty(reservations)) {
     return (
@@ -85,6 +87,7 @@ const ReservationList = ({
               Remove={Remove}
               Edit={Edit}
               Review={Review}
+              feedback={feedback}
             />
           );
         })}

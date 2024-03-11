@@ -21,7 +21,9 @@ const ReservationPagination = ({
   Review,
   deletingId,
   actionLabel,
+  feedback,
 }: {
+  feedback?: boolean;
   actionLabel?: string;
   deletingId?: string;
   pagination: {
@@ -58,6 +60,7 @@ const ReservationPagination = ({
               Review={Review}
               deletingId={deletingId}
               user={user}
+              feedback={feedback}
             />,
           ]);
         }

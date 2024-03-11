@@ -18,7 +18,9 @@ const ListingReservation = ({
   listing,
   reservations,
   user,
+  setTotalPrice: onPriceChange,
 }: {
+  setTotalPrice?: (val: number) => void;
   user?: safeUserType | null;
   reservations: safeReservationType[];
   listing: safeListingType;
@@ -40,6 +42,7 @@ const ListingReservation = ({
     });
     return dates;
   }, [reservations]);
+
   const createReservation = useCallback(() => {
     if (!user) {
       return loginModal.onOpen();
@@ -75,8 +78,14 @@ const ListingReservation = ({
       if (dayCount && listing.price) {
         const total = dayCount * listing.price;
         setTotalPrice(total > 0 ? total : -total);
+        if (onPriceChange) {
+          onPriceChange!(total > 0 ? total : -total);
+        }
       } else {
         setTotalPrice(listing.price);
+        if (onPriceChange) {
+          onPriceChange!(listing.price);
+        }
       }
     }
   }, [dateRange, listing.price]);

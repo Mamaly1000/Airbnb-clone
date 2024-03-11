@@ -28,7 +28,6 @@ export async function GET(
   }
   return NextResponse.json(reservation);
 }
-
 export async function DELETE(
   request: Request,
   { params }: { params: { reservation_id: string } }
@@ -60,6 +59,7 @@ export async function PATCH(
     return NextResponse.error();
   }
   if (!totalPrice || !startDate || !endDate || !listingId) {
+    console.log("missing fields");
     return NextResponse.error();
   }
   const updatedReservation = await prisma.listing.update({
@@ -76,12 +76,16 @@ export async function PATCH(
             endDate,
             startDate,
             totalPrice,
-            userId: user.id,
           },
         },
       },
     },
   });
+
+  if (!updatedReservation) {
+    console.log("updated reservation failed");
+    return NextResponse.error();
+  }
 
   return NextResponse.json({
     updatedReservation,

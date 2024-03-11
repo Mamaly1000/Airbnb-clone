@@ -23,7 +23,6 @@ const TripesClient = ({
   user?: safeUserType;
 }) => {
   const LoginModal = useLoginModal();
-
   const updateReservationModal = useUpdateReservationModal();
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
@@ -74,6 +73,7 @@ const TripesClient = ({
         deletingId={deletingId}
         className="pt-44"
         user={user}
+        feedback
         Cancel={{
           onClick: onCancel,
           label: "Cancel reservation",
@@ -99,6 +99,7 @@ const TripesClient = ({
           onClick: onCancel,
           label: "Cancel reservation",
         }}
+        feedback
         Edit={{
           label: "update your reservation",
           onClick: onUpdate,

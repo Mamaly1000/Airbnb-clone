@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import Modal from "./Modal";
 import { useFeedbackModal } from "@/hooks/useFeedbackModal";
 import RateInput from "../inputs/RateInput";
