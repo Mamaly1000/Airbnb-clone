@@ -36,7 +36,7 @@ button {
   @apply hover:scale-105 active:scale-95;
 }
 *::-webkit-scrollbar {
-  @apply bg-neutral-200 max-w-[3px] min-w-[3px] max-h-[3px] min-h-[3px] border-none;
+  @apply bg-neutral-200 max-w-[5px] min-w-[5px] max-h-[5px] min-h-[5px] border-none;
 }
 *::-webkit-scrollbar-thumb {
   @apply bg-rose-500;

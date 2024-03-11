@@ -17,8 +17,9 @@ export default async function SingleListingPage({
   const listingData = await getListingById(params.listing_id);
   const user = await getCurrentUser();
   const reservations = await getReservations(params);
-  const reviews = await getFeedbacks({
+  const reviewsData = await getFeedbacks({
     listingId: listingData?.id,
+    limit: 5,
   });
 
   if (isNull(user)) {
@@ -44,7 +45,7 @@ export default async function SingleListingPage({
       listing={listingData}
       user={user}
       reservations={reservations}
-      reviews={reviews}
+      reviews={reviewsData}
     />
   );
 }

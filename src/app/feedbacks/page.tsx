@@ -15,9 +15,9 @@ const Feedbacks = async () => {
     );
   }
 
-  const feedbacks = await getFeedbacks();
+  const {reviews} = await getFeedbacks();
 
-  return <FeedbacksClient feedbacks={feedbacks} user={user} />;
+  return <FeedbacksClient feedbacks={reviews} user={user} />;
 };
 
 export default Feedbacks;

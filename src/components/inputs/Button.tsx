@@ -17,7 +17,17 @@ interface ButtonInterface
 
 const Button = forwardRef<HTMLButtonElement, ButtonInterface>(
   (
-    { label, onClick, disabled, iconSize, outline, small, Icon, className },
+    {
+      label,
+      onClick,
+      disabled,
+      children,
+      iconSize,
+      outline,
+      small,
+      Icon,
+      className,
+    },
     ref
   ) => {
     return (
@@ -37,7 +47,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonInterface>(
         )}
       >
         {Icon && <Icon className="absolute start-2 " size={iconSize || 30} />}
-        {label}
+        {label || children}
       </button>
     );
   }

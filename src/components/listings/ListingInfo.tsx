@@ -7,9 +7,7 @@ import ListingCategory from "./listingCategory";
 import { IconType } from "react-icons";
 import dynamic from "next/dynamic";
 import RateInput from "../inputs/RateInput";
-const Map = dynamic(() => import("@/components/Map/Map"), {
-  ssr: false,
-});
+
 const ListingInfo = ({
   user,
   listing,
@@ -32,13 +30,16 @@ const ListingInfo = ({
   user?: safeUserType | null;
 }) => {
   const { getByValue } = useCountry();
+  const Map = dynamic(() => import("@/components/Map/Map"), {
+    ssr: false,
+  });
   const location = useMemo(() => {
     if (listing.locationVlaue) {
       return getByValue(listing.locationVlaue);
     }
   }, [listing.locationVlaue, getByValue]);
   return (
-    <div className="col-span-4 flex flex-col gap-8 ">
+    <div className="col-span-4 flex flex-col gap-8 overflow-hidden max-w-full">
       <div className="flex flex-col gap-2">
         <div className="text-xl font-semibold flex flex-row items-center gap-2">
           <div className="capitalize">hosted by {listing.user.name}</div>
@@ -63,4 +64,4 @@ const ListingInfo = ({
   );
 };
 
-export default ListingInfo;
+export default React.memo(ListingInfo);

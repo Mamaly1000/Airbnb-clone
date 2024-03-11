@@ -27,9 +27,10 @@ const SmallReviewCard = ({
       animate={{ opacity: 1, translateX: 0 }}
       transition={{ duration: 0.13, delay: index / 10 + 0.01, ease: "linear" }}
       className={twMerge(
-        `min-w-[250px] min-h-[250px] max-w-[250px] max-h-[250px] rounded-lg bg-white drop-shadow-2xl
-         dark:bg-neutral-900 text-black dark:text-white
+        `min-w-[250px] min-h-[250px] max-w-[250px] max-h-[250px] rounded-lg
+         bg-white dark:bg-neutral-900 text-black dark:text-white
           flex items-start justify-between flex-col gap-2 p-3
+          border-[1px] dark:border-none border-neutral-300
            hover:bg-neutral-300 dark:hover:bg-neutral-950 cursor-pointer 
           `,
         className
