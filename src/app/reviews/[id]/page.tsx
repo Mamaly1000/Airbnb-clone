@@ -35,7 +35,7 @@ const ReviewPage = async ({
 
   return (
     <Container main classname="min-w-full max-w-full pt-32">
-      {/* <ReviewOverview listing={listing} overallRates={overallData} /> */}
+      <ReviewOverview listing={listing} overallRates={overallData} />
       <hr className="min-w-full min-h-[2px] bg-neutral-200 dark:bg-neutral-700 my-10 border-none" />
       <SearchReviewInput prevValue={searchParams?.search} />
       <ReviewList
@@ -43,6 +43,14 @@ const ReviewPage = async ({
           title: "All Reviews",
           subTitle: " There are total of " + pagination?.total + " reviews.",
         }}
+        emptyState={
+          searchParams?.search
+            ? {
+                title: "no review were found",
+                subTitle: "Try to change your filter or keyword",
+              }
+            : undefined
+        }
         user={user}
         initailData={reviews}
         pagination={pagination}

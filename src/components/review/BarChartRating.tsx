@@ -54,7 +54,7 @@ const BarChartRating = ({
       className={twMerge(
         `w-[250px] min-h-[190px] max-w-[250px] max-h-[190px] h-fit text-sm p-3 rounded-lg 
          flex items-start justify-between gap-2 flex-col 
-       bg-white dark:bg-neutral-900 text-black dark:text-white 
+         text-black dark:text-white 
        `,
         className
       )}

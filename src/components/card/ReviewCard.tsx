@@ -36,7 +36,7 @@ const ReviewCard = ({
       className={twMerge(
         `
     min-w-full flex items-start justify-start gap-2 flex-col
-     bg-white dark:bg-neutral-900
+     border-[1px] border-neutral-200 dark:border-neutral-700
       rounded-lg p-3 `,
         className
       )}
@@ -47,17 +47,17 @@ const ReviewCard = ({
           <p className="text-black dark:text-white text-[16px]">
             {review.user.name}
           </p>
-          <p className="text-[12px] text-neutral-200 dark:text-neutral-400">
+          <p className="text-[12px] text-neutral-400 ">
             {review.user.email}
           </p>
         </div>
       </div>
       <div className="min-w-full max-w-full flex flex-col items-start justify-start gap-1">
-        <div className="flex items-center justify-start gap-2">
+        <div className="flex items-center justify-start gap-1">
           <RateInput
             readOnly
             size="13px"
-            className="max-w-[40px] pb-[.5px]"
+            className="max-w-[35px] pb-[.5px]"
             val={review.rating}
             id={review.id}
           />
@@ -65,9 +65,7 @@ const ReviewCard = ({
             {createdAt}
           </span>
         </div>
-        <p className="font-light min-w-full max-w-full whitespace-pre-wrap">
-          {review.body}
-        </p>
+        <p className="font-light min-w-full max-w-full ">{review.body}</p>
       </div>
     </motion.article>
   );

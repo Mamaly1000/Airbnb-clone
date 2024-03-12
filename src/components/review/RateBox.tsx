@@ -17,10 +17,11 @@ const RateBox = ({
   value: number[];
   Icon: IconType;
 }) => {
-  const average =
+  const average = (
     value.reduce((acc, current) => {
       return (acc += current);
-    }) / value.length;
+    }) / value.length
+  ).toFixed(2);
   return (
     <article
       className={twMerge(

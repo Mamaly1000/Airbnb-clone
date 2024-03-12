@@ -20,17 +20,19 @@ const SearchReviewInput = ({
 
   const router = useRouter();
   const searchDebounce = debounce((val) => {
-    if (prevValue === search) {
+    if (prevValue !== search) {
       const query = qs.stringifyUrl({
         url: pathname!,
         query:
           search.length > 0
             ? {
-                search: val,
+                search: val?.trim(),
               }
             : {},
       });
-      router.push(query);
+      router.push(query, {
+        scroll: false,
+      });
     }
   }, 3000);
 
@@ -39,7 +41,7 @@ const SearchReviewInput = ({
     return () => {
       searchDebounce.cancel();
     };
-  }, [searchDebounce]);
+  }, [search]);
 
   return (
     <section

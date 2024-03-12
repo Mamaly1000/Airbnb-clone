@@ -20,7 +20,7 @@ const ReviewOverview = ({
   return (
     <div className="min-w-full max-w-full overflow-hidden flex flex-col gap-3">
       <p className=" font-extralight text-[90px] text-black dark:text-white flex items-center gap-1 min-w-full max-w-full text-left justify-start">
-        <GoStarFill size={70} /> {listing.rate}
+        <GoStarFill size={70} /> {listing.rate.toFixed(2)}
       </p>
       <section className="min-w-full overflow-x-auto overflow-y-hidden min-h-fit flex items-center justify-start gap-8 pb-2">
         <BarChartRating
