@@ -5,14 +5,14 @@ import { useFeedbackModal } from "@/hooks/useFeedbackModal";
 import RateInput from "../inputs/RateInput";
 import TextArea from "../inputs/TextArea";
 import Heading from "../form/Heading";
-import axios from "axios";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Loader from "../ui/Loader";
 import useProperty from "@/hooks/useProperty";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const feedbackSchema = z.object({
   message: z
@@ -20,7 +20,12 @@ const feedbackSchema = z.object({
       required_error: "please write your feedback message",
     })
     .min(20, "minimum characters are 20"),
-  rating: z.number({ required_error: "please rate your reservation" }),
+  cleanliness: z.number({ required_error: "please rate cleanliness" }),
+  accuracy: z.number({ required_error: "please rate accuracy" }),
+  checkIn: z.number({ required_error: "please rate checkIn" }),
+  communication: z.number({ required_error: "please rate communication" }),
+  location: z.number({ required_error: "please rate location" }),
+  value: z.number({ required_error: "please rate value" }),
 });
 
 const FeedbackModal = () => {
@@ -33,8 +38,13 @@ const FeedbackModal = () => {
   const form = useForm({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
-      rating: 0,
       message: "",
+      cleanliness: 1,
+      accuracy: 1,
+      checkIn: 1,
+      communication: 1,
+      location: 1,
+      value: 1,
     },
   });
 
@@ -88,9 +98,56 @@ const FeedbackModal = () => {
               <RateInput
                 id={listingId}
                 disabled={isLoading}
-                val={form.watch("rating")}
-                onChange={(val) => form.setValue("rating", val)}
+                val={form.watch("cleanliness")}
+                onChange={(val) => form.setValue("cleanliness", val)}
                 tooltip
+                size="25px"
+                label="cleanliness"
+              />
+              <RateInput
+                size="25px"
+                id={listingId}
+                disabled={isLoading}
+                val={form.watch("accuracy")}
+                onChange={(val) => form.setValue("accuracy", val)}
+                tooltip
+                label="accuracy"
+              />
+              <RateInput
+                size="25px"
+                id={listingId}
+                disabled={isLoading}
+                val={form.watch("checkIn")}
+                onChange={(val) => form.setValue("checkIn", val)}
+                tooltip
+                label="check-in"
+              />
+              <RateInput
+                size="25px"
+                id={listingId}
+                disabled={isLoading}
+                val={form.watch("communication")}
+                onChange={(val) => form.setValue("communication", val)}
+                tooltip
+                label="communication"
+              />
+              <RateInput
+                size="25px"
+                id={listingId}
+                disabled={isLoading}
+                val={form.watch("location")}
+                onChange={(val) => form.setValue("location", val)}
+                tooltip
+                label="location"
+              />
+              <RateInput
+                size="25px"
+                id={listingId}
+                disabled={isLoading}
+                val={form.watch("value")}
+                onChange={(val) => form.setValue("value", val)}
+                tooltip
+                label="value"
               />
               <TextArea
                 value={form.watch("message")}

@@ -22,7 +22,11 @@ const TextArea = ({
       onChange={onChange}
       disabled={disabled}
       className={twMerge(
-        "hover:border-black focus:border-black peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed "
+        `hover:border-black focus:border-black dark:hover:border-rose-500 dark:focus:border-rose-500
+         w-full p-4 pt-6 font-light border-2 rounded-md outline-none transition
+          bg-white dark:bg-neutral-800
+          text-black dark:text-white 
+          disabled:opacity-70 disabled:cursor-not-allowed `
       )}
     />
   );

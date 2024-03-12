@@ -85,7 +85,12 @@ likingIds String[] @db.ObjectId
 rating Int @default(0)
 createdAt DateTime @default(now())
 listingId String @db.ObjectId
-
+cleanliness Int 
+accuracy Int 
+checkIn Int
+communication Int
+location Int 
+value Int
 listing Listing @relation(fields: [listingId],references: [id],onDelete:Cascade)
 user User @relation(fields:[userId], references:[id],onDelete:Cascade)
 comments Comment[]

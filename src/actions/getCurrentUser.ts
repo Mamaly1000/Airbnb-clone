@@ -4,11 +4,10 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 import prisma from "@/libs/prismadb";
-import { User } from "@prisma/client";
 import { safeUserType } from "@/types/safeuser";
 
 export async function getSession() {
-  return getServerSession(authOptions);
+  return await getServerSession(authOptions);
 }
 
 export default async function getCurrentUser() {

@@ -11,7 +11,7 @@ import { safeListingType } from "@/types/safeListing";
 import { safeReservationType } from "@/types/safeReservation";
 import { safeUserType } from "@/types/safeuser";
 import axios from "axios";
-import toast from "react-hot-toast";
+import toast from "react-hot-toast"; 
 
 const ListingReservation = ({
   rebook = false,
@@ -62,6 +62,7 @@ const ListingReservation = ({
         toast.success(res.data.message);
         setDateRange(initialDateRange);
         router.push("/trips");
+        router.refresh(); 
       })
       .catch((error) => {
         toast.error("something went wrong!");

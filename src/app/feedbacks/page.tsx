@@ -15,7 +15,7 @@ const Feedbacks = async () => {
     );
   }
 
-  const {reviews} = await getFeedbacks();
+  const { reviews } = await getFeedbacks();
 
   return <FeedbacksClient feedbacks={reviews} user={user} />;
 };
