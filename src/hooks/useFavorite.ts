@@ -2,24 +2,16 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import useLoginModal from "./useLoginModal";
-import { safeUserType } from "@/types/safeuser";
 import { useCallback, useMemo, useState } from "react";
 import toast from "react-hot-toast";
+import useUser from "./useUser";
+import { includes } from "lodash";
 
-const useFavorite = ({
-  listing_id,
-  user,
-}: {
-  listing_id: string;
-  user?: safeUserType | null;
-}) => {
+const useFavorite = ({ listing_id }: { listing_id: string }) => {
+  const { user, mutate } = useUser();
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
   const loginModal = useLoginModal();
-
-  const hasFavorited = useMemo(() => {
-    return !!user?.favoriteIds?.find((listing) => listing === listing_id);
-  }, [user, listing_id]);
 
   const toggleFavorite = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -29,29 +21,10 @@ const useFavorite = ({
       }
       try {
         setLoading(true);
-        let req;
-        if (hasFavorited) {
-          req = () =>
-            axios
-              .delete(`/api/favorites/${listing_id}`)
-              .then((res) => toast.success(res.data.message))
-              .catch((error) => {
-                console.log(error);
-                toast.error("something went wrong!");
-              });
-        }
-        if (!hasFavorited) {
-          req = () =>
-            axios
-              .post(`/api/favorites/${listing_id}`)
-              .then((res) => toast.success(res.data.message))
-              .catch((error) => {
-                console.log(error);
-                toast.error("something went wrong!");
-              });
-        }
-        (await req!()) as unknown as Promise<any>;
-        router.refresh();
+        await axios.patch(`/api/favorites/${listing_id}`).then((res) => {
+          toast.success(res.data.message);
+          mutate();
+        });
       } catch (error) {
         console.log(error);
         toast.error("something went wrong!");
@@ -59,8 +32,11 @@ const useFavorite = ({
         setLoading(false);
       }
     },
-    [user, listing_id, hasFavorited, loginModal, router]
+    [user, listing_id, loginModal, router, mutate]
   );
+  const hasFavorited = useMemo(() => {
+    return includes(user?.favoriteIds, listing_id);
+  }, [user, listing_id]);
 
   return { hasFavorited, toggleFavorite, isLoading };
 };

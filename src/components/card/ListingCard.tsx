@@ -19,7 +19,6 @@ import { listingActionsType } from "@/types/ListingActions";
 const ListingCard = ({
   listing,
   className,
-  user,
   reservation,
   action,
   disabled,
@@ -32,6 +31,7 @@ const ListingCard = ({
   Cancel,
   index = 0,
 }: {
+  favoritePage?: boolean;
   feedback?: boolean;
   Outdated?: boolean;
   disabled?: boolean;
@@ -114,7 +114,7 @@ const ListingCard = ({
             blurDataURL={listing.imageSrc}
           />
           <div className="absolute top-3 right-3 ">
-            <HeartButton id={listing.id} user={user} />
+            <HeartButton id={listing.id} />
           </div>
         </div>
         <div className="font-semibold text-lg line-clamp-1">

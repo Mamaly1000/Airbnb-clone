@@ -7,6 +7,7 @@ import ListingCard from "../card/ListingCard";
 import { safeUserType } from "@/types/safeuser";
 import { safeListingType } from "@/types/safeListing";
 import { twMerge } from "tailwind-merge";
+import { listingActionsType } from "@/types/ListingActions";
 
 const ListingList = ({
   listings,
@@ -16,7 +17,15 @@ const ListingList = ({
   className,
   main,
   pagination,
+  favoritePage,
+  Cancel,
+  Edit,
+  Remove,
+  Review,
+  deletingId,
 }: {
+  deletingId?: string;
+  favoritePage?: boolean;
   pagination?: {
     hasMore: boolean;
     maxPages: number;
@@ -34,7 +43,7 @@ const ListingList = ({
     subTitle?: string;
   };
   listings: safeListingType[];
-}) => {
+} & listingActionsType) => {
   if (isEmpty(listings)) {
     return (
       <EmptyState
@@ -60,10 +69,16 @@ const ListingList = ({
         {listings.map((listing, i) => {
           return (
             <ListingCard
+              favoritePage={favoritePage}
               index={i}
               listing={listing as any}
               user={user}
               key={listing.id}
+              Cancel={Cancel}
+              Edit={Edit}
+              Remove={Remove}
+              Review={Review}
+              disabled={deletingId === listing.id}
             />
           );
         })}

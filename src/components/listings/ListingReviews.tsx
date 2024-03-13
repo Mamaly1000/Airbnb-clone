@@ -26,7 +26,7 @@ export default async function ListingReviews({
 }) {
   const router = useRouter();
   if (isEmpty(reviewsData?.reviews) || isNull(reviewsData?.reviews)) {
-    return <EmptyState small subTitle="this listing has no review" />;
+    return <EmptyState small title="no avialable review" subTitle="this listing has no review" />;
   }
   return (
     <motion.section

@@ -24,6 +24,7 @@ const ReservationList = ({
   deletingId,
   className,
   feedback,
+  main,
 }: reservertionReturnDataType &
   listingActionsType & {
     empty?: {
@@ -35,10 +36,11 @@ const ReservationList = ({
       subTitle?: string;
     };
     disabled?: boolean;
-    user?: safeUserType;
+    user?: safeUserType | null;
     deletingId?: string;
     className?: string;
     feedback?: boolean;
+    main?: boolean;
   }) => {
   if (isEmpty(reservations)) {
     return (
@@ -53,7 +55,7 @@ const ReservationList = ({
   }
   return (
     <Container
-      main
+      main={main}
       classname={twMerge(
         "min-w-full max-w-full flex flex-col items-start justify-start gap-4",
         className

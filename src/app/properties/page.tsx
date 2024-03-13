@@ -14,16 +14,18 @@ const Properties = async () => {
       />
     );
   }
-  const { listings } = (await getListings({ userId: user.id })) || [];
-  if (listings.length === 0) {
-    return (
-      <EmptyState
-        subTitle="Looks like you didn`t create any property here."
-        title="No properties found!"
-      />
-    );
-  }
-  return <PropertiesClient properties={listings} user={user} />;
+  const { listings, pagination } = await getListings({
+    userId: user.id,
+    type: "ALL",
+  }); 
+
+  return (
+    <PropertiesClient
+      pagination={pagination}
+      properties={listings}
+      user={user}
+    />
+  );
 };
 
 export default Properties;

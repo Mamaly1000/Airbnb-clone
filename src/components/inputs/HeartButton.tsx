@@ -1,21 +1,14 @@
 "use client";
 import useFavorite from "@/hooks/useFavorite";
-import { safeUserType } from "@/types/safeuser";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { twMerge } from "tailwind-merge";
 
-const HeartButton = ({
-  id,
-  user,
-}: {
-  id: string;
-  user?: safeUserType | null;
-}) => {
+const HeartButton = ({ id }: { id: string }) => {
   const { hasFavorited, toggleFavorite, isLoading } = useFavorite({
     listing_id: id,
-    user,
   });
+
   return (
     <button
       onClick={(e) => toggleFavorite(e)}

@@ -2,18 +2,23 @@
 import { safeListingType } from "@/types/safeListing";
 import { safeUserType } from "@/types/safeuser";
 import React, { useCallback, useState } from "react";
-import Container from "../ui/Container";
-import ListingCard from "../card/ListingCard";
-import Heading from "../form/Heading";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useUpdateProperty } from "@/hooks/useUpdateProperty";
+import ListingList from "../lists/ListingList";
 
 const PropertiesClient = ({
   properties,
   user,
+  pagination,
 }: {
+  pagination: {
+    hasMore: boolean;
+    maxPages: number;
+    total: number;
+  };
+
   properties: safeListingType[];
   user?: safeUserType | null;
 }) => {
@@ -23,10 +28,10 @@ const PropertiesClient = ({
   const [deletingId, setDeletingId] = useState("");
 
   const onDelete = useCallback(
-    (id: string) => {
-      setDeletingId(id);
+    (listing: safeListingType) => {
+      setDeletingId(listing.id);
       axios
-        .delete(`/api/listings/${id}`)
+        .delete(`/api/listings/${listing.id}`)
         .then((res: { data: { message: string } }) => {
           toast.success(res.data.message);
           router.refresh();
@@ -43,32 +48,32 @@ const PropertiesClient = ({
   );
 
   return (
-    <Container main classname="min-w-full max-w-full">
-      <Heading title="Properties" subtitle="List of your properties!" />
-      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
-        {properties.map((property) => {
-          return (
-            <ListingCard
-              action={{
-                actionId: property.id,
-                actionLabel: "Delete Property",
-                onAction: onDelete,
-              }}
-              updateAction={{
-                label: "update your property data",
-                onClick: () => {
-                  updateProperyModal.onOpen(property.id);
-                },
-              }}
-              listing={property}
-              key={property.id}
-              user={user}
-              disabled={deletingId === property.id}
-            />
-          );
-        })}
-      </div>
-    </Container>
+    <ListingList
+      listings={properties}
+      pagination={pagination}
+      user={user}
+      main
+      className="pt-32"
+      emptyState={{
+        subTitle: "Looks like you didn`t create any property here.",
+        title: "No properties found!",
+      }}
+      header={{
+        title: "Properties",
+        subTitle: "List of your properties!",
+      }}
+      Remove={{
+        label: "Delete Property",
+        onClick: onDelete,
+      }}
+      Edit={{
+        label: "update your property data",
+        onClick: (li) => {
+          updateProperyModal.onOpen(li.id);
+        },
+      }}
+      deletingId={deletingId}
+    />
   );
 };
 

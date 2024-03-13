@@ -12,6 +12,7 @@ export type ListingQueryType = {
   page?: number | undefined;
   favorites?: boolean | undefined;
   userFavoritesListings?: string[];
+  type?: "ALL";
 };
 export default async function getListings(params?: ListingQueryType) {
   let query: any = {};
@@ -99,8 +100,8 @@ export default async function getListings(params?: ListingQueryType) {
     orderBy: {
       createdAt: "desc",
     },
-    skip,
-    take: limit + 1,
+    skip: params?.type === "ALL" ? 0 : skip,
+    take: params?.type === "ALL" ? totalListings : limit + 1,
   });
 
   const isNextPage = listings.length > limit; // Check if there are more items than the limit
@@ -115,8 +116,8 @@ export default async function getListings(params?: ListingQueryType) {
   return {
     listings: safeListings || [],
     pagination: {
-      hasMore: isNextPage,
-      maxPages,
+      hasMore: params?.type === "ALL" ? false : isNextPage,
+      maxPages: params?.type === "ALL" ? 1 : maxPages,
       total: totalListings,
     },
   };

@@ -20,7 +20,6 @@ const FavoritesClient = ({
   favorites: safeListingType[];
   user?: safeUserType | null;
 }) => {
-  console.log(pagination);
   return (
     <>
       <ListingList
@@ -38,7 +37,12 @@ const FavoritesClient = ({
           subTitle: "List of your favorite places!",
         }}
       />
-      <ListingLoadMore pagination={pagination} user={user!} params={params} />
+      <ListingLoadMore
+        favoritePage
+        pagination={pagination}
+        user={user!}
+        params={params}
+      />
     </>
   );
 };

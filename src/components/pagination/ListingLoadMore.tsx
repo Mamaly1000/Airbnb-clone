@@ -12,7 +12,9 @@ const ListingLoadMore = ({
   user,
   params,
   pagination: listingPagination,
+  favoritePage,
 }: {
+  favoritePage?: boolean;
   pagination: {
     hasMore: boolean;
     maxPages: number;
@@ -40,6 +42,7 @@ const ListingLoadMore = ({
           setLists([
             ...lists,
             <ListingList
+              favoritePage={favoritePage}
               pagination={res.pagination}
               className="py-0 mt-0"
               listings={res.listings}
