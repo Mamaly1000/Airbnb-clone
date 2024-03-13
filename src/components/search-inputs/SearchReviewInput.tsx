@@ -1,8 +1,8 @@
 "use client";
 
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import qs from "query-string";
@@ -14,6 +14,7 @@ const SearchReviewInput = ({
   prevValue?: string;
   className?: string;
 }) => {
+  const [Hydrate, setHydrate] = useState(false);
   const [search, setSearch] = useState(prevValue || "");
   const InputRef: React.LegacyRef<HTMLInputElement> | undefined = useRef(null);
   const pathname = usePathname();
@@ -43,10 +44,18 @@ const SearchReviewInput = ({
     };
   }, [search]);
 
+  useEffect(() => {
+    setHydrate(true);
+  }, []);
+
+  if (!Hydrate) {
+    return null;
+  }
+
   return (
     <section
       className={twMerge(
-        "relative min-w-full max-w-full min-h-[45px] max-h-[45px] rounded-full flex items-center justify-center ",
+        "min-w-full bg-white dark:bg-neutral-800 sticky top-3 max-w-full min-h-[45px] max-h-[45px] rounded-full flex items-center justify-center ",
         className
       )}
       onClick={(e) => {

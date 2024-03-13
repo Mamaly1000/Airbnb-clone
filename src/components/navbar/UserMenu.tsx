@@ -122,13 +122,6 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                           },
                         },
                         {
-                          id: 67453564,
-                          label: "Feedbacks",
-                          onClick: () => {
-                            router.push("/feedbacks");
-                          },
-                        },
-                        {
                           id: 7456345,
                           label: "Completed Reservations",
                           onClick: () => {

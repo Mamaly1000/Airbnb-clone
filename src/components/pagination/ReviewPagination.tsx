@@ -1,84 +1,59 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import toast from "react-hot-toast";
+import React, { useEffect, useState } from "react";
 import Loader from "../ui/Loader";
-import { safeUserType } from "@/types/safeuser";
-import {
-  getReservations,
-  reservationQueryType,
-} from "@/actions/getReservations";
-import ReservationList from "../lists/ReservationList";
-import { listingActionsType } from "@/types/ListingActions";
 import { useRouter } from "next/navigation";
-
-const ReservationPagination = ({
-  user,
+import { FeedbackQueryType, getFeedbacks } from "@/actions/getFeedbacks";
+import ReviewList from "../lists/ReviewList";
+import { safeUserType } from "@/types/safeuser";
+import toast from "react-hot-toast";
+import { twMerge } from "tailwind-merge";
+const ReviewPagination = ({
+  pagination: reviewPagination,
   params,
-  pagination: reservationPagination,
-  Cancel,
-  Edit,
-  Remove,
-  Review,
-  deletingId,
   actionLabel,
-  feedback,
+  user,
 }: {
-  feedback?: boolean;
+  user?: safeUserType | null;
   actionLabel?: string;
-  deletingId?: string;
-  pagination: {
-    total: number;
-    hasMore: boolean;
-    maxPages: number;
-  };
-  params?: reservationQueryType;
-  user?: safeUserType;
-} & listingActionsType) => {
+  pagination: { hasMore: boolean; maxPages: number; total: number };
+  params?: FeedbackQueryType;
+}) => {
   const router = useRouter();
 
   const [isLoading, setLoading] = useState(false);
   const [page, setPage] = useState(2);
-  const [pagination, setPagination] = useState(reservationPagination);
+  const [pagination, setPagination] = useState(reviewPagination);
   const [lists, setLists] = useState<JSX.Element[]>([]);
-  const getMoreReservations = async () => {
-    try {
-      setLoading(true);
-      await getReservations({
-        page,
-        ...params,
-      }).then((res) => {
+
+  const getMoreReview = async () => {
+    setLoading(true);
+    await getFeedbacks({ ...params, page })
+      .then((res) => {
         setPagination(res.pagination);
         setPage(page + 1);
         router.refresh();
-        if (res.reservations.length > 0) {
+        if (res.reviews.length > 0) {
           setLists([
             ...lists,
-            <ReservationList
-              className="py-0 mt-0"
+            <ReviewList
+              className={twMerge(res.pagination.hasMore ? "pb-2" : "pb-4")}
               pagination={res.pagination}
-              reservations={res.reservations}
-              Cancel={Cancel}
-              Edit={Edit}
-              Remove={Remove}
-              Review={Review}
-              deletingId={deletingId}
+              initailData={res.reviews}
               user={user}
-              feedback={feedback}
             />,
           ]);
         }
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("something went wrong!");
+      })
+      .finally(() => {
+        setLoading(false);
       });
-    } catch (error) {
-      console.log(error);
-      toast.error("something went wrong");
-    } finally {
-      setLoading(false);
-    }
   };
-  useEffect(() => {
-    setPagination(reservationPagination);
-  }, [reservationPagination]);
+
   return (
     <>
       {lists}
@@ -96,7 +71,7 @@ const ReservationPagination = ({
                 disabled={isLoading}
                 onClick={(e) => {
                   e.stopPropagation();
-                  getMoreReservations();
+                  getMoreReview();
                 }}
                 className="min-w-full max-w-full px-3 py-2 drop-shadow-2xl bg-rose-500 text-white disabled:opacity-50 capitalize font-bold hover:scale-100 hover:opacity-50"
               >
@@ -110,4 +85,4 @@ const ReservationPagination = ({
   );
 };
 
-export default ReservationPagination;
+export default ReviewPagination;

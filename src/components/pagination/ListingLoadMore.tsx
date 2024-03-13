@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import ListingList from "../lists/ListingList";
 import Loader from "../ui/Loader";
 import { safeUserType } from "@/types/safeuser";
+import { useRouter } from "next/navigation";
 
 const ListingLoadMore = ({
   user,
@@ -14,6 +15,7 @@ const ListingLoadMore = ({
   params?: any;
   user: safeUserType;
 }) => {
+  const router = useRouter();
   const [isLoading, setLoading] = useState(false);
   const [page, setPage] = useState(2);
   const [pagination, setPagination] = useState({
@@ -30,6 +32,7 @@ const ListingLoadMore = ({
       }).then((res) => {
         setPagination(res.pagination);
         setPage(page + 1);
+        router.refresh();
         if (res.listings.length > 0) {
           setLists([
             ...lists,
@@ -57,7 +60,7 @@ const ListingLoadMore = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="min-w-full max-w-full flex items-center justify-center bg-white dark:bg-neutral-800 pt-5"
+            className="min-w-full max-w-full flex items-center justify-center bg-white dark:bg-neutral-800 pt-5 hover:scale-100 hover:opacity-50"
           >
             {isLoading && <Loader size={25} className="h-[100px]" />}
             {!isLoading && (

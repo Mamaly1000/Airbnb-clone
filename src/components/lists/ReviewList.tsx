@@ -8,14 +8,18 @@ import Heading from "../form/Heading";
 import ReviewCard from "../card/ReviewCard";
 import { safeUserType } from "@/types/safeuser";
 import { twMerge } from "tailwind-merge";
+import { FeedbackQueryType } from "@/actions/getFeedbacks";
 
 const ReviewList = ({
-  pagination,
   initailData,
   emptyState,
   header,
   user,
+  className,
+  pagination,
 }: {
+  className?: string;
+  params?: FeedbackQueryType;
   user?: safeUserType | null;
   emptyState?: {
     title: string;
@@ -38,21 +42,21 @@ const ReviewList = ({
     );
   }
   return (
-    <>
-      <Container
-        classname={twMerge(
-          "min-w-full max-w-full overflow-hidden flex flex-col items-start justify-start",
-          header && "gap-8"
-        )}
-      >
-        {header && <Heading title={header.title} subtitle={header?.subTitle} />}
-        <div className="min-w-full max-w-full grid grid-cols-1 md:grid-cols-2 gap-2">
-          {initailData.map((r, i) => {
-            return <ReviewCard index={i} review={r} user={user} key={r.id} />;
-          })}
-        </div>
-      </Container>
-    </>
+    <Container
+      classname={twMerge(
+        "min-w-full max-w-full overflow-hidden flex flex-col items-start justify-start",
+        header && "gap-8",
+        pagination.hasMore ? "pb-2" : "pb-4",
+        className
+      )}
+    >
+      {header && <Heading title={header.title} subtitle={header?.subTitle} />}
+      <div className="min-w-full max-w-full grid grid-cols-1 md:grid-cols-2 gap-2">
+        {initailData.map((r, i) => {
+          return <ReviewCard index={i} review={r} user={user} key={r.id} />;
+        })}
+      </div>
+    </Container>
   );
 };
 

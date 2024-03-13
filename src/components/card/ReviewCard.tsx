@@ -42,14 +42,12 @@ const ReviewCard = ({
       )}
     >
       <div className="min-w-full max-w-full flex items-center justify-start gap-2">
-        <Avatar userId="" className="w-[40px] h-[40px] " />
+        <Avatar userId={review.userId} className="w-[40px] h-[40px] " />
         <div className="flex items-start justify-start flex-col">
           <p className="text-black dark:text-white text-[16px]">
             {review.user.name}
           </p>
-          <p className="text-[12px] text-neutral-400 ">
-            {review.user.email}
-          </p>
+          <p className="text-[12px] text-neutral-400 ">{review.user.email}</p>
         </div>
       </div>
       <div className="min-w-full max-w-full flex flex-col items-start justify-start gap-1">

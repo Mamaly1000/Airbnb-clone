@@ -94,27 +94,6 @@ export async function getFeedbacks(
       ...where,
       OR: [
         {
-          listing: {
-            category: {
-              contains: params?.search,
-            },
-          },
-        },
-        {
-          listing: {
-            description: {
-              contains: params?.search,
-            },
-          },
-        },
-        {
-          listing: {
-            title: {
-              contains: params?.search,
-            },
-          },
-        },
-        {
           body: {
             contains: params.search,
           },
@@ -122,6 +101,13 @@ export async function getFeedbacks(
         {
           user: {
             name: {
+              contains: params.search,
+            },
+          },
+        },
+        {
+          user: {
+            email: {
               contains: params.search,
             },
           },

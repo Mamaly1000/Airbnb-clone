@@ -1,45 +1,98 @@
-import { Feedback, User } from "@prisma/client";
+"use client";
 import React from "react";
 import EmptyState from "../ui/EmptyState";
 import { safeUserType } from "@/types/safeuser";
 import Container from "../ui/Container";
-import Heading from "../form/Heading";
-import FeedbackCard from "../card/FeedbackCard";
+import ReviewPagination from "../pagination/ReviewPagination";
+import ReviewList from "../lists/ReviewList";
+import ReviewOverview from "../review/ReviewOverview";
+import { isNull } from "lodash";
+import { safeListingType } from "@/types/safeListing";
+import { safeReviewType } from "@/types/safeReviewType";
+import dynamic from "next/dynamic";
+
+const SearchReviewInput = dynamic(
+  () => import("./../search-inputs/SearchReviewInput"),
+  {
+    ssr: false,
+  }
+);
 
 const FeedbacksClient = ({
-  feedbacks,
   user,
+  listing,
+  overallData,
+  searchParams,
+  reviews,
+  pagination,
+  params,
 }: {
-  user: User | safeUserType;
-  feedbacks: Feedback[];
+  pagination: {
+    hasMore: boolean;
+    maxPages: number;
+    total: number;
+  };
+  reviews: safeReviewType[];
+  params: {
+    id?: string;
+  };
+  searchParams?: {
+    search?: string;
+  };
+  listing: safeListingType | null;
+  user?: safeUserType | null;
+  overallData: any;
 }) => {
-  if (feedbacks.length === 0) {
+  if (isNull(listing) || isNull(user)) {
     return (
       <EmptyState
-        subTitle="no feedbacks"
-        title="here there is no users feedbacks about properties and their reservations experiences."
         redirect
+        title="there is no review for this listing."
+        subTitle="Please check back later"
       />
     );
   }
+
   return (
-    <Container main classname="min-w-full max-w-full relative z-0">
-      <Heading
-        title="properties feedbacks"
-        subtitle="here you can see users feedbacks about properties and their reservations experiences."
+    <>
+      <Container classname="pt-32">
+        <ReviewOverview listing={listing} overallRates={overallData} />
+        <hr className="min-w-full min-h-[2px] bg-neutral-200 dark:bg-neutral-700 my-10 border-none" />
+        <SearchReviewInput prevValue={searchParams?.search} />
+      </Container>
+      <ReviewList
+        header={{
+          title: "All Reviews",
+          subTitle: " There are total of " + pagination?.total + " reviews.",
+        }}
+        emptyState={
+          searchParams?.search
+            ? {
+                title: "no review were found",
+                subTitle: "Try to change your filter or keyword",
+              }
+            : {
+                title: "No Reviews Yet",
+                subTitle: "Be the first to leave a review.",
+              }
+        }
+        user={user}
+        initailData={reviews}
+        pagination={pagination}
+        params={{
+          listingId: params.id,
+          search: searchParams?.search,
+        }}
       />
-      <section className="mt-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 ">
-        {feedbacks.map((feedback) => {
-          return (
-            <FeedbackCard
-              key={feedback.id}
-              feedback={feedback as any}
-              user={user}
-            />
-          );
-        })}
-      </section>
-    </Container>
+      <ReviewPagination
+        user={user}
+        pagination={pagination}
+        params={{
+          listingId: params.id,
+          search: searchParams?.search,
+        }}
+      />
+    </>
   );
 };
 
