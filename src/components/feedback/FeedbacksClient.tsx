@@ -10,6 +10,7 @@ import { isNull } from "lodash";
 import { safeListingType } from "@/types/safeListing";
 import { safeReviewType } from "@/types/safeReviewType";
 import dynamic from "next/dynamic";
+import ListingBar from "../review/ListingBar";
 
 const SearchReviewInput = dynamic(
   () => import("./../search-inputs/SearchReviewInput"),
@@ -55,7 +56,7 @@ const FeedbacksClient = ({
 
   return (
     <>
-      <Container classname="pt-32">
+      <Container classname="pt-52 md:pt-32">
         <ReviewOverview listing={listing} overallRates={overallData} />
         <hr className="min-w-full min-h-[2px] bg-neutral-200 dark:bg-neutral-700 my-10 border-none" />
         <SearchReviewInput prevValue={searchParams?.search} />
@@ -92,6 +93,7 @@ const FeedbacksClient = ({
           search: searchParams?.search,
         }}
       />
+      <ListingBar listing={listing} />
     </>
   );
 };

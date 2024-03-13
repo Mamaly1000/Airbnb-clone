@@ -11,17 +11,20 @@ import { useRouter } from "next/navigation";
 const ListingLoadMore = ({
   user,
   params,
+  pagination: listingPagination,
 }: {
+  pagination: {
+    hasMore: boolean;
+    maxPages: number;
+    total: number;
+  };
   params?: any;
   user: safeUserType;
 }) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
   const [page, setPage] = useState(2);
-  const [pagination, setPagination] = useState({
-    maxPages: 0,
-    hasMore: true,
-  });
+  const [pagination, setPagination] = useState(listingPagination);
   const [lists, setLists] = useState<JSX.Element[]>([]);
   const getMoreListings = async () => {
     try {
@@ -37,6 +40,7 @@ const ListingLoadMore = ({
           setLists([
             ...lists,
             <ListingList
+              pagination={res.pagination}
               className="py-0 mt-0"
               listings={res.listings}
               user={user}
@@ -51,11 +55,12 @@ const ListingLoadMore = ({
       setLoading(false);
     }
   };
+
   return (
     <>
       {lists}
       <AnimatePresence>
-        {pagination.hasMore && (
+        {!!pagination?.hasMore && (
           <motion.section
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

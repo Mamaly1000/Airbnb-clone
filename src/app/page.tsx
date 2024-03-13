@@ -6,7 +6,7 @@ import EmptyState from "@/components/ui/EmptyState";
 import { isNull } from "lodash";
 
 export default async function Home(params: any) {
-  const { listings } = await getListings(params.searchParams);
+  const { listings, pagination } = await getListings(params.searchParams);
   const currentUser = await getCurrentUser();
 
   if (isNull(currentUser)) {
@@ -21,7 +21,11 @@ export default async function Home(params: any) {
         user={currentUser}
       />
       {listings.length === 10 && (
-        <ListingLoadMore params={params.searchParams} user={currentUser} />
+        <ListingLoadMore
+          pagination={pagination}
+          params={params.searchParams}
+          user={currentUser}
+        />
       )}
     </>
   );

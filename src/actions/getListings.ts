@@ -1,16 +1,19 @@
 "use server";
 import prisma from "@/libs/prismadb";
-export default async function getListings(params?: {
-  userId?: string;
-  roomCount?: number;
-  bathroomCount?: number;
-  guestCount?: number;
-  startDate?: string;
-  endDate?: string;
-  category?: string;
-  locationValue?: string;
-  page?: number;
-}) {
+export type ListingQueryType = {
+  userId?: string | undefined;
+  roomCount?: number | undefined;
+  bathroomCount?: number | undefined;
+  guestCount?: number | undefined;
+  startDate?: string | undefined;
+  endDate?: string | undefined;
+  category?: string | undefined;
+  locationValue?: string | undefined;
+  page?: number | undefined;
+  favorites?: boolean | undefined;
+  userFavoritesListings?: string[];
+};
+export default async function getListings(params?: ListingQueryType) {
   let query: any = {};
   const limit = 10;
   const page = params?.page || 1;
@@ -25,7 +28,17 @@ export default async function getListings(params?: {
       endDate,
       category,
       locationValue,
+      favorites,
+      userFavoritesListings,
     } = params!;
+    if (favorites) {
+      query = {
+        id: {
+          in: userFavoritesListings,
+        },
+      };
+    }
+
     if (userId) {
       query.userId = userId;
     }
@@ -98,11 +111,13 @@ export default async function getListings(params?: {
     ...listing,
     createdAt: listing.createdAt.toISOString(),
   }));
+
   return {
     listings: safeListings || [],
     pagination: {
       hasMore: isNextPage,
       maxPages,
+      total: totalListings,
     },
   };
 }

@@ -15,10 +15,16 @@ const ListingList = ({
   user,
   className,
   main,
+  pagination,
 }: {
+  pagination?: {
+    hasMore: boolean;
+    maxPages: number;
+    total: number;
+  };
   main?: boolean;
   className?: string;
-  user: safeUserType;
+  user?: safeUserType | null;
   emptyState?: {
     title: string;
     subTitle?: string;
@@ -43,7 +49,11 @@ const ListingList = ({
   return (
     <Container
       main={main}
-      classname={twMerge("min-w-full max-w-full", className)}
+      classname={twMerge(
+        "min-w-full max-w-full",
+        className,
+        pagination?.hasMore ? "pb-0" : "pb-4"
+      )}
     >
       {header && <Heading title={header.title} subtitle={header?.subTitle} />}
       <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">

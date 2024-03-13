@@ -1,5 +1,5 @@
 import getCurrentUser from "@/actions/getCurrentUser";
-import { getfavorites } from "@/actions/getFavorites";
+import getListings from "@/actions/getListings";
 import FavoritesClient from "@/components/Favorites/FavoritesClient";
 import EmptyState from "@/components/ui/EmptyState";
 import React from "react";
@@ -14,16 +14,21 @@ const Favorites = async () => {
       />
     );
   }
-  const favorites = await getfavorites();
-  if (!favorites || favorites.length === 0) {
-    return (
-      <EmptyState
-        title="No favorites found!"
-        subTitle="Looks like you have no favorites listings."
-      />
-    );
-  }
-  return <FavoritesClient  favorites={favorites} user={user} />;
+  const { listings, pagination } = await getListings({
+    favorites: true,
+    userFavoritesListings: user.favoriteIds,
+  });
+  return (
+    <FavoritesClient
+      params={{
+        favorites: true,
+        userFavoritesListings: user.favoriteIds,
+      }}
+      pagination={pagination}
+      favorites={listings}
+      user={user}
+    />
+  );
 };
 
 export default Favorites;
