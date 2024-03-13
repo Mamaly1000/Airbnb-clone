@@ -81,15 +81,15 @@ const RentModal = () => {
             title="which of these categories can perfectly describes your place?"
             subtitle="Pick a category"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[30vh] md:max-h-[50vh] overflow-y-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:max-h-[50vh] ">
             {categories.map((c) => {
               return (
                 <CategoryBox
                   className={twMerge(
-                    "border-[1px]  rounded-lg hover:border-neutral-800",
+                    "border-[1px] rounded-lg hover:text-rose-500 hover:border-rose-500 ",
                     watchingCategory == c.label
-                      ? "border-rose-500 text-rose-500 hover:text-rose-500 hover:border-rose-500"
-                      : "border-neutral-300 text-neutral-500 hover:border-neutral-800"
+                      ? "border-rose-500 text-rose-500 "
+                      : "border-neutral-300 dark:border-neutral-500 text-neutral-500  "
                   )}
                   category={c}
                   key={c.label}

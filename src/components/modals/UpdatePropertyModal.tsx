@@ -80,7 +80,7 @@ const UpdatePropertyModal = () => {
             title="Please wait"
             subtitle="please wait for loading your property data"
           />
-          <Loader className="min-w-full h-[200px] max-h-[200px] min-h-[200px] flex items-center justify-center" />
+          <Loader className="min-w-full h-[200px] max-h-[200px] min-h-[200px] flex items-center justify-center dark:bg-neutral-900" />
         </>
       );
     }
@@ -91,15 +91,15 @@ const UpdatePropertyModal = () => {
             title="which of these categories can perfectly describes your place?"
             subtitle="Pick a category"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[30vh] md:max-h-[50vh] overflow-y-auto">
+          <div className="grid p-1  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[30vh] md:max-h-[50vh]  ">
             {categories.map((c) => {
               return (
                 <CategoryBox
                   className={twMerge(
-                    "border-[1px]  rounded-lg hover:border-neutral-800",
+                    "border-[1px] rounded-lg hover:text-rose-500 hover:border-rose-500 ",
                     watchingCategory == c.label
-                      ? "border-rose-500 text-rose-500 hover:text-rose-500 hover:border-rose-500"
-                      : "border-neutral-300 text-neutral-500 hover:border-neutral-800"
+                      ? "border-rose-500 text-rose-500 "
+                      : "border-neutral-300 dark:border-neutral-500 text-neutral-500  "
                   )}
                   category={c}
                   key={c.label}
@@ -141,21 +141,18 @@ const UpdatePropertyModal = () => {
             onChange={(val) => setCustomValue("guestCount", val)}
             value={watchingGuestCount}
             title="guests"
-            subTitle="how many guests do you allow?"
           />
           <hr />
           <Counter
             onChange={(val) => setCustomValue("roomCount", val)}
             value={watchingRoomCount}
             title="Rooms"
-            subTitle="how many rooms do you have?"
           />
           <hr />
           <Counter
             onChange={(val) => setCustomValue("bathroomCount", val)}
             value={watchingBathroomCount}
-            title="bATHROOMS"
-            subTitle="how many bathrooms do you have?"
+            title="bathrooms"
           />
         </div>
       );
@@ -280,7 +277,7 @@ const UpdatePropertyModal = () => {
         location: getByValue(property.locationValue),
       });
     }
-  }, [property, id, getByValue, reset]);
+  }, [property, id]);
 
   return (
     <Modal
@@ -288,6 +285,7 @@ const UpdatePropertyModal = () => {
       onChange={(val) => {
         if (!val) {
           onClose();
+          setSteps(STEPS.CATEGORY);
         }
       }}
       header={{

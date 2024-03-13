@@ -1,6 +1,6 @@
 import getCurrentUser from "@/actions/getCurrentUser";
 import { getReservations } from "@/actions/getReservations";
-import ReservationsClient from "@/components/Reservations/ReservationsClient"; 
+import ReservationsClient from "@/components/Reservations/ReservationsClient";
 import EmptyState from "@/components/ui/EmptyState";
 import React from "react";
 
@@ -16,6 +16,7 @@ const Reservations = async () => {
   }
   const { reservations, pagination } = await getReservations({
     authorId: user.id,
+    type: "ALL",
   });
 
   return (

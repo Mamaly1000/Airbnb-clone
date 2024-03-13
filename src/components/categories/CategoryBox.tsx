@@ -60,7 +60,10 @@ const CategoryBox = ({
         handleClick();
       }}
       className={twMerge(
-        ` flex flex-col items-center justify-center gap-2 border-b-2 p-3 hover:text-neutral-800 transition cursor-pointer `,
+        ` flex flex-col items-center justify-center gap-2 
+        border-b-2 p-3 hover:text-neutral-800 transition cursor-pointer 
+        bg-white dark:bg-neutral-800 text-neutral-400
+        `,
         className
       )}
     >

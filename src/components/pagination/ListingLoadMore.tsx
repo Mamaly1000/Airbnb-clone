@@ -21,7 +21,7 @@ const ListingLoadMore = ({
     total: number;
   };
   params?: any;
-  user: safeUserType;
+  user?: safeUserType | null;
 }) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
@@ -78,7 +78,7 @@ const ListingLoadMore = ({
                   e.stopPropagation();
                   getMoreListings();
                 }}
-                className="min-w-full max-w-full px-3 py-2 drop-shadow-2xl bg-rose-500 text-white disabled:opacity-50 capitalize font-bold"
+                className="min-w-full max-w-full px-3 py-2 drop-shadow-2xl bg-rose-500 text-white disabled:opacity-50 capitalize font-bold hover:opacity-50 hover:scale-100"
               >
                 show more
               </motion.button>

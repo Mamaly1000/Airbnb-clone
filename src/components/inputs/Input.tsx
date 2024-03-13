@@ -34,7 +34,7 @@ const Input = forwardRef<HTMLInputElement, inputProps>(
         {formatPrice && (
           <BiDollar
             size={24}
-            className="text-neutral-700 absolute top-5 start-2"
+            className="text-gray-300 dark:text-neutral-400 absolute top-5 start-2"
           />
         )}
         <input
@@ -43,7 +43,7 @@ const Input = forwardRef<HTMLInputElement, inputProps>(
           {...register(id, { required })}
           placeholder=" "
           className={twMerge(
-            " peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed ",
+            " peer w-full bg-white dark:bg-neutral-800 text-black dark:text-white p-4 pt-6 font-light border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed ",
             formatPrice ? "pl-9" : "pl-4",
             errors[id]
               ? "border-rose-500 focus:border-rose-500"
@@ -54,7 +54,7 @@ const Input = forwardRef<HTMLInputElement, inputProps>(
         <label
           htmlFor={id}
           className={twMerge(
-            `capitalize  absolute text-base duration-150 -translate-y-3 top-5 z-10 origin-[0] 
+            `capitalize text-gray-300 dark:text-neutral-400 absolute text-base duration-150 -translate-y-3 top-5 z-10 origin-[0] 
             peer-placeholder-shown:scale-100
             peer-placeholder-shown:translate-y-0 
             peer-focus:scale-75

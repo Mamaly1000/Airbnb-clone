@@ -1,5 +1,4 @@
 "use client";
-import { SingleCountryType } from "@/hooks/useCountry";
 import React from "react";
 import L from "leaflet";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
@@ -23,7 +22,7 @@ const Map = ({ center }: { center?: number[] }) => {
       center={(center as L.LatLngExpression) || [32, 53]}
       zoom={center ? 4 : 2}
       scrollWheelZoom={false}
-      className="h-[35vh] rounded-lg"
+      className="h-[35vh] rounded-lg border-[1px] border-neutral-300 dark:border-rose-500"
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
