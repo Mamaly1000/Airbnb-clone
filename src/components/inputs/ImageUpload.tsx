@@ -6,6 +6,7 @@ import { useCallback } from "react";
 import { TbPhotoPlus } from "react-icons/tb";
 import toast from "react-hot-toast";
 import { useTheme } from "@/hooks/useTheme";
+import { twMerge } from "tailwind-merge";
 declare global {
   var cloudinary: any;
 }
@@ -13,7 +14,9 @@ declare global {
 const ImageUpload = ({
   onChange,
   value,
+  className,
 }: {
+  className?: string;
   value: string;
   onChange: (value: string) => void;
 }) => {
@@ -73,7 +76,10 @@ const ImageUpload = ({
       {({ open }) => {
         return (
           <div
-            className="relative cursor-pointer hover:opacity-70 transition border-2 p-20 border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-600 "
+            className={twMerge(
+              className,
+              "relative cursor-pointer hover:opacity-70 transition border-2 p-20 border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-600 "
+            )}
             onClick={() => {
               if (!!open) {
                 open!();

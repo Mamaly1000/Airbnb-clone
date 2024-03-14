@@ -1,18 +1,26 @@
 "use client";
 import React from "react";
 import EmptyState from "../ui/EmptyState";
-import Heading from "../form/Heading";
-import ListingCard from "../card/ListingCard";
-import { Listing, Reservation, User } from "@prisma/client";
-import Container from "../ui/Container";
+import { User } from "@prisma/client";
 import { safeUserType } from "@/types/safeuser";
+import ReservationList from "../lists/ReservationList";
+import ReservationPagination from "../pagination/ReservationPagination";
+import { safeReservationType } from "@/types/safeReservation";
+import { reservationQueryType } from "@/actions/getReservations";
 
 const CompletedReservationsList = ({
   reservations,
-  user,
+  pagination,
+  params,
 }: {
+  params?: reservationQueryType;
+  pagination: {
+    hasMore: boolean;
+    total: number;
+    maxPages: number;
+  };
   user: User | safeUserType;
-  reservations: Array<Reservation & { listing: Listing }>;
+  reservations: Array<safeReservationType>;
 }) => {
   if (reservations.length === 0) {
     return (
@@ -23,24 +31,23 @@ const CompletedReservationsList = ({
     );
   }
   return (
-    <Container main classname="min-w-full max-w-full ">
-      <Heading
-        title="Completed Reservations"
-        subtitle="here you can observe your completed reservations"
+    <>
+      <ReservationList
+        main
+        className="pt-32"
+        reservations={reservations}
+        pagination={pagination}
+        header={{
+          title: "Completed Reservations",
+          subTitle: "here you can observe your completed reservations",
+        }}
+        empty={{
+          title: "There is no completed reservation here!",
+          subTitle: "lets make a reservation",
+        }}
       />
-      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
-        {reservations.map((reservation) => {
-          return (
-            <ListingCard
-              listing={reservation.listing as any}
-              reservation={reservation as any}
-              user={user as any}
-              key={reservation.id}
-            />
-          );
-        })}
-      </div>
-    </Container>
+      <ReservationPagination  params={params} pagination={pagination} />
+    </>
   );
 };
 

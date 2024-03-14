@@ -2,14 +2,14 @@
 import { useRebookModal } from "@/hooks/useRebookModal";
 import React, { useCallback, useState } from "react";
 import Modal from "./Modal";
-import useLoginModal from "@/hooks/useLoginModal"; 
+import useLoginModal from "@/hooks/useLoginModal";
 import RebookCalendar from "../Reservations/RebookCalendar";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { initialDateRange } from "../listings/ListingClient";
 import { Range } from "react-date-range";
 import { useRouter } from "next/navigation";
-import useProperty from "@/hooks/useProperty"; 
+import useProperty from "@/hooks/useProperty";
 import useUser from "@/hooks/useUser";
 import useReservations from "@/hooks/useReservations";
 import Loader from "../ui/Loader";
@@ -24,10 +24,9 @@ const RebookReservationModal = () => {
   const { user, mutate: userMutate } = useUser();
 
   const router = useRouter();
-
-  const [isLoading, setLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(property?.price || 0);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
+  const [isLoading, setLoading] = useState(false);
 
   const rebookReservation = useCallback(
     async (_e: any) => {
@@ -91,15 +90,13 @@ const RebookReservationModal = () => {
         <div className="min-w-full flex flex-col items-start justify-start gap-8  ">
           {property && reservations && user ? (
             <RebookCalendar
-              setTotalPrice={setTotalPrice}
-              listing={property}
-              reservations={reservations}
-              setLoading={(val) => setLoading(val)}
-              user={user}
-              isLoading={isLoading}
               dateRange={dateRange}
               setDateRange={setDateRange}
+              setTotalPrice={setTotalPrice}
               totalPrice={totalPrice}
+              listing={property}
+              reservations={reservations}
+              user={user}
             />
           ) : (
             <Loader className="min-w-full h-[300px] max-h-[300px] flex items-center justify-center" />

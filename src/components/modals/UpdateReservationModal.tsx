@@ -99,11 +99,13 @@ const UpdateReservationModal = () => {
           />
           {reservation && reservation.listing && reservations && user ? (
             <RebookCalendar
-              setTotalPrice={(price) => setTotalPrice(price)}
+              dateRange={dateRange}
+              setDateRange={setDateRange}
+              setTotalPrice={setTotalPrice}
+              totalPrice={totalPrice}
               listing={reservation.listing}
               reservations={reservations}
               user={user}
-              setCustomDaterange={(range) => setDateRange(range.selection)}
             />
           ) : (
             <Loader className="min-w-full min-h-[200px] h-[200px] max-w-[200px] flex items-center justify-center bg-neutral-900" />

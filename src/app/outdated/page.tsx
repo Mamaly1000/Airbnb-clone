@@ -4,11 +4,11 @@ import React from "react";
 import getCurrentUser from "@/actions/getCurrentUser";
 import { Reservation } from "@prisma/client";
 import OutDatedReservationsClient from "@/components/Reservations/OutDatedReservationsClient";
+import { getReservations } from "@/actions/getReservations";
 
 export const revalidate = 0;
 
 const Outdated = async () => {
-  const { reservations } = await getOutdatedReservations();
   const user = await getCurrentUser();
   if (!user) {
     return (
@@ -18,11 +18,16 @@ const Outdated = async () => {
       />
     );
   }
+  const { reservations, pagination } = await getReservations({
+    type: "OUTDATED",
+    userId: user.id,
+  });
 
   return (
     <OutDatedReservationsClient
+      pagination={pagination}
       user={user}
-      reservations={reservations as Reservation[] as any}
+      reservations={reservations}
     />
   );
 };

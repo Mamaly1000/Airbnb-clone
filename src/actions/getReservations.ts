@@ -47,11 +47,37 @@ export async function getReservations(
         },
       };
     }
-    if (params.type === "OUTDATED") {
-      query = {
-        ...query,
-        endDate: {
-          lt: new Date(),
+    if (params.type === "OUTDATED" && params.userId) {
+      const outdatedReservations = await prisma.reservation.findMany({
+        where: {
+          ...query,
+          endDate: {
+            lt: new Date(),
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          listing: true,
+        },
+      });
+      const safeReservations = outdatedReservations.map((reservation) => ({
+        ...reservation,
+        createdAt: reservation.createdAt.toISOString(),
+        endDate: reservation.endDate.toISOString(),
+        startDate: reservation.startDate.toISOString(),
+        listing: {
+          ...reservation.listing,
+          createdAt: reservation.listing.createdAt.toISOString(),
+        },
+      }));
+      return {
+        reservations: safeReservations,
+        pagination: {
+          hasMore: false,
+          maxPages: 1,
+          total: outdatedReservations.length,
         },
       };
     }
@@ -91,6 +117,14 @@ export async function getReservations(
       },
     };
   }
+  if (params?.status) {
+    if (params.status === "COMPLETED") {
+      query = {
+        userId: params.userId,
+        status: "COMPLETED",
+      };
+    }
+  }
   const reservation = await prisma.reservation.findMany({
     where: query,
     include: {
@@ -102,6 +136,7 @@ export async function getReservations(
     skip,
     take: limit + 1,
   });
+
   const totalReservations = await prisma.reservation.count({ where: query });
   const maxPages = Math.ceil(totalReservations / limit);
 

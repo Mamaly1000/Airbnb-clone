@@ -1,5 +1,6 @@
 import { getCompletedReservations } from "@/actions/getCompletedReservations";
 import getCurrentUser from "@/actions/getCurrentUser";
+import { getReservations } from "@/actions/getReservations";
 import CompletedReservationsList from "@/components/Reservations/CompletedReservationsList";
 import EmptyState from "@/components/ui/EmptyState";
 import React from "react";
@@ -14,18 +15,22 @@ const CompletedReservations = async () => {
       />
     );
   }
-  const reservations = await getCompletedReservations({
+  const { reservations, pagination } = await getReservations({
     userId: user.id,
-  } as any);
-  if (!reservations) {
-    return (
-      <EmptyState
-        title="There is no completed reservation here!"
-        subTitle="lets make a reservation"
-      />
-    );
-  }
-  return <CompletedReservationsList reservations={reservations} user={user} />;
+    status: "COMPLETED",
+  });
+
+  return (
+    <CompletedReservationsList
+      params={{
+        userId: user.id,
+        status: "COMPLETED",
+      }}
+      pagination={pagination}
+      reservations={reservations}
+      user={user}
+    />
+  );
 };
 
 export default CompletedReservations;

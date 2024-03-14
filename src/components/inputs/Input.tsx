@@ -46,8 +46,8 @@ const Input = forwardRef<HTMLInputElement, inputProps>(
             " peer w-full bg-white dark:bg-neutral-800 text-black dark:text-white p-4 pt-6 font-light border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed ",
             formatPrice ? "pl-9" : "pl-4",
             errors[id]
-              ? "border-rose-500 focus:border-rose-500"
-              : "border-neutral-300 focus:border-black"
+              ? "border-red-500 focus:border-red-500"
+              : "hover:border-rose-500 focus:border-rose-500"
           )}
           type={type}
         />

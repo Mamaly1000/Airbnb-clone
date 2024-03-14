@@ -55,7 +55,6 @@ const ReservationPagination = ({
           setLists([
             ...lists,
             <ReservationList
-              className="py-0 mt-0"
               pagination={res.pagination}
               reservations={res.reservations}
               Cancel={Cancel}
@@ -76,9 +75,7 @@ const ReservationPagination = ({
       setLoading(false);
     }
   };
-  useEffect(() => {
-    setPagination(reservationPagination);
-  }, [reservationPagination]);
+
   return (
     <>
       {lists}

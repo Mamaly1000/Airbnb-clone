@@ -5,12 +5,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Modal from "./Modal";
 import useUser from "@/hooks/useUser";
-import Input from "../inputs/Input"; 
+import Input from "../inputs/Input";
 import { useProfileModal } from "@/hooks/useProfileModal";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import useProfileImage from "@/hooks/useProfileImage";
+import ImageUpload from "../inputs/ImageUpload";
 
 const profileSchema = z.object({
   name: z.string().optional(),
@@ -71,7 +72,7 @@ const EditprofileModal = () => {
         image: user.image || "",
       });
     }
-  }, [user, form]);
+  }, [user]);
 
   return (
     <Modal
@@ -89,6 +90,11 @@ const EditprofileModal = () => {
           }}
           className=" flex flex-col items-start justify-start gap-8 "
         >
+          <ImageUpload
+            className="min-w-full max-w-full border-[1px] border-neutral-300 hover:border-red-500 rounded-lg"
+            value={form.watch("image")}
+            onChange={(val) => form.setValue("image", val)}
+          />
           <Input
             errors={form.formState.errors}
             id="name"
@@ -96,7 +102,7 @@ const EditprofileModal = () => {
             register={form.register as any}
             disabled={isLoading}
             required
-          />{" "}
+          />
           <Input
             errors={form.formState.errors}
             id="email"
@@ -105,7 +111,6 @@ const EditprofileModal = () => {
             disabled={isLoading}
             required
           />
-         
         </form>
       }
       header={{

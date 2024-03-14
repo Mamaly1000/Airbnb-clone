@@ -25,6 +25,7 @@ const ReservationList = ({
   className,
   feedback,
   main,
+  Outdated,
 }: reservertionReturnDataType &
   listingActionsType & {
     empty?: {
@@ -41,6 +42,7 @@ const ReservationList = ({
     className?: string;
     feedback?: boolean;
     main?: boolean;
+    Outdated?: boolean;
   }) => {
   if (isEmpty(reservations)) {
     return (
@@ -58,6 +60,7 @@ const ReservationList = ({
       main={main}
       classname={twMerge(
         "min-w-full max-w-full flex flex-col items-start justify-start gap-4",
+        pagination.hasMore ? "pb-0" : "pb-4",
         className
       )}
     >
@@ -79,6 +82,7 @@ const ReservationList = ({
         {reservations.map((reservation, i) => {
           return (
             <ListingCard
+              Outdated={Outdated}
               index={i}
               listing={reservation.listing}
               key={reservation.id}

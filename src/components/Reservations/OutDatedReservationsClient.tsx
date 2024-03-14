@@ -1,24 +1,26 @@
 "use client";
 import React, { useCallback, useState } from "react";
-import Container from "../ui/Container";
-import Heading from "../form/Heading";
-import { Reservation } from "@prisma/client";
-import ListingCard from "../card/ListingCard";
 import { safeUserType } from "@/types/safeuser";
 import { useRebookModal } from "@/hooks/useRebookModal";
 import useLoginModal from "@/hooks/useLoginModal";
-import EmptyState from "../ui/EmptyState";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { isEmpty } from "lodash";
+import ReservationList from "../lists/ReservationList";
+import { safeListingType } from "@/types/safeListing";
+import { safeReservationType } from "@/types/safeReservation";
 
 const OutDatedReservationsClient = ({
   reservations,
-  user,
+  pagination,
 }: {
+  pagination: {
+    hasMore: boolean;
+    total: number;
+    maxPages: number;
+  };
   user: safeUserType;
-  reservations: Array<Reservation | any>;
+  reservations: Array<safeReservationType>;
 }) => {
   const router = useRouter();
 
@@ -27,72 +29,63 @@ const OutDatedReservationsClient = ({
 
   const [deletingId, setDeletingId] = useState("");
   const onCancel = useCallback(
-    (id: string) => {
-      setDeletingId(id);
-      axios
-        .delete(`/api/reservations/${id}`)
-        .then((res) => {
-          toast.success(res.data.message);
-          router.refresh();
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.error("something went wrong!");
-        })
-        .finally(() => {
-          setDeletingId("");
-        });
+    (_listing: safeListingType, reservation?: safeReservationType) => {
+      if (reservation) {
+        setDeletingId(reservation.id);
+        axios
+          .delete(`/api/reservations/${reservation.id}`)
+          .then((res) => {
+            toast.success(res.data.message);
+            router.refresh();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error("something went wrong!");
+          })
+          .finally(() => {
+            setDeletingId("");
+          });
+      } else {
+        LoginModal.onOpen();
+      }
     },
     [router]
   );
 
-  if (isEmpty(reservations)) {
-    return (
-      <EmptyState
-        subTitle="Looks like you have no outdated reservations on your properties or trips."
-        title="No outdated reservations found!"
-        redirect
-      />
-    );
-  }
-
   return (
-    <Container main classname="min-w-full">
-      <Heading
-        title="outdated reservations"
-        subtitle="here you can observe outdated reservations and rebook your outdated reservations"
-      />
-      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
-        {reservations.map((reservation) => {
-          return (
-            <ListingCard
-              Outdated
-              feedback
-              listing={reservation.listing}
-              action={{
-                actionId: reservation.id,
-                actionLabel: "Cancel Reservation",
-                onAction: () => {
-                  if (user) {
-                    onCancel(reservation.id);
-                  } else {
-                    LoginModal.onOpen();
-                  }
-                },
-              }}
-              updateAction={{
-                label: "Rebook Reservation",
-                onClick: () => {},
-              }}
-              disabled={deletingId === reservation.id}
-              reservation={reservation}
-              user={user}
-              key={reservation.id}
-            />
-          );
-        })}
-      </div>
-    </Container>
+    <ReservationList
+      main
+      className="pt-32"
+      deletingId={deletingId}
+      Cancel={{
+        label: "Cancel Reservation",
+        onClick: onCancel,
+      }}
+      Edit={{
+        label: "Rebook Reservation",
+        onClick: (_l, r) => {
+          if (r) {
+            rebookModal.onOpen({
+              listingId: r.listingId,
+              reservationId: r.id,
+            });
+          }
+        },
+      }}
+      Outdated
+      pagination={pagination}
+      reservations={reservations}
+      header={{
+        title: "outdated reservations",
+        subTitle:
+          "here you can observe outdated reservations and rebook your outdated reservations",
+      }}
+      empty={{
+        subTitle:
+          "Looks like you have no outdated reservations on your properties or trips.",
+        title: "No outdated reservations found!",
+      }}
+    />
   );
 };
 
