@@ -9,7 +9,8 @@ import ListingInfo from "./ListingInfo";
 import ListingReservation from "./ListingReservation";
 import { safeReservationType } from "@/types/safeReservation";
 import { motion } from "framer-motion";
-import ListingReviews from "./ListingReviews"; 
+import ListingReviews from "./ListingReviews";
+import RelatedListings from "./RelatedListings";
 export const initialDateRange = {
   startDate: new Date(),
   endDate: new Date(),
@@ -21,7 +22,9 @@ const ListingClient = ({
   user,
   reservations = [],
   reviews,
+  relatedListings,
 }: {
+  relatedListings: safeListingType[];
   reviews?: any;
   listing: safeListingType & {
     user: safeUserType;
@@ -83,6 +86,10 @@ const ListingClient = ({
         </motion.div>
         <ListingReviews listingId={listing.id} reviewsData={reviews} />
       </div>
+        <RelatedListings
+          category={listing.category}
+          listings={relatedListings}
+        />
     </Container>
   );
 };

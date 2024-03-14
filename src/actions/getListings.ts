@@ -13,10 +13,11 @@ export type ListingQueryType = {
   favorites?: boolean | undefined;
   userFavoritesListings?: string[];
   type?: "ALL";
+  limit?: number;
 };
 export default async function getListings(params?: ListingQueryType) {
   let query: any = {};
-  const limit = 10;
+  const limit = params?.limit || 10;
   const page = params?.page || 1;
   const skip = (page - 1) * limit; // Pr
   if (params) {

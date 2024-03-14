@@ -23,6 +23,7 @@ const ListingList = ({
   Remove,
   Review,
   deletingId,
+  containerClassName,
 }: {
   deletingId?: string;
   favoritePage?: boolean;
@@ -43,6 +44,7 @@ const ListingList = ({
     subTitle?: string;
   };
   listings: safeListingType[];
+  containerClassName?: string;
 } & listingActionsType) => {
   if (isEmpty(listings)) {
     return (
@@ -65,7 +67,13 @@ const ListingList = ({
       )}
     >
       {header && <Heading title={header.title} subtitle={header?.subTitle} />}
-      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+      <div
+        className={twMerge(
+          "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8",
+          containerClassName,
+          header ? "mt-10" : ""
+        )}
+      >
         {listings.map((listing, i) => {
           return (
             <ListingCard
