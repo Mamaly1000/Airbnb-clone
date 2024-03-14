@@ -55,6 +55,7 @@ const ReservationPagination = ({
           setLists([
             ...lists,
             <ReservationList
+              key={`/api/reservations?page=${page + 1}`}
               pagination={res.pagination}
               reservations={res.reservations}
               Cancel={Cancel}

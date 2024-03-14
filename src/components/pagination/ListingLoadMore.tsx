@@ -42,6 +42,7 @@ const ListingLoadMore = ({
           setLists([
             ...lists,
             <ListingList
+              key={`/api/listings?page=${page + 1}`}
               favoritePage={favoritePage}
               pagination={res.pagination}
               className="py-0 mt-0"

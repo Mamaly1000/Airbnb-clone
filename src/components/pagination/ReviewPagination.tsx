@@ -37,6 +37,7 @@ const ReviewPagination = ({
           setLists([
             ...lists,
             <ReviewList
+              key={`/api/reviews?page=${page + 1}`}
               className={twMerge(res.pagination.hasMore ? "pb-2" : "pb-4")}
               pagination={res.pagination}
               initailData={res.reviews}
