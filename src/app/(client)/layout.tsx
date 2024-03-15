@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "../globals.css";
 import { Nunito } from "next/font/google";
-import ModalProvider from "@/providers/ModalProvider";
-import ToastProvider from "@/providers/ToastProvider";
+import Navbar from "@/components/navbar/Navbar";
+import getCurrentUser from "@/actions/getCurrentUser";
 import "react-tooltip/dist/react-tooltip.css";
 import { twMerge } from "tailwind-merge";
 import Body from "@/components/shared/CustomBody";
@@ -18,13 +18,13 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const user = await getCurrentUser();
   return (
-    <html lang="en">
-      <Body className={twMerge(font.className)}>
-        <ModalProvider />
+    <>
+      <Navbar user={user} />
+      <div className="z-0  relative bg-white dark:bg-neutral-800">
         {children}
-        <ToastProvider />
-      </Body>
-    </html>
+      </div>
+    </>
   );
 }

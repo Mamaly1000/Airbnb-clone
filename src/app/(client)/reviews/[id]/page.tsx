@@ -2,7 +2,7 @@ import getCurrentUser from "@/actions/getCurrentUser";
 import { getFeedbacks } from "@/actions/getFeedbacks";
 import { getListingById } from "@/actions/getListingById";
 import React from "react"; 
-import FeedbacksClient from "../../../components/feedback/FeedbacksClient";
+import FeedbacksClient from "@/components/feedback/FeedbacksClient";
 
 const ReviewPage = async ({
   params,

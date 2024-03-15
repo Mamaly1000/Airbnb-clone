@@ -1,6 +1,6 @@
 "use client";
 import { useTheme } from "@/hooks/useTheme";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { twMerge } from "tailwind-merge";
 
 const Body = ({
@@ -10,7 +10,11 @@ const Body = ({
   children: ReactNode;
   className?: string;
 }) => {
-  const { mode } = useTheme();
+  const { mode, setTheme } = useTheme();
+  useEffect(() => {
+    setTheme(localStorage.getItem("airbnb_theme_mode") as unknown);
+  }, []);
+
   return (
     <body
       className={twMerge(

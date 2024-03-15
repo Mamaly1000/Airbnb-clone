@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 interface useThemeStore {
   mode: "dark" | "light";
-  setTheme: () => void;
+  setTheme: (val?: "dark" | "light" | null | unknown) => void;
 }
 export const useTheme = create<useThemeStore>((set) => ({
   mode:
@@ -12,16 +12,20 @@ export const useTheme = create<useThemeStore>((set) => ({
     //   (localStorage?.getItem("airbnb_theme_mode") as any)) ||
     // "dark",
     "dark",
-  setTheme: () => {
-    if (
-      localStorage.getItem("airbnb_theme_mode") === null ||
-      localStorage.getItem("airbnb_theme_mode") === "dark"
-    ) {
-      set({ mode: "light" });
-      localStorage.setItem("airbnb_theme_mode", "light");
+  setTheme: (val) => {
+    if (!!!val) {
+      if (
+        localStorage.getItem("airbnb_theme_mode") === null ||
+        localStorage.getItem("airbnb_theme_mode") === "dark"
+      ) {
+        set({ mode: "light" });
+        localStorage.setItem("airbnb_theme_mode", "light");
+      } else {
+        localStorage.setItem("airbnb_theme_mode", "dark");
+        set({ mode: "dark" });
+      }
     } else {
-      localStorage.setItem("airbnb_theme_mode", "dark");
-      set({ mode: "dark" });
+      if (val === "dark" || val === "light") set({ mode: val });
     }
   },
 }));
