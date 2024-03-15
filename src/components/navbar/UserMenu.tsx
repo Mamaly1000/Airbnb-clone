@@ -62,6 +62,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            onPointerLeave={() => setOpen(false)}
             initial={{ opacity: 0, translateY: 10 }}
             exit={{ opacity: 0, translateY: 10 }}
             animate={{ opacity: 1, translateY: 0 }}

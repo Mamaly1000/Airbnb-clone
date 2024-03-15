@@ -41,7 +41,7 @@ export default async function ListingReviews({
         ))}
       </motion.section>
       {reviewsData.pagination.hasMore && (
-        <Button onClick={() => router.push(`/reviews/${listingId}`)}>
+        <Button className="bg-black dark:bg-rose-500 border-black dark:border-rose-500" onClick={() => router.push(`/reviews/${listingId}`)}>
           view all {reviewsData.pagination.total} reviews
         </Button>
       )}

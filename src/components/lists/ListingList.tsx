@@ -62,8 +62,8 @@ const ListingList = ({
       main={main}
       classname={twMerge(
         "min-w-full max-w-full",
-        className,
-        pagination?.hasMore ? "pb-0" : "pb-4"
+        pagination?.hasMore ? "pb-2" : "pb-4",
+        className
       )}
     >
       {header && <Heading title={header.title} subtitle={header?.subTitle} />}

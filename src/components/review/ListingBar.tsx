@@ -36,7 +36,7 @@ const ListingBar = ({ listing }: { listing: safeListingType }) => {
           </div>
 
           <Link
-            className="w-full md:w-fit text-center px-3 py-2 rounded-lg bg-rose-500 text-white drop-shadow-2xl active:scale-90 hover:scale-105 font-light capitalize"
+            className="w-full md:w-fit text-center px-3 py-2 rounded-lg bg-black dark:bg-rose-500 text-white drop-shadow-2xl active:scale-90 hover:scale-105 font-light capitalize"
             href={`/listings/${listing.id}`}
           >
             book now

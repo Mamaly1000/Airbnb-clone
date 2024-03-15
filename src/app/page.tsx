@@ -7,7 +7,7 @@ export default async function Home(params: any) {
 
   return (
     <>
-      <ListingList className="pt-44 pb-0" main listings={listings} />
+      <ListingList pagination={pagination} className="pt-52" main listings={listings} />
       {listings.length === 10 && (
         <ListingLoadMore pagination={pagination} params={params.searchParams} />
       )}

@@ -85,11 +85,11 @@ const ListingClient = ({
           </motion.div>
         </motion.div>
         <ListingReviews listingId={listing.id} reviewsData={reviews} />
-      </div>
         <RelatedListings
           category={listing.category}
           listings={relatedListings}
         />
+      </div>
     </Container>
   );
 };

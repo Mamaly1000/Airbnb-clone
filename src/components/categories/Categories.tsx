@@ -125,7 +125,7 @@ const Categories = () => {
       classname={twMerge(
         `pt-4 flex flex-row items-center 
         justify-between overflow-x-auto 
-        gap-2 max-w-full z-0`,
+        gap-2 max-w-full z-0 py-3`,
         isScrolling && "sticky top-0 left-0",
         scrolled && " z-10 py-2 "
       )}

@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactNode, useState } from "react";
+import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import getListings from "@/actions/getListings";
 import toast from "react-hot-toast";
@@ -45,7 +45,6 @@ const ListingLoadMore = ({
               key={`/api/listings?page=${page + 1}`}
               favoritePage={favoritePage}
               pagination={res.pagination}
-              className="py-0 mt-0"
               listings={res.listings}
               user={user}
             />,

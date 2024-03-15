@@ -14,7 +14,7 @@ const RelatedListings = ({
     <section className="min-w-full max-w-full flex flex-col items-start justify-start gap-3 pt-10">
       <ListingList
         containerClassName="grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3"
-        className="p-0 xl:px-0 min-w-full max-w-full m-0 flex items-start justify-start flex-col"
+        className=" xl:px-0 md:px-0 sm:px-0 px-0 mx-0"
         listings={listings}
         emptyState={{
           title: "no related listing!",
