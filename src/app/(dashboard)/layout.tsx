@@ -29,7 +29,9 @@ export default async function RootLayout({
         )}
       >
         <DashboardHeading />
-        <section className="min-w-full max-w-full p-5">{children}</section>
+        <section className="min-w-full max-w-full p-2 md:p-5 ">
+          {children}
+        </section>
       </section>
     </section>
   );

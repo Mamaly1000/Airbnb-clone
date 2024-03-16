@@ -1,55 +1,59 @@
 "use client";
-import useCountry, { SingleCountryType } from "@/hooks/useCountry";
-import { useTheme } from "@/hooks/useTheme";
-import React from "react";
+import React, { useState } from "react";
 import Select from "react-select";
 import { twMerge } from "tailwind-merge";
-
-const CountrySelect = ({
-  onChange,
+import { categories } from "../categories/Categories";
+import { IconType } from "react-icons";
+import { FcEmptyFilter } from "react-icons/fc";
+import { useTheme } from "@/hooks/useTheme";
+const CategorySelect = ({
   value,
+  onChange,
   className,
 }: {
+  value: { label: string; icon: IconType } | undefined;
   className?: string;
-  value?: SingleCountryType;
-  onChange: (value: SingleCountryType) => void;
+  onChange: (val?: typeof value) => void;
 }) => {
   const { mode } = useTheme();
-  const { getAll } = useCountry();
+
   return (
-    <div className={twMerge("", className)}>
+    <div className={twMerge("  ", className)}>
       <Select
-        placeholder="AnyWhere"
-        isClearable
-        options={getAll()}
+        options={categories.map((c) => ({
+          label: c.label,
+          icon: c.icon,
+          value: c.label,
+        }))}
         value={value}
         onChange={(newval) => {
-          onChange(newval as SingleCountryType);
+          onChange(newval as any);
         }}
         formatOptionLabel={(data) => {
+          const Icon = data.icon;
           return (
             <div
               className={twMerge(
-                "flex flex-row px-1  ",
+                "flex flex-row items-center justify-start px-1 gap-2",
                 value?.label === data.label
                   ? "text-neutral-600 dark:text-neutral-200 "
                   : "text-black dark:text-white"
               )}
             >
-              {data.label},{" "}
               <span
                 className={twMerge(
-                  "ml-1",
                   value?.label === data.label
                     ? "text-neutral-400 dark:text-neutral-300  "
-                    : "text-neutral-500   "
+                    : "text-neutral-500 "
                 )}
               >
-                {data.region}
+                <Icon size={20} />
               </span>
+              {data.label}
             </div>
           );
         }}
+        isClearable
         classNames={{
           control: () =>
             "p-3 border-2 border-neutral-400 focus:border-neutral-400 bg-white dark:bg-neutral-800 text-black dark:text-white",
@@ -77,9 +81,10 @@ const CountrySelect = ({
             primary25: mode === "dark" ? "rgba(244 63 94 / .2)" : "#ffe4e6",
           },
         })}
+        placeholder="select your category..."
       />
     </div>
   );
 };
 
-export default CountrySelect;
+export default CategorySelect;

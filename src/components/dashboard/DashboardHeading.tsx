@@ -40,7 +40,7 @@ const DashboardHeading = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className=" text-[14px] md:text-[16px]  text-neutral-200 dark:text-neutral-300 capitalize font-light text-left min-w-full md:min-w-[50%] md:max-w-[50%] whitespace-pre-wrap"
+            className=" text-[14px] md:text-[16px]  text-neutral-800 dark:text-neutral-300 capitalize font-light text-left min-w-full md:min-w-[50%] md:max-w-[50%] whitespace-pre-wrap"
           >
             {heading?.description}
           </motion.p>

@@ -55,7 +55,7 @@ const SidebarItem = ({
         `relative peer p-1 md:px-3 md:py-2 rounded-lg hover:scale-100 hover:bg-opacity-70 cursor-pointer
          disabled:cursor-not-allowed disabled:opacity-50
          min-w-full max-w-full  
-       hover:bg-black border-white  text-neutral-100 dark:text-neutral-300 hover:text-white  dark:hover:text-white
+       hover:bg-black border-white text-neutral-700 dark:text-neutral-300 hover:text-white  dark:hover:text-white
          flex items-center justify-center md:justify-start gap-2`,
         isActive && `text-white dark:text-white bg-rose-500 font-bold`,
         disabled && `opacity-30`

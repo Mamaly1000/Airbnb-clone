@@ -20,13 +20,13 @@ const SmallUserprofile = ({ user }: { user: safeUserType | null }) => {
         userId={user.id}
       />
       <div className=" hidden md:flex min-w-full max-w-full items-center justify-center flex-col capitalize">
-        <p className="text-[13px] text-gray-400 dark:text-gray-300 mb-1">
+        <p className="text-[13px] text-gray-500 dark:text-gray-300 mb-1">
           wellcome back
         </p>
         <p className="text-[16px] text-black dark:text-white font-semibold">
           {user.name}
         </p>
-        <p className="text-[13px] font-light text-gray-400 dark:text-gray-300">
+        <p className="text-[13px] font-light text-gray-400 dark:text-gray-500">
           {user.email}
         </p>
       </div>
