@@ -8,7 +8,6 @@ import { safeUserType } from "@/types/safeuser";
 import { safeListingType } from "@/types/safeListing";
 import { twMerge } from "tailwind-merge";
 import { listingActionsType } from "@/types/ListingActions";
-import { boolean } from "zod";
 import Loader from "../ui/Loader";
 
 const ListingList = ({
@@ -66,7 +65,10 @@ const ListingList = ({
   if (isLoading) {
     return (
       <Loader
-        className="min-w-full max-w-full flex items-center justify-center"
+        className={twMerge(
+          "min-w-full max-w-full flex items-center justify-center",
+          emptyState?.className
+        )}
         size={20}
       />
     );

@@ -47,3 +47,9 @@ button {
 input {
   @apply outline-none focus-within:outline-none focus:outline-none hover:outline-none active:outline-none autofill:outline-none;
 }
+.leaflet-popup-tip-container {
+  display: none !important;
+}
+.leaflet-popup-content-wrapper {
+  @apply bg-white dark:bg-neutral-800;
+}

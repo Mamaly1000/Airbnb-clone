@@ -148,7 +148,7 @@ export default async function getListings(params?: ListingQueryType) {
         pagination: {
           hasMore: false,
           total: listings.length,
-          maxPage: 1,
+          maxPages: 1,
         },
       };
     }
