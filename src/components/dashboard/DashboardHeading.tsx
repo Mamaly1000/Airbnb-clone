@@ -7,6 +7,8 @@ import { sidebarItems } from "./Sidebar";
 import useScrollAnimation from "@/hooks/useScroll";
 import { AnimatePresence, motion } from "framer-motion";
 import useMeasure from "react-use-measure";
+import ToggleTheme from "../navbar/ToggleTheme";
+import { IoNotificationsOutline } from "react-icons/io5";
 const DashboardHeading = () => {
   const pathname = usePathname();
   const [ref, { height }] = useMeasure();
@@ -31,7 +33,10 @@ const DashboardHeading = () => {
           {heading?.label}
         </h1>
         <div className="flex items-center justify-start md:justify-end gap-2">
-          <button>notifs</button>
+          <ToggleTheme className="" />
+          <button className="p-2 min-w-[40px] min-h-[40px]  flex items-center justify-center rounded-full border-[1px] border-neutral-200 text-inherit bg-inherit relative">
+            <IoNotificationsOutline size={15} />
+          </button>
         </div>
       </section>
       <AnimatePresence>

@@ -13,7 +13,6 @@ import useUser from "@/hooks/useUser";
 import SidebarItem from "./SidebarItem";
 import { usePathname } from "next/navigation";
 import { IconType } from "react-icons";
-import ToggleTheme from "../navbar/ToggleTheme";
 
 export const sidebarItems: {
   label: string;
@@ -113,7 +112,6 @@ const Sidebar = () => {
           </Fragment>
         ))}
       </section>
-      <ToggleTheme />
     </section>
   );
 };

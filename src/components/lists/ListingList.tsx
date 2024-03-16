@@ -8,6 +8,8 @@ import { safeUserType } from "@/types/safeuser";
 import { safeListingType } from "@/types/safeListing";
 import { twMerge } from "tailwind-merge";
 import { listingActionsType } from "@/types/ListingActions";
+import { boolean } from "zod";
+import Loader from "../ui/Loader";
 
 const ListingList = ({
   listings,
@@ -24,7 +26,9 @@ const ListingList = ({
   Review,
   deletingId,
   containerClassName,
+  isLoading,
 }: {
+  isLoading?: boolean;
   deletingId?: string;
   favoritePage?: boolean;
   pagination?: {
@@ -38,6 +42,7 @@ const ListingList = ({
   emptyState?: {
     title: string;
     subTitle?: string;
+    className?: string;
   };
   header?: {
     title: string;
@@ -46,14 +51,23 @@ const ListingList = ({
   listings: safeListingType[];
   containerClassName?: string;
 } & listingActionsType) => {
-  if (isEmpty(listings)) {
+  if (!isLoading && isEmpty(listings)) {
     return (
       <EmptyState
         title={emptyState ? emptyState.title : "There is no listing here!"}
         subTitle={
           emptyState?.subTitle ? emptyState.subTitle : "lets make a reservation"
         }
+        className={emptyState?.className}
         redirect
+      />
+    );
+  }
+  if (isLoading) {
+    return (
+      <Loader
+        className="min-w-full max-w-full flex items-center justify-center"
+        size={20}
       />
     );
   }

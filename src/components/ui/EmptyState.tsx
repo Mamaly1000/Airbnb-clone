@@ -12,7 +12,9 @@ const EmptyState = ({
   refresh = false,
   redirect,
   small,
+  className,
 }: {
+  className?: string;
   redirect?: boolean;
   refresh?: boolean;
   title?: string;
@@ -28,7 +30,8 @@ const EmptyState = ({
         `h-screen flex flex-col items-center 
         justify-center gap-2 bg-white
       dark:bg-neutral-800 px-3`,
-        small && "h-[20vh]"
+        small && "h-[20vh]",
+        className
       )}
     >
       <Heading title={title} center subtitle={subTitle} />

@@ -1,19 +1,29 @@
-import type { Metadata } from "next";
+"use client";
 import "../globals.css";
 import Sidebar from "@/components/dashboard/Sidebar";
 import { twMerge } from "tailwind-merge";
 import DashboardHeading from "@/components/dashboard/DashboardHeading";
-
-export const metadata: Metadata = {
-  title: "Airbnb dashboard",
-  description: "wellcome to Airbnb",
-};
+import useUser from "@/hooks/useUser";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import useLoginModal from "@/hooks/useLoginModal";
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { user, isLoading } = useUser();
+  const router = useRouter();
+  const loginModal = useLoginModal();
+  useEffect(() => {
+    if (!user && !isLoading) {
+      router.push("/");
+      toast.error("please login to your account!");
+      loginModal.onOpen();
+    }
+  }, [user, isLoading]);
   return (
     <section
       className={twMerge(

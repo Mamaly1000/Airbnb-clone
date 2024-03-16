@@ -1,5 +1,6 @@
 "use client";
 import { useTheme } from "@/hooks/useTheme";
+import { debounce } from "lodash";
 import * as React from "react";
 import { Range, getTrackBackground } from "react-range";
 
@@ -10,7 +11,7 @@ const PriceRange: React.FC<{
   handlePriceRangeChange: (val: any) => void;
 }> = ({ MAX = 100, MIN = 0, STEP = 0.1, handlePriceRangeChange }) => {
   const { mode } = useTheme();
-  const [values, setValues] = React.useState([20, 40]);
+  const [values, setValues] = React.useState([0, MAX / 2]);
   const emptyColor = "rgb(212 212 212 / var(--tw-border-opacity))";
   return (
     <div className="rounded-[5px] bg-white dark:bg-neutral-800 border-[1px] border-neutral-300 hover:border-neutral-400 px-4 py-2 flex items-center justify-center w-full md:w-[330px] mt-5 md:mt-0 min-h-[65.6px] max-h-[65.6px]">
@@ -21,10 +22,7 @@ const PriceRange: React.FC<{
           min={MIN}
           max={MAX}
           onChange={(values) => {
-            handlePriceRangeChange({
-              min: values[0],
-              max: values[1],
-            });
+            handlePriceRangeChange({ min: values[0], max: values[1] });
             setValues(values);
           }}
           renderTrack={({ props, children }) => (
@@ -58,6 +56,7 @@ const PriceRange: React.FC<{
           renderThumb={({ index, props, isDragged }) => (
             <div
               {...props}
+              key={props.key}
               style={{
                 ...props.style,
                 height: "20px",

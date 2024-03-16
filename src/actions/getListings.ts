@@ -14,6 +14,9 @@ export type ListingQueryType = {
   userFavoritesListings?: string[];
   type?: "ALL";
   limit?: number;
+  min?: number;
+  max?: number;
+  search?: string;
 };
 export default async function getListings(params?: ListingQueryType) {
   let query: any = {};
@@ -32,6 +35,10 @@ export default async function getListings(params?: ListingQueryType) {
       locationValue,
       favorites,
       userFavoritesListings,
+      max,
+      min,
+      search,
+      type,
     } = params!;
     if (favorites) {
       query = {
@@ -70,7 +77,44 @@ export default async function getListings(params?: ListingQueryType) {
     if (locationValue) {
       query.locationValue = locationValue;
     }
-
+    if (min && max) {
+      if (min === 0 && max !== 0) {
+        query.price = {
+          lte: +max,
+        };
+      } else if (min !== 0 && max === 0) {
+        query.price = {
+          gte: +min,
+        };
+      } else if (!!max && !!min) {
+        query.price = {
+          gte: +min,
+          lte: +max,
+        };
+      }
+    }
+    if (search) {
+      query = {
+        ...query,
+        OR: [
+          {
+            title: { contains: search },
+            description: { contains: search },
+            category: { contains: search },
+          },
+          {
+            title: { startsWith: search },
+            description: { startsWith: search },
+            category: { startsWith: search },
+          },
+          {
+            title: { endsWith: search },
+            description: { endsWith: search },
+            category: { endsWith: search },
+          },
+        ],
+      };
+    }
     if (startDate && endDate) {
       query.NOT = {
         reservations: {
@@ -86,6 +130,25 @@ export default async function getListings(params?: ListingQueryType) {
               },
             ],
           },
+        },
+      };
+    }
+    if (type === "ALL") {
+      const listings = await prisma.listing.findMany({
+        where: query,
+        orderBy: { createdAt: "desc" },
+      });
+
+      const safeListings = listings.map((listing) => ({
+        ...listing,
+        createdAt: listing.createdAt.toISOString(),
+      }));
+      return {
+        listings: safeListings,
+        pagination: {
+          hasMore: false,
+          total: listings.length,
+          maxPage: 1,
         },
       };
     }

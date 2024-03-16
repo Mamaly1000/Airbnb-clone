@@ -57,8 +57,8 @@ const SidebarItem = ({
          min-w-full max-w-full  
        hover:bg-black border-white text-neutral-700 dark:text-neutral-300 hover:text-white  dark:hover:text-white
          flex items-center justify-center md:justify-start gap-2`,
-        isActive && `text-white dark:text-white bg-rose-500 font-bold`,
-        disabled && `opacity-30`
+        isActive &&
+          `text-white dark:text-white bg-black dark:bg-rose-500 font-bold`
       )}
       disabled={disabled}
       onClick={OnclickHandler}
@@ -68,9 +68,9 @@ const SidebarItem = ({
       <AnimatePresence>
         {isActive && (
           <motion.hr
-            className="min-w-[3px] border-none rounded-full drop-shadow-2xl  bg-white absolute z-10 end-0"
+            className="min-w-[3px] border-none rounded-full    bg-white absolute z-10 end-1 md:end-3 drop-shadow-2xl"
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 20, opacity: 1 }}
+            animate={{ height: 25, opacity: 1 }}
             exit={{ opacity: 0 }}
           />
         )}
