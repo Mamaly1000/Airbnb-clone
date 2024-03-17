@@ -1,6 +1,8 @@
 import getCurrentUser from "@/actions/getCurrentUser";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prismadb";
+import { format } from "date-fns";
+import { NotificationTypes } from "../reservations/route";
 
 export async function POST(request: NextRequest) {
   const user = await getCurrentUser();
@@ -89,14 +91,58 @@ export async function POST(request: NextRequest) {
     return NextResponse.error();
   }
   // update the reservation status
-  await prisma.reservation.update({
+  const updatedReservation = await prisma.reservation.update({
     where: {
       id: reservationId,
     },
     data: {
       status: "COMPLETED",
     },
+    include: {
+      listing: true,
+    },
   });
+
+  try {
+    await prisma.notification.createMany({
+      data: [
+        {
+          userId: updatedListing.userId,
+          actionUserId: user.id,
+          listingId: updatedListing.id,
+          type: NotificationTypes.REVIEW_RESERVATION,
+          message: newFeedback.body,
+          title: `${user.name} wrote a review for ${updatedReservation.listing.title}.`,
+          reservationId: updatedReservation.id,
+          totalAmount: updatedReservation.totalPrice,
+        },
+        {
+          actionUserId: user.id,
+          userId: updatedListing.userId,
+          listingId: updatedListing.id,
+          type: NotificationTypes.COMPLETE_RESERVATION,
+          message: `the reservation,was booked between ${format(
+            updatedReservation.startDate,
+            "yyyy/mm/dd-hh:mm"
+          )} and ${format(
+            updatedReservation.endDate,
+            "yyyy/mm/dd-hh:mm"
+          )} has been completed.`,
+          title: `${user.name}s reservation for ${updatedListing.title}, had just completed.`,
+          reservationId: updatedReservation.id,
+          totalAmount: updatedReservation.totalPrice,
+        },
+      ],
+    });
+    await prisma.user.update({
+      where: { id: updatedListing.userId },
+      data: { hasNotification: true },
+    });
+  } catch (error) {
+    console.log(
+      "error in creating notification for creating feedback and reservation status"
+    );
+  }
 
   return NextResponse.json({
     message: "thanks for your feedback",

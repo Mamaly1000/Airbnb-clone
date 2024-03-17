@@ -17,6 +17,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { LuMoonStar } from "react-icons/lu";
 import { GoSun } from "react-icons/go";
 import { RiLogoutCircleLine } from "react-icons/ri";
+import NotifToggle from "./NotifToggle";
 const UserMenu = ({ user }: { user: safeUserType | null }) => {
   const [isOpen, setOpen] = useState(false);
 
@@ -48,6 +49,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
         >
           Airbnb your home
         </button>
+        <NotifToggle />
         <ToggleTheme className="hidden md:flex" />
         <button
           className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-sm transition"

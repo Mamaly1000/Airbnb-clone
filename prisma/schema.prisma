@@ -1,6 +1,5 @@
 // This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
+// learn more about it in the docs: https://pris.ly/d/prisma-schema 
 generator client {
   provider = "prisma-client-js"
 }
@@ -25,6 +24,7 @@ model User {
   reservations Reservation[]
   feedbacks Feedback[]
   comments Comment[]
+  hasNotification Boolean @default(false)
   notifications Notification[] 
   views      ListingView[]
 } 
@@ -63,6 +63,7 @@ model Listing{
   reservations Reservation[] 
   comments Comment[]
   views      ListingView[]
+  notifications Notification[]
 }
 model Reservation{
   id String @id @default(auto()) @map("_id") @db.ObjectId
@@ -109,17 +110,21 @@ model Comment{
   author User @relation(fields: [authorId], references: [id],onDelete:Cascade)
 }
 model Notification {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  title String?   // The title of the notification
-  message String?   // The message of the notification
-  read Boolean  @default(false)  
-  userId    String @db.ObjectId
-  user User @relation(fields: [userId], references: [id],onDelete:Cascade)
-  totalAmount  String?  
-  reservationId String @db.ObjectId
-  reservation Reservation @relation(fields: [reservationId],references: [id] ,onDelete:Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                        String @id @default(auto()) @map("_id") @db.ObjectId
+  title                     String?   // The title of the notification
+  message                   String?   // The message of the notification
+  read                      Boolean  @default(false)  
+  userId                    String @db.ObjectId
+  actionUserId              String @db.ObjectId
+  actionUser                User @relation(fields: [actionUserId], references: [id],onDelete:Cascade)
+  totalAmount               Int?  
+  reservationId             String? @db.ObjectId
+  listingId                 String @db.ObjectId
+  listing                   Listing @relation(fields: [listingId],references: [id],onDelete:Cascade)
+  reservation               Reservation? @relation(fields: [reservationId],references: [id] ,onDelete:Cascade)
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+  type                      Int
 }
 model ListingView {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
@@ -128,4 +133,6 @@ model ListingView {
   viewer      User     @relation(fields: [viewerId], references: [id], onDelete: Cascade)
   listing     Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
   viewedAt    DateTime @default(now())
-}
+} 
+
+ 

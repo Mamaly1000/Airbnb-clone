@@ -29,7 +29,6 @@ const TripesClient = ({
   const onCancel = useCallback(
     (_listing: safeListingType, reservation?: safeReservationType) => {
       if (reservation) {
-        axios;
         setDeletingId(reservation.id);
         axios
           .delete(`/api/reservations/${reservation.id}`)
