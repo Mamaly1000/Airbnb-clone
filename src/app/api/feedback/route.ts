@@ -1,8 +1,8 @@
 import getCurrentUser from "@/actions/getCurrentUser";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prismadb";
-import { format } from "date-fns";
-import { NotificationTypes } from "../reservations/route";
+import { format } from "date-fns"; 
+import { NotificationTypes } from "@/types/notificationstype";
 
 export async function POST(request: NextRequest) {
   const user = await getCurrentUser();

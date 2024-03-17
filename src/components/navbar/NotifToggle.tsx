@@ -4,8 +4,7 @@ import useUser from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { IoHeartDislikeSharp, IoNotificationsOutline } from "react-icons/io5";
-import { NotificationTypes } from "@/app/api/reservations/route";
+import { IoHeartDislikeSharp, IoNotificationsOutline } from "react-icons/io5"; 
 import { IconType } from "react-icons";
 import { MdOutlineFavorite } from "react-icons/md";
 import { FaTag } from "react-icons/fa";
@@ -16,6 +15,7 @@ import {
   TbHomeEdit,
   TbHomeX,
 } from "react-icons/tb";
+import { NotificationTypes } from "@/types/notificationstype";
 
 const NotifToggle = () => {
   const router = useRouter();

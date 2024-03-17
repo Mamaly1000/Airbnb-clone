@@ -1,8 +1,8 @@
 import prisma from "@/libs/prismadb";
 import getCurrentUser from "@/actions/getCurrentUser";
 import { NextResponse } from "next/server";
-import { format } from "date-fns";
-import { NotificationTypes } from "../../reservations/route";
+import { format } from "date-fns"; 
+import { NotificationTypes } from "@/types/notificationstype";
 
 export async function POST(
   requst: Request,

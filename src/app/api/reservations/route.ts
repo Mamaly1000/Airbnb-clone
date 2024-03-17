@@ -3,17 +3,7 @@ import getCurrentUser from "@/actions/getCurrentUser";
 import { NextRequest, NextResponse } from "next/server";
 import { getReservations } from "@/actions/getReservations";
 import { format } from "date-fns";
-
-export enum NotificationTypes {
-  REBOOK_RESERVATION,
-  UPDATE_RESERVATION,
-  CANCEL_RESERVATION,
-  BOOK_RESERVATION,
-  DISLIKE_LISTING,
-  LIKE_LISTING,
-  REVIEW_RESERVATION,
-  COMPLETE_RESERVATION,
-}
+import { NotificationTypes } from "@/types/notificationstype";
 
 export async function POST(request: Request) {
   const currentUser = await getCurrentUser();

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/libs/prismadb";
 import getCurrentUser from "@/actions/getCurrentUser";
-import { includes, without } from "lodash"; 
-import { NotificationTypes } from "../../reservations/route";
+import { includes, without } from "lodash";  
+import { NotificationTypes } from "@/types/notificationstype";
 
 interface IParams {
   listing_id?: string;
