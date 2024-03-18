@@ -1,4 +1,5 @@
-import React, { Fragment, useMemo, useState } from "react";
+"use client";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import ListingSearchInput from "./ListingSearchInput";
 import PriceRange from "./PriceRange";
 import CategorySelect from "./CategorySelect";
@@ -14,7 +15,7 @@ import { BiSearch } from "react-icons/bi";
 import { MdAttachMoney } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
 import qs from "query-string";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const SearchBar = () => {
   const router = useRouter();
@@ -37,10 +38,10 @@ const SearchBar = () => {
   const handlePriceRangeChange = (range: { min: number; max: number }) => {
     setRange(range);
   };
-
+  const pathname = usePathname();
   const debounceFilter = debounce((val) => {
     const query = qs.stringifyUrl({
-      url: "/mydashboard/search",
+      url: pathname!,
       query: {
         category: val.category?.label,
         location: val.location?.value,
@@ -56,7 +57,7 @@ const SearchBar = () => {
     router.push(query);
   }, 2000);
 
-  useMemo(() => {
+  useEffect(() => {
     debounceFilter({
       priceRange,
       search,

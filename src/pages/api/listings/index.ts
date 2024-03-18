@@ -26,7 +26,9 @@ export default async function handler(
         sort,
         filter,
         page,
+        userId,
       }: {
+        userId?: string;
         min?: string;
         max?: string;
         search?: string;
@@ -118,6 +120,12 @@ export default async function handler(
             createdAt: "asc",
           };
         }
+      }
+      if (userId) {
+        where = {
+          ...where,
+          userId,
+        };
       }
       const maxPrice = await prisma.listing.aggregate({
         _max: {

@@ -16,7 +16,7 @@ const ClientListingPagination = ({
           initial={{ opacity: 0, translateY: 10 }}
           exit={{ opacity: 0, translateY: 10 }}
           animate={{ opacity: 1, translateY: 0 }}
-          className="min-w-full max-w-full flex items-center justify-center"
+          className="min-w-full max-w-full flex items-center justify-center mt-5"
         >
           {isLoading ? (
             <Loader

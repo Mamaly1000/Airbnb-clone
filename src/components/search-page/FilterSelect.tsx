@@ -1,9 +1,11 @@
+"use client";
 import React from "react";
-import { IconType } from "react-icons"; 
-import { GrFavorite } from "react-icons/gr"; 
+import { IconType } from "react-icons";
+import { GrFavorite } from "react-icons/gr";
 import CustomSelect from "../inputs/CustomSelect";
 import { PiBuildingsBold } from "react-icons/pi";
 import { AiOutlineHome } from "react-icons/ai";
+import { usePathname } from "next/navigation";
 
 export type listingFilterType = "FAVORITES" | "ALL" | "MY PROPERTIES";
 
@@ -16,7 +18,11 @@ const filterItems: {
   { type: "ALL", label: "All properties", icon: PiBuildingsBold },
   { type: "MY PROPERTIES", label: "my properties", icon: AiOutlineHome },
 ];
-
+const filterItemsUser: {
+  type: listingFilterType;
+  label: string;
+  icon: IconType;
+}[] = [{ type: "FAVORITES", label: "favorites", icon: GrFavorite }];
 const FilterSelect = ({
   value,
   onChange,
@@ -28,6 +34,11 @@ const FilterSelect = ({
   };
   onChange: (val: typeof value) => void;
 }) => {
+  const pathname = usePathname();
+  const options =
+    pathname && pathname.includes("/mydashboard/properties")
+      ? filterItemsUser
+      : filterItems;
   return (
     <CustomSelect
       value={
@@ -50,7 +61,7 @@ const FilterSelect = ({
             : undefined
         )
       }
-      options={filterItems.map((item) => ({
+      options={options.map((item) => ({
         icon: item.icon,
         label: item.label,
         value: item.type,

@@ -3,7 +3,7 @@ import {
   NotificationFilterTypes,
   NotificationSortTypes,
 } from "@/hooks/useNotifications";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IconType } from "react-icons";
 import SearchInput from "./SearchInput";
 import CustomSelect from "../inputs/CustomSelect";
@@ -102,7 +102,7 @@ const NotificationSearchContainer = () => {
     router.push(query);
   }, 2000);
 
-  useMemo(() => {
+  useEffect(() => {
     searchDebounce({
       search: !!search ? search : undefined,
       filter: selectedFilter?.value,
