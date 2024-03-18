@@ -33,7 +33,7 @@ html,
   @apply transition-all duration-150;
 }
 button {
-  @apply hover:scale-105 active:scale-95;
+  @apply active:scale-95;
 }
 *::-webkit-scrollbar {
   @apply bg-neutral-200 max-w-[5px] min-w-[5px] max-h-[5px] min-h-[5px] border-none;

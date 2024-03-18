@@ -6,14 +6,9 @@ import { twMerge } from "tailwind-merge";
 import { format, isSameDay } from "date-fns";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import Button from "@/components/inputs/Button";
-
-const TableHeader = ({
-  heading,
-  actions,
-  className,
-}: {
+export type tableHeaderPropsType = {
   className?: string;
-  actions?: {
+  headingActions?: {
     create?: {
       label?: string;
       icon?: IconType;
@@ -30,19 +25,20 @@ const TableHeader = ({
     };
   };
   heading?: { title?: string; subtitle?: string };
-}) => {
+};
+const TableHeader = ({ heading, headingActions, className }: tableHeaderPropsType) => {
   const CreateIcon = useMemo(() => {
-    if (actions?.create?.icon) {
-      const Icon = actions.create.icon;
+    if (headingActions?.create?.icon) {
+      const Icon = headingActions.create.icon;
       return <Icon size={20} />;
     }
-  }, [actions?.create?.icon]);
+  }, [headingActions?.create?.icon]);
   const ResetIcon = useMemo(() => {
-    if (actions?.reset?.icon) {
-      const Icon = actions.reset.icon;
+    if (headingActions?.reset?.icon) {
+      const Icon = headingActions.reset.icon;
       return <Icon size={20} />;
     }
-  }, [actions?.reset?.icon]);
+  }, [headingActions?.reset?.icon]);
   return (
     <motion.section
       className={twMerge(
@@ -50,8 +46,8 @@ const TableHeader = ({
         className
       )}
     >
-      <div className="flex items-start justify-start">
-        <h3 className="font-semibold text-[13px] md:text-[16px] text-black dark:text-white capitalize">
+      <div className="flex items-start justify-start flex-col md:max-w-[50%] ">
+        <h3 className="font-semibold text-[20px] md:text-[35px] text-black dark:text-white capitalize">
           {heading?.title || "tables heading title"}
         </h3>
         <p className="text-[12px] md:text-[14px] capitalize font-light text-neutral-600 dark:text-neutral-200">
@@ -59,31 +55,37 @@ const TableHeader = ({
         </p>
       </div>
       <div className="flex flex-wrap items-center justify-start md:justify-end gap-2">
-        {actions?.calendar && (
-          <div className="flex items-center justify-center gap-1">
-            <button className="w-[30px] h-[30px] rounded-full drop-shadow-2xl flex items-center justify-center border-[1px] border-black dark:border-rose-500 text-black dark:text-rose-500">
-              <MdKeyboardArrowLeft size={13} />
-            </button>
+        {headingActions?.calendar && (
+          <button className="flex items-center justify-center gap-2 border-[1px] rounded-[5px] drop-shadow-2xl border-black dark:border-neutral-600 overflow-hidden">
+            <span className="w-[40px] h-[40px] bg-black dark:bg-neutral-600 text-white flex items-center justify-center">
+              <MdKeyboardArrowLeft size={20} />
+            </span>
             <motion.span
-              className="text-black dark:text-white"
-              key={actions.calendar.date.toISOString()}
+              className="text-neutral-500 dark:text-neutral-100 text-[15px] font-semibold"
+              key={headingActions.calendar.date.toISOString()}
             >
-              {format(actions.calendar.date, "MMM dd, yyyy")}
-              {!!isSameDay(actions.calendar.date, Date.now()) && "Today"}
+              {format(headingActions.calendar.date, "MMM dd, yyyy")}
+              {!!isSameDay(headingActions.calendar.date, Date.now()) && " Today"}
             </motion.span>
-            <button className="w-[30px] h-[30px] rounded-full drop-shadow-2xl flex items-center justify-center border-[1px] border-black dark:border-rose-500 text-black dark:text-rose-500">
-              <MdKeyboardArrowRight size={13} />
-            </button>
-          </div>
+            <span className="w-[40px] h-[40px] bg-black dark:bg-neutral-600 text-white flex items-center justify-center">
+              <MdKeyboardArrowRight size={20} />
+            </span>
+          </button>
         )}
-        {actions?.create && (
-          <Button onClick={() => actions.create?.onClick()}>
-            {CreateIcon} {actions.create?.label}
+        {headingActions?.create && (
+          <Button
+            className="w-[40px] h-[40px] bg-green-600 border-green-600"
+            onClick={() => headingActions.create?.onClick()}
+          >
+            {CreateIcon}
           </Button>
-        )}{" "}
-        {actions?.reset && (
-          <Button onClick={() => actions.reset?.onClick()}>
-            {ResetIcon} {actions.reset?.label}
+        )}
+        {headingActions?.reset && (
+          <Button
+            className="w-[40px] h-[40px] bg-red-600 border-red-600"
+            onClick={() => headingActions.reset?.onClick()}
+          >
+            {ResetIcon}
           </Button>
         )}
       </div>

@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 
 export type listingFilterType = "FAVORITES" | "ALL" | "MY PROPERTIES";
 
-const filterItems: {
+export const filterItems: {
   type: listingFilterType;
   label: string;
   icon: IconType;
