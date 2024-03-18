@@ -7,7 +7,8 @@ import { sidebarItems } from "./Sidebar";
 import useScrollAnimation from "@/hooks/useScroll";
 import { AnimatePresence, motion } from "framer-motion";
 import useMeasure from "react-use-measure";
-import ToggleTheme from "../navbar/ToggleTheme"; 
+import ToggleTheme from "../navbar/ToggleTheme";
+import NotifToggle from "../navbar/NotifToggle";
 const DashboardHeading = () => {
   const pathname = usePathname();
   const [ref, { height }] = useMeasure();
@@ -32,6 +33,7 @@ const DashboardHeading = () => {
           {heading?.label}
         </h1>
         <div className="flex items-center justify-start md:justify-end gap-2">
+          <NotifToggle className="hidden md:flex" />
           <ToggleTheme className="" />
         </div>
       </section>

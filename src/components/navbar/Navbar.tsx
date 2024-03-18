@@ -27,17 +27,17 @@ const Navbar = ({
     >
       <Container
         classname={twMerge(
-          `border-b-[1px] flex items-center justify-center dark:border-neutral-500 py-4 max-h-[70px]`,
+          `border-b-[1px] relative z-20 flex items-center justify-center dark:border-neutral-500 py-4 max-h-[70px]`,
           className
         )}
       >
-        <div className="min-w-full max-w-full flex flex-row items-center justify-between gap-3 md:gap-0">
+        <div className="min-w-full max-w-full flex flex-row items-center justify-between gap-3 md:gap-0 relative z-20">
           <Logo />
           <Search />
           <UserMenu user={user} />
         </div>
       </Container>
-      <Categories />
+      <Categories  />
     </div>
   );
 };

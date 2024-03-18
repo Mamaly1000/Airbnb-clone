@@ -1,24 +1,20 @@
 "use client";
-import ListingList from "@/components/lists/ListingList";
+import ClientListingList from "@/components/lists/ClientListingList";
 import SearchBar from "@/components/search-page/SearchBar";
-import useListings from "@/hooks/useListings";
 import React from "react";
 
-const SearchPage = () => {
-  const { setParams, isLoading, listings } = useListings();
-
+const SearchPage = ({ searchParams }: { searchParams: any }) => {
   return (
     <section className="min-w-full max-w-full flex flex-col items-start justify-start gap-8">
-      <SearchBar onChange={setParams} />
-      <ListingList
+      <SearchBar />
+      <ClientListingList
         emptyState={{
           title: "no result",
           subTitle: "it can be a typo or you should search more.",
           className:
             "min-w-full max-w-full flex flex-col items-center justify-center",
         }}
-        isLoading={isLoading}
-        listings={listings}
+        params={searchParams}
         className="pt-12 min-w-full max-w-full"
       />
     </section>

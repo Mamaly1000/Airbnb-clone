@@ -17,7 +17,9 @@ const SidebarItem = ({
   index = 0,
   disabled,
   user,
+  mobileOnly,
 }: {
+  mobileOnly?: boolean;
   user: safeUserType | null;
   disabled?: boolean;
   index?: number;
@@ -33,14 +35,16 @@ const SidebarItem = ({
   const OnclickHandler = useCallback(
     (e: any) => {
       e.stopPropagation();
-      if (!user) {
-        loginModal.onOpen();
-      }
+
       if (!disabled) {
-        if (onClick) {
-          onClick();
-        } else if (route) {
-          router.push(route);
+        if (!user) {
+          loginModal.onOpen();
+        } else {
+          if (onClick) {
+            onClick();
+          } else if (route) {
+            router.push(route);
+          }
         }
       }
     },
@@ -59,7 +63,8 @@ const SidebarItem = ({
          text-neutral-700 dark:text-neutral-300 hover:text-white
          dark:hover:text-white flex items-center justify-center md:justify-start gap-2`,
         isActive &&
-          `text-white dark:text-white bg-black dark:bg-rose-500 font-bold`
+          `text-white dark:text-white bg-black dark:bg-rose-500 font-bold`,
+        mobileOnly && "flex md:hidden"
       )}
       disabled={disabled}
       onClick={OnclickHandler}

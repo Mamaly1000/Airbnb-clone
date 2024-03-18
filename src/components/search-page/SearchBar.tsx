@@ -13,20 +13,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { BiSearch } from "react-icons/bi";
 import { MdAttachMoney } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
+import qs from "query-string";
+import { useRouter } from "next/navigation";
 
-const SearchBar = ({
-  onChange,
-}: {
-  onChange: (params: {
-    min?: number;
-    max?: number;
-    search?: string;
-    category?: string;
-    location?: string;
-    sort?: listingSortType;
-    filter?: listingFilterType;
-  }) => void;
-}) => {
+const SearchBar = () => {
+  const router = useRouter();
   const { maxPrice } = useListings();
   const [search, setSearch] = useState("");
   const [priceRange, setRange] = useState({ min: 0, max: maxPrice / 2 });
@@ -48,15 +39,21 @@ const SearchBar = ({
   };
 
   const debounceFilter = debounce((val) => {
-    onChange({
-      category: val.category?.label,
-      location: val.location?.value,
-      max: val.priceRange.max,
-      min: val.priceRange.min,
-      search: !!val.search ? val.search.trim() : undefined,
-      sort: !!val.selectedSort?.type ? val.selectedSort.type : undefined,
-      filter: !!val.selectedFilter?.type ? val.selectedFilter.type : undefined,
+    const query = qs.stringifyUrl({
+      url: "/mydashboard/search",
+      query: {
+        category: val.category?.label,
+        location: val.location?.value,
+        max: val.priceRange.max,
+        min: val.priceRange.min,
+        search: !!val.search ? val.search.trim() : undefined,
+        sort: !!val.selectedSort?.type ? val.selectedSort.type : undefined,
+        filter: !!val.selectedFilter?.type
+          ? val.selectedFilter.type
+          : undefined,
+      },
     });
+    router.push(query);
   }, 2000);
 
   useMemo(() => {

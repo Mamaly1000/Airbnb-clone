@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { AiOutlineLogin, AiOutlineMenu } from "react-icons/ai";
 import Avatar from "./Avatar";
 import MenuItems from "./MenuItems";
@@ -18,9 +18,11 @@ import { LuMoonStar } from "react-icons/lu";
 import { GoSun } from "react-icons/go";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import NotifToggle from "./NotifToggle";
+import { IoNotificationsOutline } from "react-icons/io5";
+import useScrollAnimation from "@/hooks/useScroll";
 const UserMenu = ({ user }: { user: safeUserType | null }) => {
   const [isOpen, setOpen] = useState(false);
-
+  const { isScrolling } = useScrollAnimation({});
   const { mode, setTheme } = useTheme();
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
@@ -39,7 +41,11 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
       rentmodal.onOpen();
     }
   }, [user, loginModal, rentmodal]);
-
+  useEffect(() => {
+    if (isScrolling) {
+      setOpen(false);
+    }
+  }, [isScrolling]);
   return (
     <div className="relative capitalize">
       <div className="flex flex-row items-center gap-3 [&>button:hover]:border-rose-500 [&>button:hover]:text-rose-500">
@@ -49,22 +55,23 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
         >
           Airbnb your home
         </button>
-        <NotifToggle />
+        <NotifToggle className="hidden md:flex" />
         <ToggleTheme className="hidden md:flex" />
-        <button
-          className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-sm transition"
-          onClick={toggleOpen}
-        >
-          <AiOutlineMenu />
-          <div className="hidden md:block">
-            <Avatar src={user ? user.image : null} />
-          </div>
-        </button>
+        <NotifToggle>
+          <button
+            className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-sm transition"
+            onClick={toggleOpen}
+          >
+            <AiOutlineMenu />
+            <div className="hidden md:block">
+              <Avatar src={user ? user.image : null} />
+            </div>
+          </button>
+        </NotifToggle>
       </div>
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            onPointerLeave={() => setOpen(false)}
             initial={{ opacity: 0, translateY: 10 }}
             exit={{ opacity: 0, translateY: 10 }}
             animate={{ opacity: 1, translateY: 0 }}
@@ -152,6 +159,15 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                           onClick: () => setTheme(),
                           Icon: mode !== "dark" ? LuMoonStar : GoSun,
                           id: 23984219412039,
+                          mobileOnly: true,
+                        },
+                        {
+                          label: "notifications",
+                          onClick: () => {
+                            router.push("/mydashboard/notifications");
+                          },
+                          Icon: IoNotificationsOutline,
+                          id: 235433534,
                           mobileOnly: true,
                         },
                       ]

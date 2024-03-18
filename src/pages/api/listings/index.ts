@@ -25,6 +25,7 @@ export default async function handler(
         location,
         sort,
         filter,
+        page,
       }: {
         min?: string;
         max?: string;
@@ -33,6 +34,7 @@ export default async function handler(
         location?: string;
         sort?: listingSortType;
         filter?: listingFilterType;
+        page?: string;
       } = req.query;
       let where: any = {};
       let orderBy: any = {
@@ -123,19 +125,37 @@ export default async function handler(
         },
       });
 
+      const currentPage = +(page || 1);
+      const limit = 10;
+      const skip = (currentPage - 1) * limit;
+      const totalListings = await prisma.listing.count({ where });
+      const maxPages = Math.ceil(totalListings / limit);
       const listings = await prisma.listing.findMany({
         where,
         orderBy,
+        skip,
+        take: limit + 1,
       });
-
+      const hasMore = listings.length > limit;
+      if (hasMore) {
+        listings.pop();
+      }
       const safeListings =
         listings.map((listing) => ({
           ...listing,
           createdAt: listing.createdAt.toISOString(),
         })) || [];
-      return res
-        .status(200)
-        .json({ listings: safeListings, maxPrice: maxPrice._max.price });
+      return res.status(200).json({
+        listings: safeListings,
+        maxPrice: maxPrice._max.price,
+        pagination: {
+          maxPages,
+          page: currentPage,
+          nextPage: currentPage + 1,
+          total: totalListings,
+          hasMore,
+        },
+      });
     }
     if (req.method === "POST") {
       const currentUser = await serverAuth(req, res);
