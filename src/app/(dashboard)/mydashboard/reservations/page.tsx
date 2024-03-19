@@ -60,14 +60,37 @@ const ReservationsPage = ({ searchParams }: { searchParams: any }) => {
           "p-3 border-b-[1px] border-neutral-300 dark:border-neutral-600",
         heading:
           "p-3 border-b-[1px] border-neutral-300 dark:border-neutral-600 bg-neutral-200 dark:bg-neutral-900 drop-shadow-2xl items-start rounded-t-md",
+        controllSection: "p-3",
       }}
       controllSection={{
         colums_control: {
           label: "display columns",
-          columns: [],
+          columns: [
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: false,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: true,
+            },
+          ],
           icon: BiTable,
         },
-        checkBoxes: [],
+        checkBoxes: [
+          {
+            label: "hide completed reservations",
+            onClick: () => {},
+            isActive: false,
+          },
+          {
+            label: "hide completed reservations",
+            onClick: () => {},
+            isActive: true,
+          },
+        ],
         title: "showing 10 reservations",
       }}
     />
