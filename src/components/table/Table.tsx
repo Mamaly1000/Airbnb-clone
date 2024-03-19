@@ -3,16 +3,14 @@ import React from "react";
 import TableHeader from "./table-heading/TableHeader";
 import TableFilterSection, {
   TableFilterSectionPropsType,
-} from "./table-heading/TableFilterSection";
-import { filterItems } from "../search-page/FilterSelect";
-import { formatDistanceToNowStrict } from "date-fns";
-import { IoCreate } from "react-icons/io5";
-import { MdLockReset } from "react-icons/md";
+} from "./table-heading/TableFilterSection"; 
 import { twMerge } from "tailwind-merge";
 import { tableHeaderPropsType } from "./table-heading/TableHeader";
 import TableControllSection, {
   TableControllSectionPropsType,
-} from "./table-body/TableControllSection";
+} from "./table-heading/TableControllSection";
+import TableMainContainer from "./table-body/TableMainContainer";
+import { TableHeaderTypes } from "./table-body/TableHead";
 
 const Table = ({
   TableDefaultFilterOptions,
@@ -24,9 +22,11 @@ const Table = ({
   tableFilterOptions,
   classNames,
   controllSection,
+  tableHeaderLabels,
 }: tableHeaderPropsType &
   TableFilterSectionPropsType &
-  TableControllSectionPropsType & {
+  TableControllSectionPropsType &
+  TableHeaderTypes & {
     classNames: {
       heading?: string;
       filterSection?: string;
@@ -58,6 +58,7 @@ const Table = ({
         controllSection={controllSection}
         className={classNames.controllSection}
       />
+      <TableMainContainer tableHeaderLabels={tableHeaderLabels} />
     </section>
   );
 };

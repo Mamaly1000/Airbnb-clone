@@ -10,7 +10,9 @@ const CheckBox = ({
   onClick,
   index,
   isActive,
+  className,
 }: {
+  className?: string;
   label: string;
   Icon?: IconType;
   onClick: () => void;
@@ -25,7 +27,8 @@ const CheckBox = ({
       exit={{ opacity: 0, translateX: -10 }}
       transition={{ duration: 0.13, delay: index / 10 + 0.01, ease: "linear" }}
       className={twMerge(
-        "max-w-fit rounded-lg flex items-center justify-center gap-2"
+        `max-w-fit rounded-lg flex items-center justify-center gap-2 py-2`,
+        className
       )}
     >
       <div className="min-w-[25px] min-h-[25px] max-w-[25px] max-h-[25px] flex items-center justify-center rounded-[5px] drop-shadow-2xl bg-transparent border-[1px] border-rose-500  overflow-hidden">

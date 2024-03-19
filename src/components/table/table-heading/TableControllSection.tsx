@@ -48,7 +48,7 @@ const TableControllSection = ({
           </p>
         )}
       </div>
-      <div className="w-full md:w-fit flex items-center justify-start md:justify-end flex-wrap gap-3 relative z-20">
+      <div className="w-full md:w-fit flex items-center justify-start lg:justify-end flex-wrap gap-3 relative z-20">
         {!isUndefined(checkBoxes) &&
           !isEmpty(checkBoxes) &&
           checkBoxes?.map((c, i) => (

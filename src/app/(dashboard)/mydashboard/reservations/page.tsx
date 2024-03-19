@@ -56,16 +56,86 @@ const ReservationsPage = ({ searchParams }: { searchParams: any }) => {
         )
       }
       classNames={{
-        filterSection:
-          "p-3 border-b-[1px] border-neutral-300 dark:border-neutral-600",
         heading:
           "p-3 border-b-[1px] border-neutral-300 dark:border-neutral-600 bg-neutral-200 dark:bg-neutral-900 drop-shadow-2xl items-start rounded-t-md",
-        controllSection: "p-3",
+        filterSection:
+          "p-3 border-b-[1px] border-neutral-300 dark:border-neutral-600 z-20",
+        controllSection: "p-3 z-10 relative",
       }}
       controllSection={{
         colums_control: {
           label: "display columns",
           columns: [
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: false,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: true,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: false,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: true,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: false,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: true,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: false,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: true,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: false,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: true,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: false,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: true,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: false,
+            },
+            {
+              label: "hide completed reservations",
+              onClick: () => {},
+              isActive: true,
+            },
             {
               label: "hide completed reservations",
               onClick: () => {},
