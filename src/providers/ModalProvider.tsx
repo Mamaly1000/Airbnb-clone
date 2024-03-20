@@ -5,6 +5,7 @@ import LoginModal from "@/components/modals/LoginModal";
 import RebookReservationModal from "@/components/modals/RebookReservationModal";
 import RegisterModal from "@/components/modals/RegisterModal";
 import RentModal from "@/components/modals/RentModal";
+import ReservationDateRangeModal from "@/components/modals/ReservationDateRangeModal";
 import SearchModal from "@/components/modals/SearchModal";
 import UpdatePropertyModal from "@/components/modals/UpdatePropertyModal";
 import UpdateReservationModal from "@/components/modals/UpdateReservationModal";
@@ -29,6 +30,7 @@ const ModalProvider = () => {
       <UpdatePropertyModal />
       <FeedbackModal />
       <EditprofileModal />
+      <ReservationDateRangeModal />
     </>
   );
 };

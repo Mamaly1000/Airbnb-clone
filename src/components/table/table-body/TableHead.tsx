@@ -1,15 +1,9 @@
 "use client";
 import { isEmpty, isUndefined } from "lodash";
 import React from "react";
-import TableHeaderLabel from "../table-shared-components/TableHeaderLabel";
+import TableHeaderLabel, { SingleTable_TH_type } from "../table-shared-components/TableHeaderLabel";
 export type TableHeaderTypes = {
-  tableHeaderLabels?: {
-    label: string;
-    sort: { isActive?: boolean; type?: "asc" | "desc" };
-    disabled?: boolean;
-    display?: boolean;
-    onClick?: () => void;
-  }[];
+  tableHeaderLabels?:SingleTable_TH_type[];
 };
 const TableHead = ({ tableHeaderLabels }: TableHeaderTypes) => {
   return (

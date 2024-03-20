@@ -3,7 +3,7 @@ import React from "react";
 import TableHeader from "./table-heading/TableHeader";
 import TableFilterSection, {
   TableFilterSectionPropsType,
-} from "./table-heading/TableFilterSection"; 
+} from "./table-heading/TableFilterSection";
 import { twMerge } from "tailwind-merge";
 import { tableHeaderPropsType } from "./table-heading/TableHeader";
 import TableControllSection, {
@@ -13,26 +13,22 @@ import TableMainContainer from "./table-body/TableMainContainer";
 import { TableHeaderTypes } from "./table-body/TableHead";
 
 const Table = ({
-  TableDefaultFilterOptions,
-  heading,
-  headingActions,
-  onDeselectTableFilter,
-  onResetTableFilter,
-  onSelectTableFilter,
-  tableFilterOptions,
+  filterSectionActions,
   classNames,
   controllSection,
   tableHeaderLabels,
-}: tableHeaderPropsType &
-  TableFilterSectionPropsType &
-  TableControllSectionPropsType &
+  header,
+}: TableControllSectionPropsType &
   TableHeaderTypes & {
     classNames: {
       heading?: string;
       filterSection?: string;
       container?: string;
       controllSection?: string;
+      mainTable?: string;
     };
+    filterSectionActions: TableFilterSectionPropsType;
+    header: tableHeaderPropsType;
   }) => {
   return (
     <section
@@ -42,23 +38,29 @@ const Table = ({
       )}
     >
       <TableHeader
-        heading={heading}
-        headingActions={headingActions}
+        heading={header.heading}
+        headingActions={header.headingActions}
         className={classNames.heading}
       />
       <TableFilterSection
-        tableFilterOptions={tableFilterOptions}
-        onResetTableFilter={onResetTableFilter}
-        TableDefaultFilterOptions={TableDefaultFilterOptions}
-        onSelectTableFilter={onSelectTableFilter}
-        onDeselectTableFilter={onDeselectTableFilter}
+        tableFilterOptions={filterSectionActions.tableFilterOptions}
+        onResetTableFilter={filterSectionActions.onResetTableFilter}
+        TableDefaultFilterOptions={
+          filterSectionActions.TableDefaultFilterOptions
+        }
+        filterButton={filterSectionActions.filterButton}
+        onSelectTableFilter={filterSectionActions.onSelectTableFilter}
+        onDeselectTableFilter={filterSectionActions.onDeselectTableFilter}
         className={classNames.filterSection}
       />
       <TableControllSection
         controllSection={controllSection}
         className={classNames.controllSection}
       />
-      <TableMainContainer tableHeaderLabels={tableHeaderLabels} />
+      <TableMainContainer
+        className={classNames.mainTable}
+        tableHeaderLabels={tableHeaderLabels}
+      />
     </section>
   );
 };

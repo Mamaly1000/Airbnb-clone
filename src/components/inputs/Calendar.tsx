@@ -7,7 +7,9 @@ const Calendar = ({
   value,
   disabledDates,
   onChnage,
+  minDate,
 }: {
+  minDate?: boolean;
   value: Range;
   disabledDates?: Date[];
   onChnage: (value: RangeKeyDict) => void;
@@ -29,7 +31,7 @@ const Calendar = ({
       onChange={onChnage}
       direction="vertical"
       showDateDisplay={false}
-      minDate={new Date()}
+      minDate={!minDate ? new Date() : undefined}
       disabledDates={disabledDates}
     />
   );

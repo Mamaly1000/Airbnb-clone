@@ -1,8 +1,6 @@
 "use client";
 import React from "react";
 import { IconType } from "react-icons";
-import OptionSelector from "../table-shared-components/OptionSelector";
-import { BiFilter } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import { TbFilterCancel } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
@@ -19,14 +17,18 @@ export type TableFilterSectionPropsType = {
   onSelectTableFilter?: (option: tableFilterOption) => void;
   onResetTableFilter?: () => void;
   onDeselectTableFilter?: (item: tableFilterOption) => void;
+  filterButton: {
+    label: string;
+    icon: IconType;
+    onClick: () => void;
+  };
 };
 const TableFilterSection = ({
   tableFilterOptions = [],
   onResetTableFilter,
-  onSelectTableFilter,
   className,
   onDeselectTableFilter,
-  TableDefaultFilterOptions = [],
+  filterButton,
 }: TableFilterSectionPropsType) => {
   return (
     <section
@@ -36,19 +38,24 @@ const TableFilterSection = ({
       )}
     >
       <section className="min-w-full max-w-full flex items-center justify-start gap-2 relative z-10">
-        <OptionSelector
-          onChange={(val) => {
-            onSelectTableFilter!(val);
-          }}
-          options={TableDefaultFilterOptions.filter(
-            (item) => !!!tableFilterOptions.find((s) => s.value === item.value)
-          )}
-          disabled={
-            tableFilterOptions.length === TableDefaultFilterOptions.length
-          }
-          Icon={BiFilter}
-          label="select filter"
-        />
+        {filterButton && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              filterButton.onClick();
+            }}
+            className={twMerge(
+              `px-3 rounded-[5px] drop-shadow-2xl 
+          flex items-center justify-center gap-1 
+          text-sm capitalize h-[40px] relative z-10
+          border-[1px] border-black dark:border-neutral-600
+          disabled:cursor-not-allowed disabled:opacity-50`
+            )}
+          >
+            {filterButton.icon && <filterButton.icon size={20} />}{" "}
+            {filterButton.label}
+          </button>
+        )}
         <button
           className={twMerge(
             `text-sm h-[40px] max-w-fit px-2 bg-transparent 
@@ -68,8 +75,11 @@ const TableFilterSection = ({
           <button
             className={twMerge(
               `w-full sm:w-[45%] md:w-fit
-              bg-neutral-500 dark:bg-neutral-900 bg-opacity-10 rounded-full px-2 py-1 text-black dark:text-white text-[10px] sm:text-[12px] md:text-[14px] cursor-pointer hover:bg-red-600 hover:text-white dark:hover:bg-red-600 dark:hover:text-white
-               capitalize flex items-center justify-between gap-2 active:scale-90 hover:scale-100`
+              bg-neutral-500 dark:bg-neutral-900 bg-opacity-10 
+              rounded-full px-2 py-1 
+              text-black dark:text-white text-[10px] sm:text-[12px] md:text-[14px] capitalize cursor-pointer
+               hover:bg-red-600 hover:text-white dark:hover:bg-red-600 dark:hover:text-white
+                flex items-center justify-between gap-2 active:scale-90 hover:scale-100`
             )}
             onClick={(e) => {
               e.stopPropagation();
