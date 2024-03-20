@@ -7,7 +7,7 @@ const PriceRange: React.FC<{
   STEP?: number;
   MIN?: number;
   MAX?: number;
-  handlePriceRangeChange: (val: any) => void;
+  handlePriceRangeChange: (val: { min: number; max: number }) => void;
 }> = ({ MAX = 100, MIN = 0, STEP = 0.1, handlePriceRangeChange }) => {
   const { mode } = useTheme();
   const [values, setValues] = React.useState([0, MAX / 2]);
