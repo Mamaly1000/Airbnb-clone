@@ -14,6 +14,7 @@ const CustomSelect = ({
   isClearable,
   options,
   formatOptionLabel,
+  disabled,
 }: {
   formatOptionLabel?: (
     data: {
@@ -56,11 +57,13 @@ const CustomSelect = ({
         }>
       ) => void)
     | undefined;
+  disabled?: boolean;
 }) => {
   const { mode } = useTheme();
   return (
     <div className={twMerge("", className)}>
       <Select
+        isDisabled={disabled}
         placeholder={placeholder}
         isClearable={isClearable}
         options={options}

@@ -1,6 +1,7 @@
 "use client";
 import EditprofileModal from "@/components/modals/EditprofileModal";
 import FeedbackModal from "@/components/modals/FeedbackModal";
+import FilterReservationModal from "@/components/modals/FilterReservationModal";
 import LoginModal from "@/components/modals/LoginModal";
 import RebookReservationModal from "@/components/modals/RebookReservationModal";
 import RegisterModal from "@/components/modals/RegisterModal";
@@ -31,6 +32,7 @@ const ModalProvider = () => {
       <FeedbackModal />
       <EditprofileModal />
       <ReservationDateRangeModal />
+      <FilterReservationModal />
     </>
   );
 };

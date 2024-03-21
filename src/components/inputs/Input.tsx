@@ -12,8 +12,9 @@ interface inputProps extends React.HtmlHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;
   formatPrice?: boolean;
   required?: boolean;
-  register: UseFormRegister<FieldValues>;
+  register: UseFormRegister<any>;
   errors: FieldErrors;
+  onBlur?: (e: React.BaseSyntheticEvent) => void;
 }
 const Input = forwardRef<HTMLInputElement, inputProps>(
   (
@@ -26,6 +27,7 @@ const Input = forwardRef<HTMLInputElement, inputProps>(
       register,
       required,
       errors,
+      onBlur,
     },
     _ref
   ) => {
@@ -50,6 +52,7 @@ const Input = forwardRef<HTMLInputElement, inputProps>(
               : "hover:border-rose-500 focus:border-rose-500"
           )}
           type={type}
+          onBlur={onBlur}
         />
         <label
           htmlFor={id}

@@ -10,4 +10,6 @@ export type reservationFilterTypes =
   | "LISTING"
   | "PRICE"
   | "COMPLETED"
-  | "PENDING";
+  | "PENDING"
+  | "ALL"
+  | "CLIENT";

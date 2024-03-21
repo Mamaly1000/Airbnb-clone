@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import { listingSortType } from "@/components/search-page/SortSelect";
 import { listingFilterType } from "@/components/search-page/FilterSelect";
+import { Listing } from "@prisma/client";
 
 export default async function handler(
   req: NextApiRequest,
@@ -27,7 +28,11 @@ export default async function handler(
         filter,
         page,
         userId,
+        paginate,
+        isActive,
       }: {
+        isActive?: string;
+        paginate?: string;
         userId?: string;
         min?: string;
         max?: string;
@@ -127,6 +132,14 @@ export default async function handler(
           userId,
         };
       }
+      if (!!isActive) {
+        where = {
+          AND: [
+            { userId: currentUser.currentUser.id },
+            { reservations: { some: {} } },
+          ],
+        };
+      }
       const maxPrice = await prisma.listing.aggregate({
         _max: {
           price: true,
@@ -138,12 +151,22 @@ export default async function handler(
       const skip = (currentPage - 1) * limit;
       const totalListings = await prisma.listing.count({ where });
       const maxPages = Math.ceil(totalListings / limit);
-      const listings = await prisma.listing.findMany({
-        where,
-        orderBy,
-        skip,
-        take: limit + 1,
-      });
+      let listings: Listing[] = [];
+      if (!!!paginate || paginate === "true") {
+        listings = await prisma.listing.findMany({
+          where,
+          orderBy,
+          skip,
+          take: limit + 1,
+        });
+      }
+      if (paginate === "false" && !!paginate) {
+        listings = await prisma.listing.findMany({
+          where,
+          orderBy,
+        });
+      }
+
       const hasMore = listings.length > limit;
       if (hasMore) {
         listings.pop();

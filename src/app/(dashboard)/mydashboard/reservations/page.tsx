@@ -2,6 +2,7 @@
 import Table from "@/components/table/Table";
 import { tableFilterOption } from "@/components/table/table-heading/TableFilterSection";
 import { SingleTable_TH_type } from "@/components/table/table-shared-components/TableHeaderLabel";
+import { useReservationFilterModal } from "@/hooks/useReservationFilterModal";
 import { useReservationRangeDateModal } from "@/hooks/useReservationRangeDateModal";
 import { useReservationTable } from "@/hooks/useReservationTable";
 import {
@@ -11,7 +12,7 @@ import {
 import { without } from "lodash";
 import React, { useCallback, useState } from "react";
 import { IconType } from "react-icons";
-import { BiFilter, BiTable } from "react-icons/bi";
+import { BiFilter, BiTable, BiUser } from "react-icons/bi";
 import {
   TbHomeCheck,
   TbHomeDollar,
@@ -44,6 +45,11 @@ const filterItems: {
     label: "property",
     icon: TbHomeRibbon,
   },
+  {
+    value: "CLIENT",
+    label: "client",
+    icon: BiUser,
+  },
 ];
 const ReservationsPage = () => {
   const [isLoading, setLoading] = useState(false);
@@ -56,13 +62,13 @@ const ReservationsPage = () => {
     searchParams,
     hiddenColumns,
     setColumns,
-    setDate,
     setResetColumns,
     setSelectedSort,
     setSelectedFilter,
   } = useReservationTable();
   const { onOpen: openDaterangeReservationModal } =
     useReservationRangeDateModal();
+  const { onOpen: openReservationFilterModal } = useReservationFilterModal();
   const tableLabelOnclick = useCallback(
     (labelSortType: reservationSortTypes) => {
       if (!isLoading) {
@@ -153,10 +159,6 @@ const ReservationsPage = () => {
       onClick: () => tableLabelOnclick("STATUS"),
     },
   ];
-
-  const [reservationFilterOptions, setReservationFilterOptions] = useState<
-    tableFilterOption[]
-  >([]);
   return (
     <Table
       header={{
@@ -183,19 +185,52 @@ const ReservationsPage = () => {
       }}
       filterSectionActions={{
         onResetTableFilter: () => {
-          // todo => delete all search params and also selected filters
+          onResetQuery();
+          setSelectedFilter([]);
         },
-        onDeselectTableFilter: (item) =>
-          setSelectedFilter(without(SelectedFilters, item.value)),
+        onDeselectTableFilter: (
+          item: unknown & { value: reservationFilterTypes }
+        ) => {
+          if (item.value === "CLIENT") {
+            setQuery({
+              ...searchParams,
+              userId: undefined,
+            });
+          }
+          if (item.value === "COMPLETED") {
+            setQuery({
+              ...searchParams,
+              type: "ALL",
+            });
+          }
+          if (item.value === "LISTING") {
+            setQuery({
+              ...searchParams,
+              listingId: undefined,
+            });
+          }
+          if (item.value === "PENDING") {
+            setQuery({
+              ...searchParams,
+              type: "ALL",
+            });
+          }
+          if (item.value === "PRICE") {
+            setQuery({
+              ...searchParams,
+              min: undefined,
+              max: undefined,
+            });
+          }
+          setSelectedFilter(without(SelectedFilters, item.value));
+        },
         tableFilterOptions: filterItems.filter(
           (item) => !!SelectedFilters?.includes(item.value)
         ),
         filterButton: {
           label: "select filter",
           icon: BiFilter,
-          onClick: () => {
-            // todo => create reservation filter modal
-          },
+          onClick: () => openReservationFilterModal(),
         },
       }}
       classNames={{

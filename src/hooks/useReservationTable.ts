@@ -18,7 +18,7 @@ interface useReservationTableStore {
     userId?: string;
     sortType?: "asc" | "desc";
     listingId?: string;
-    type?: "COMPLETED" | "PENDING";
+    type?: "COMPLETED" | "PENDING" | "ALL";
   };
   setQuery: (searchParams?: {
     page?: number | undefined;
@@ -27,7 +27,7 @@ interface useReservationTableStore {
     userId?: string | undefined;
     sortType?: "asc" | "desc";
     listingId?: string;
-    type?: "COMPLETED" | "PENDING";
+    type?: "COMPLETED" | "PENDING" | "ALL";
   }) => void;
   onResetQuery: () => void;
   setColumns: (hiddenColumns: reservationSortTypes[]) => void;
@@ -51,6 +51,7 @@ export const useReservationTable = create<useReservationTableStore>((set) => ({
     min: undefined,
     page: 1,
     sortType: "desc",
+    type: "ALL",
   },
 
   onResetQuery: () =>

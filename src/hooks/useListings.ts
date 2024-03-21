@@ -15,6 +15,8 @@ export type listingQueryHookType = {
   sort?: listingSortType | undefined;
   filters?: listingFilterType | undefined;
   userId?: string;
+  isActive?: boolean;
+  paginate?: boolean;
 };
 const useListings = (params?: listingQueryHookType) => {
   const [pagination, setPagination] = useState<{
