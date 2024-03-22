@@ -265,13 +265,6 @@ const ReservationsPage = () => {
           onClick: () => openReservationFilterModal(),
         },
       }}
-      classNames={{
-        heading:
-          "p-3 border-b-[1px] border-neutral-300 dark:border-neutral-600 bg-neutral-200 dark:bg-neutral-900 drop-shadow-md items-start rounded-t-md",
-        filterSection:
-          "p-3 border-b-[1px] border-neutral-300 dark:border-neutral-600 z-20",
-        controllSection: "p-3 z-10 relative",
-      }}
       controllSection={{
         colums_control: {
           label: "display columns",
@@ -279,7 +272,12 @@ const ReservationsPage = () => {
             label: "hide " + label.label,
             onClick: () => {
               if (label.display) {
-                setColumns(uniq([...hiddenColumns, label.colunm_type]));
+                setColumns(
+                  uniq([
+                    ...hiddenColumns,
+                    label.colunm_type,
+                  ] as reservationSortTypes[])
+                );
                 if (SelectedSort === label.colunm_type) {
                   setQuery({
                     ...searchParams,
@@ -289,10 +287,17 @@ const ReservationsPage = () => {
                   setSelectedSort(undefined);
                 }
               } else {
-                setColumns(without(hiddenColumns, label.colunm_type));
+                setColumns(
+                  without(
+                    hiddenColumns,
+                    label.colunm_type
+                  ) as reservationSortTypes[]
+                );
               }
             },
-            isActive: hiddenColumns.includes(label.colunm_type),
+            isActive: hiddenColumns.includes(
+              label.colunm_type as reservationSortTypes
+            ),
           })),
           icon: BiTable,
         },

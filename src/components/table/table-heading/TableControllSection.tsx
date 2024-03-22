@@ -37,7 +37,7 @@ const TableControllSection = ({
   return (
     <section
       className={twMerge(
-        `min-w-full max-w-full flex items-center justify-between gap-2 flex-wrap relative z-10`,
+        `min-w-full max-w-full flex items-center justify-between gap-2 flex-wrap p-3 z-10 relative`,
         className
       )}
     >

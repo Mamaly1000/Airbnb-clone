@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import { BiSortUp } from "react-icons/bi";
 import { reservationSortTypes } from "@/types/reservationTypes";
+import { ReviewSortTypes } from "@/types/ReviewTypes";
 export type SingleTable_TH_type = {
   label: string;
   sort:
@@ -17,7 +18,7 @@ export type SingleTable_TH_type = {
   disabled?: boolean | undefined;
   display?: boolean | undefined;
   onClick?: (() => void) | undefined;
-  colunm_type: reservationSortTypes;
+  colunm_type: reservationSortTypes | ReviewSortTypes;
   className?: string;
 };
 

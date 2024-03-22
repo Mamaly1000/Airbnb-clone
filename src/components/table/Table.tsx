@@ -24,7 +24,7 @@ const Table = ({
   footer,
 }: TableControllSectionPropsType &
   TableHeaderTypes & {
-    classNames: {
+    classNames?: {
       heading?: string;
       filterSection?: string;
       container?: string;
@@ -41,13 +41,13 @@ const Table = ({
     <section
       className={twMerge(
         `min-w-full max-w-full flex items-start justify-start gap-0 border-[1px] border-neutral-200 dark:border-neutral-700 rounded-md drop-shadow-2xl p-0 flex-col bg-white dark:bg-neutral-800`,
-        classNames.container
+        classNames?.container
       )}
     >
       <TableHeader
         heading={header.heading}
         headingActions={header.headingActions}
-        className={classNames.heading}
+        className={classNames?.heading}
       />
       <TableFilterSection
         tableFilterOptions={filterSectionActions.tableFilterOptions}
@@ -58,14 +58,14 @@ const Table = ({
         filterButton={filterSectionActions.filterButton}
         onSelectTableFilter={filterSectionActions.onSelectTableFilter}
         onDeselectTableFilter={filterSectionActions.onDeselectTableFilter}
-        className={classNames.filterSection}
+        className={classNames?.filterSection}
       />
       <TableControllSection
         controllSection={controllSection}
-        className={classNames.controllSection}
+        className={classNames?.controllSection}
       />
       <TableMainContainer
-        className={classNames.mainTable}
+        className={classNames?.mainTable}
         tableHeaderLabels={tableHeaderLabels}
         tableBody={tableBody}
       />
@@ -73,7 +73,7 @@ const Table = ({
         footerItemOnclick={footer.footerItemOnclick}
         isLoading={footer.isLoading}
         pagination={footer.pagination}
-        className={classNames.footer}
+        className={classNames?.footer}
       />
     </section>
   );

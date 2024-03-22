@@ -37,7 +37,7 @@ const TableFilterSection = ({
         className
       )}
     >
-      <section className="min-w-full max-w-full flex items-center justify-start gap-2 relative z-10">
+      <section className="min-w-full max-w-full flex items-center justify-start gap-2 relative p-3 border-b-[1px] border-neutral-300 dark:border-neutral-600 z-20">
         {filterButton && (
           <button
             onClick={(e) => {

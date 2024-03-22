@@ -46,7 +46,7 @@ const TableHeader = ({
   return (
     <motion.section
       className={twMerge(
-        `min-w-full max-w-full flex items-start justify-start gap-2 md:justify-between flex-wrap`,
+        `min-w-full max-w-full flex justify-start gap-2 md:justify-between flex-wrap p-3 border-b-[1px] border-neutral-300 dark:border-neutral-600 bg-neutral-200 dark:bg-neutral-900 drop-shadow-md items-start rounded-t-md`,
         className
       )}
     >
