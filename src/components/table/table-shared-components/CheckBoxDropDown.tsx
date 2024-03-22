@@ -47,16 +47,20 @@ const CheckBoxDropDown = ({
           <LuChevronDown size={13} />
         </motion.span>
       </button>
-      <AnimatePresence presenceAffectsLayout={false} mode="popLayout">
+      <AnimatePresence>
         {open && !isEmpty(columns) && (
           <motion.section
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.1, ease: "linear" }}
             className={twMerge(
               `min-w-fit max-w-[300px] md:max-w-fit
               max-h-[250px] overflow-x-hidden overflow-y-auto 
                flex items-start justify-start flex-col gap-1 
                p-2 rounded-[5px] drop-shadow-2xl
              bg-white dark:bg-neutral-800
-              absolute top-[110%] end-[100%] md:end-0  
+              absolute top-[110%] end-[-35%] md:end-0  
              border-[1px] border-neutral-300 dark:border-neutral-600`
             )}
             onMouseLeave={() => setOpen(false)}

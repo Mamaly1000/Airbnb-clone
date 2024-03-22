@@ -5,12 +5,14 @@ import {
 import { sub } from "date-fns";
 import { Range } from "react-date-range";
 import { create } from "zustand";
+import { reservationStatusTypes } from "./useReservations";
 
 interface useReservationTableStore {
   DisplayDate: Range;
   SelectedFilters: reservationFilterTypes[];
   SelectedSort?: reservationSortTypes;
   hiddenColumns: reservationSortTypes[];
+  hiddenRows: reservationStatusTypes[];
   searchParams?: {
     page?: number;
     min?: number;
@@ -18,7 +20,8 @@ interface useReservationTableStore {
     userId?: string;
     sortType?: "asc" | "desc";
     listingId?: string;
-    type?: "COMPLETED" | "PENDING" | "ALL";
+    type?: reservationStatusTypes;
+    sort?: reservationSortTypes;
   };
   setQuery: (searchParams?: {
     page?: number | undefined;
@@ -27,11 +30,13 @@ interface useReservationTableStore {
     userId?: string | undefined;
     sortType?: "asc" | "desc";
     listingId?: string;
-    type?: "COMPLETED" | "PENDING" | "ALL";
+    type?: reservationStatusTypes;
+    sort?: reservationSortTypes;
   }) => void;
   onResetQuery: () => void;
   setColumns: (hiddenColumns: reservationSortTypes[]) => void;
   setResetColumns: () => void;
+  setHiddenRows: (rows: reservationStatusTypes[]) => void;
   setDate: (date: Range) => void;
   setSelectedSort: (sort: reservationSortTypes | undefined) => void;
   setSelectedFilter: (filters: reservationFilterTypes[]) => void;
@@ -40,6 +45,7 @@ export const useReservationTable = create<useReservationTableStore>((set) => ({
   SelectedFilters: [],
   SelectedSort: undefined,
   hiddenColumns: [],
+  hiddenRows: [],
   DisplayDate: {
     startDate: sub(new Date(), { days: 10 }),
     endDate: new Date(),
@@ -52,8 +58,9 @@ export const useReservationTable = create<useReservationTableStore>((set) => ({
     page: 1,
     sortType: "desc",
     type: "ALL",
+    listingId: undefined,
+    sort: "CREATED_AT",
   },
-
   onResetQuery: () =>
     set({
       searchParams: {
@@ -61,6 +68,10 @@ export const useReservationTable = create<useReservationTableStore>((set) => ({
         max: undefined,
         min: undefined,
         page: 1,
+        listingId: undefined,
+        sort: "CREATED_AT",
+        sortType: "desc",
+        type: "ALL",
       },
     }),
   setQuery: (searchParams) =>
@@ -75,4 +86,5 @@ export const useReservationTable = create<useReservationTableStore>((set) => ({
   setResetColumns: () => set({ hiddenColumns: [] }),
   setSelectedSort: (sort) => set({ SelectedSort: sort }),
   setSelectedFilter: (filters) => set({ SelectedFilters: filters }),
+  setHiddenRows: (rows) => set({ hiddenRows: rows }),
 }));

@@ -21,7 +21,10 @@ const UpdateReservationModal = () => {
 
   const { reservation, mutate } = useReservation(id);
   const { user } = useUser();
-  const { reservations } = useReservations(reservation?.listingId);
+  const { reservations } = useReservations({
+    listingId: reservation?.listingId,
+    paginate: false,
+  });
 
   const router = useRouter();
 

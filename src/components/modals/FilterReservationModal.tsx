@@ -4,7 +4,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import Modal from "./Modal";
 import Heading from "../form/Heading";
 import { useReservationTable } from "@/hooks/useReservationTable";
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../inputs/Input";
@@ -21,13 +21,17 @@ const filterItems = [
   { label: "showing all of your reservations", value: "ALL", icon: BiHome },
   { label: "showing completed reservations", value: "COMPLETED", icon: BiHome },
   { label: "showing pending reservations", value: "PENDING", icon: BiHome },
+  { label: "showing outdated reservations", value: "OUTDATED", icon: BiHome },
 ];
 const reservatoinFilterFormType = z.object({
   min: z.number().optional(),
   max: z.number().optional(),
   userId: z.string().optional(),
   listingId: z.string().optional(),
-  type: z.enum(["COMPLETED", "PENDING", "ALL"]).default("ALL").optional(),
+  type: z
+    .enum(["COMPLETED", "PENDING", "ALL", "OUTDATED"])
+    .default("ALL")
+    .optional(),
 });
 enum STEPS {
   AMOUNT,
@@ -84,16 +88,6 @@ const FilterReservationModal = () => {
             type="number"
             register={form.register}
             id="max"
-            onBlur={() => {
-              if (!!minValue && !!maxValue) {
-                if (+maxValue! <= +minValue!) {
-                  form.setValue("max", 0);
-                  toast.error(
-                    "Max value must be greater than or equal with Min Value"
-                  );
-                }
-              }
-            }}
           />
         </div>
       );
@@ -192,7 +186,6 @@ const FilterReservationModal = () => {
           <CustomSelect
             onChange={(newVal: any & { value: string | undefined }) => {
               form.setValue("type", newVal?.value);
-              console.log(newVal);
             }}
             options={filterItems.map((c) => ({
               icon: BiHome,
@@ -237,8 +230,8 @@ const FilterReservationModal = () => {
   const onSubmit = (vals: z.infer<typeof reservatoinFilterFormType>) => {
     setQuery({
       listingId: vals.listingId,
-      max: !!vals.max ? undefined : vals.max === 0 ? undefined : vals.max,
-      min: vals.min,
+      max: vals.max ? vals.max : undefined,
+      min: vals.min ? vals.min : undefined,
       type: isUndefined(vals.type) ? "ALL" : vals.type,
       userId: vals.userId,
     });
@@ -267,15 +260,19 @@ const FilterReservationModal = () => {
       if (!!!minValue && !!!maxValue) {
         setStep(STEPS.INFO);
       }
-      if (!!minValue && +minValue! >= 0 && !!!maxValue) {
-        toast.error("you need to set max value too");
-        form.setValue("max", Number(form.watch("min") || 0) + 1);
+      if (!!!minValue || !!!maxValue) {
+        if (+maxValue! > +minValue!) {
+          setStep(STEPS.INFO);
+        }
+        if (!!!maxValue && !!minValue) {
+          toast.error("Max value can not be empty");
+        }
       }
-      if (!!maxValue && !!minValue && maxValue! >= 0 && minValue! >= 0) {
-        if (maxValue < minValue) {
+      if (!!minValue && !!maxValue) {
+        if (+minValue! >= +maxValue!) {
           toast.error("Max value must be greater than Min value");
-          form.setValue("max", Number(minValue) + 1);
-        } else if (maxValue > minValue) {
+        }
+        if (+minValue! < +maxValue!) {
           setStep(STEPS.INFO);
         }
       }

@@ -19,8 +19,10 @@ const RebookReservationModal = () => {
   const loginModal = useLoginModal();
 
   const { property, mutate: propertyMutate } = useProperty(listingId);
-  const { reservations, mutate: reservationsMutate } =
-    useReservations(listingId);
+  const { reservations, mutate: reservationsMutate } = useReservations({
+    listingId,
+    paginate: false,
+  });
   const { user, mutate: userMutate } = useUser();
 
   const router = useRouter();

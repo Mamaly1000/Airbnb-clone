@@ -3,6 +3,7 @@ import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import { BiSortUp } from "react-icons/bi";
+import { reservationSortTypes } from "@/types/reservationTypes";
 export type SingleTable_TH_type = {
   label: string;
   sort:
@@ -16,6 +17,8 @@ export type SingleTable_TH_type = {
   disabled?: boolean | undefined;
   display?: boolean | undefined;
   onClick?: (() => void) | undefined;
+  colunm_type: reservationSortTypes;
+  className?: string;
 };
 
 const TableHeaderLabel = ({
@@ -29,9 +32,18 @@ const TableHeaderLabel = ({
     <AnimatePresence>
       {item.display && (
         <motion.th
-          className={twMerge(`text-[12px] min-w-[150px]`)}
+          className={twMerge(
+            `text-[12px] min-w-[150px] relative z-0`,
+            item.className
+          )}
           initial={{ opacity: 0, translateX: 10 }}
-          exit={{ opacity: 0, translateX: 10 }}
+          exit={{
+            opacity: 0,
+            transition: {
+              delay: 0,
+              duration: 0.1,
+            },
+          }}
           animate={{ opacity: 1, translateX: 0 }}
           transition={{
             duration: 0.12,

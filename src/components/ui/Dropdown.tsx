@@ -19,6 +19,7 @@ const DropDown = ({
   onDropDown,
   onClose,
   isLoading,
+  buttonClassName,
 }: {
   onDropDown: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   onClose?: () => void;
@@ -28,6 +29,7 @@ const DropDown = ({
   children?: ReactNode;
   className?: string;
   isLoading?: boolean;
+  buttonClassName?: string;
 }) => {
   return (
     <div
@@ -37,7 +39,13 @@ const DropDown = ({
       )}
     >
       <button
-        className="min-w-[35px]  w-[35px] h-[35px] min-h-[35px] max-w-[35px] max-h-[35px] rounded-full p-1 flex items-center justify-center hover:text-rose-500 hover:bg-rose-500 hover:bg-opacity-10  border-none outline-none focus-within:border-none focus:border-none"
+        className={twMerge(
+          `min-w-[35px]  w-[35px] h-[35px] min-h-[35px] max-w-[35px] max-h-[35px] 
+          rounded-full p-1 flex items-center justify-center 
+          hover:text-rose-500 hover:bg-rose-500 hover:bg-opacity-10  
+          border-none outline-none focus-within:border-none focus:border-none`,
+          buttonClassName
+        )}
         onClick={onDropDown}
       >
         {children}

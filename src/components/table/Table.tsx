@@ -11,6 +11,8 @@ import TableControllSection, {
 } from "./table-heading/TableControllSection";
 import TableMainContainer from "./table-body/TableMainContainer";
 import { TableHeaderTypes } from "./table-body/TableHead";
+import { TableBodyPropsType } from "./table-body/TableBody";
+import TableFooter, { TableFooterPropsType } from "./table-footer/TableFooter";
 
 const Table = ({
   filterSectionActions,
@@ -18,6 +20,8 @@ const Table = ({
   controllSection,
   tableHeaderLabels,
   header,
+  tableBody,
+  footer,
 }: TableControllSectionPropsType &
   TableHeaderTypes & {
     classNames: {
@@ -26,14 +30,17 @@ const Table = ({
       container?: string;
       controllSection?: string;
       mainTable?: string;
+      footer?: string;
     };
+    footer: TableFooterPropsType;
     filterSectionActions: TableFilterSectionPropsType;
     header: tableHeaderPropsType;
+    tableBody: TableBodyPropsType;
   }) => {
   return (
     <section
       className={twMerge(
-        `min-w-full max-w-full flex items-start justify-start gap-0 border-[1px] border-neutral-200 dark:border-neutral-700 rounded-md drop-shadow-2xl p-0 flex-col`,
+        `min-w-full max-w-full flex items-start justify-start gap-0 border-[1px] border-neutral-200 dark:border-neutral-700 rounded-md drop-shadow-2xl p-0 flex-col bg-white dark:bg-neutral-800`,
         classNames.container
       )}
     >
@@ -60,6 +67,13 @@ const Table = ({
       <TableMainContainer
         className={classNames.mainTable}
         tableHeaderLabels={tableHeaderLabels}
+        tableBody={tableBody}
+      />
+      <TableFooter
+        footerItemOnclick={footer.footerItemOnclick}
+        isLoading={footer.isLoading}
+        pagination={footer.pagination}
+        className={classNames.footer}
       />
     </section>
   );

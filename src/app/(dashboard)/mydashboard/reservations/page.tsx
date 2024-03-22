@@ -1,16 +1,19 @@
 "use client";
 import Table from "@/components/table/Table";
-import { tableFilterOption } from "@/components/table/table-heading/TableFilterSection";
+import ReservationRow from "@/components/table/table-row/ReservationRow";
 import { SingleTable_TH_type } from "@/components/table/table-shared-components/TableHeaderLabel";
 import { useReservationFilterModal } from "@/hooks/useReservationFilterModal";
 import { useReservationRangeDateModal } from "@/hooks/useReservationRangeDateModal";
+import useReservations, {
+  reservationStatusTypes,
+} from "@/hooks/useReservations";
 import { useReservationTable } from "@/hooks/useReservationTable";
 import {
   reservationFilterTypes,
   reservationSortTypes,
 } from "@/types/reservationTypes";
-import { without } from "lodash";
-import React, { useCallback, useState } from "react";
+import { uniq, without } from "lodash";
+import React, { useCallback, useEffect } from "react";
 import { IconType } from "react-icons";
 import { BiFilter, BiTable, BiUser } from "react-icons/bi";
 import {
@@ -52,7 +55,6 @@ const filterItems: {
   },
 ];
 const ReservationsPage = () => {
-  const [isLoading, setLoading] = useState(false);
   const {
     onResetQuery,
     setQuery,
@@ -65,28 +67,42 @@ const ReservationsPage = () => {
     setResetColumns,
     setSelectedSort,
     setSelectedFilter,
+    hiddenRows,
+    setHiddenRows,
   } = useReservationTable();
   const { onOpen: openDaterangeReservationModal } =
     useReservationRangeDateModal();
   const { onOpen: openReservationFilterModal } = useReservationFilterModal();
+  const { reservations, isLoading, pagination } = useReservations({
+    ...searchParams,
+    paginate: true,
+    startDate: DisplayDate.startDate,
+    endDate: DisplayDate.endDate,
+  });
   const tableLabelOnclick = useCallback(
     (labelSortType: reservationSortTypes) => {
       if (!isLoading) {
         if (SelectedSort === labelSortType) {
           if (searchParams?.sortType === "desc") {
-            setQuery({ sortType: "asc" });
+            setQuery({ ...searchParams, sortType: "asc" });
           } else {
-            setQuery({ sortType: "desc" });
+            setQuery({ ...searchParams, sortType: "desc" });
           }
         } else {
           setSelectedSort(labelSortType);
-          setQuery({ ...searchParams, sortType: "desc" });
+          setQuery({ ...searchParams, sortType: "desc", sort: labelSortType });
         }
       }
     },
-    [isLoading, SelectedSort, searchParams, setQuery, setSelectedSort]
+    [
+      isLoading,
+      SelectedSort,
+      searchParams,
+      setQuery,
+      setSelectedSort,
+      searchParams,
+    ]
   );
-
   const labels: SingleTable_TH_type[] = [
     {
       label: "user data",
@@ -97,6 +113,8 @@ const ReservationsPage = () => {
       display: !!!hiddenColumns.includes("USER_NAME"),
       disabled: isLoading,
       onClick: () => tableLabelOnclick("USER_NAME"),
+      colunm_type: "USER_NAME",
+      className: "sticky top-0 -left-3 bg-neutral-300 dark:bg-neutral-900 z-10",
     },
     {
       label: "created at",
@@ -107,6 +125,8 @@ const ReservationsPage = () => {
       display: !!!hiddenColumns.includes("CREATED_AT"),
       disabled: isLoading,
       onClick: () => tableLabelOnclick("CREATED_AT"),
+      colunm_type: "CREATED_AT",
+      className: "min-w-[220px] max-w-[220px]",
     },
     {
       label: "total Amount",
@@ -114,6 +134,7 @@ const ReservationsPage = () => {
         isActive: SelectedSort === "TOTAL_AMOUNT",
         type: searchParams?.sortType,
       },
+      colunm_type: "TOTAL_AMOUNT",
       display: !!!hiddenColumns.includes("TOTAL_AMOUNT"),
       disabled: isLoading,
       onClick: () => tableLabelOnclick("TOTAL_AMOUNT"),
@@ -127,6 +148,8 @@ const ReservationsPage = () => {
       display: !!!hiddenColumns.includes("LISTING_NAME"),
       disabled: isLoading,
       onClick: () => tableLabelOnclick("LISTING_NAME"),
+      colunm_type: "LISTING_NAME",
+      className: "min-w-[300px] max-w-[300px]",
     },
     {
       label: "start date",
@@ -137,6 +160,8 @@ const ReservationsPage = () => {
       display: !!!hiddenColumns.includes("START-DATE"),
       disabled: isLoading,
       onClick: () => tableLabelOnclick("START-DATE"),
+      colunm_type: "START-DATE",
+      className: "min-w-[220px] max-w-[220px]",
     },
     {
       label: "end date",
@@ -147,6 +172,8 @@ const ReservationsPage = () => {
       display: !!!hiddenColumns.includes("END_DATE"),
       disabled: isLoading,
       onClick: () => tableLabelOnclick("END_DATE"),
+      colunm_type: "END_DATE",
+      className: "min-w-[220px] max-w-[220px]",
     },
     {
       label: "status",
@@ -157,10 +184,14 @@ const ReservationsPage = () => {
       display: !!!hiddenColumns.includes("STATUS"),
       disabled: isLoading,
       onClick: () => tableLabelOnclick("STATUS"),
+      colunm_type: "STATUS",
+      className:
+        "flex items-center justify-start md:justify-end  lg:sticky top-0 -right-3 bg-neutral-300 dark:bg-neutral-900 ",
     },
   ];
   return (
     <Table
+      tableHeaderLabels={labels}
       header={{
         heading: {
           title: "resrevations",
@@ -177,6 +208,7 @@ const ReservationsPage = () => {
           reset: {
             onClick: () => {
               setResetColumns();
+              setQuery({ ...searchParams, sort: undefined, sortType: "desc" });
               setSelectedSort(undefined);
             },
             icon: TbZoomReset,
@@ -243,105 +275,81 @@ const ReservationsPage = () => {
       controllSection={{
         colums_control: {
           label: "display columns",
-          columns: [
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: false,
+          columns: labels.map((label) => ({
+            label: "hide " + label.label,
+            onClick: () => {
+              if (label.display) {
+                setColumns(uniq([...hiddenColumns, label.colunm_type]));
+                if (SelectedSort === label.colunm_type) {
+                  setQuery({
+                    ...searchParams,
+                    sort: undefined,
+                    sortType: "desc",
+                  });
+                  setSelectedSort(undefined);
+                }
+              } else {
+                setColumns(without(hiddenColumns, label.colunm_type));
+              }
             },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: true,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: false,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: true,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: false,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: true,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: false,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: true,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: false,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: true,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: false,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: true,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: false,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: true,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: false,
-            },
-            {
-              label: "hide completed reservations",
-              onClick: () => {},
-              isActive: true,
-            },
-          ],
+            isActive: hiddenColumns.includes(label.colunm_type),
+          })),
           icon: BiTable,
         },
         checkBoxes: [
           {
-            label: "hide completed reservations",
-            onClick: () => {},
-            isActive: false,
+            label: "hide completed",
+            onClick: () => {
+              if (hiddenRows.includes("COMPLETED")) {
+                setHiddenRows(without(hiddenRows, "COMPLETED"));
+              } else {
+                setHiddenRows(uniq([...hiddenRows, "COMPLETED"]));
+              }
+            },
+            isActive: hiddenRows.includes("COMPLETED"),
           },
           {
-            label: "hide completed reservations",
-            onClick: () => {},
-            isActive: true,
+            label: "hide pendings",
+            onClick: () => {
+              if (hiddenRows.includes("PENDING")) {
+                setHiddenRows(without(hiddenRows, "PENDING"));
+              } else {
+                setHiddenRows(uniq([...hiddenRows, "PENDING"]));
+              }
+            },
+            isActive: hiddenRows.includes("PENDING"),
+          },
+          {
+            label: "hide outdated",
+            onClick: () => {
+              if (hiddenRows.includes("OUTDATED")) {
+                setHiddenRows(without(hiddenRows, "OUTDATED"));
+              } else {
+                setHiddenRows(uniq([...hiddenRows, "OUTDATED"]));
+              }
+            },
+            isActive: hiddenRows.includes("OUTDATED"),
           },
         ],
-        title: "showing 10 reservations",
+        title: `showing ${pagination?.totalReservations || 0} reservations`,
       }}
-      tableHeaderLabels={labels}
+      tableBody={{
+        rows: reservations.map((r) => ({
+          data: r,
+          row_type: r.status as reservationStatusTypes,
+        })),
+        RowElement: ReservationRow,
+        isLoading,
+      }}
+      footer={{
+        footerItemOnclick: (page) => {
+          if (pagination?.currentPage !== page) {
+            setQuery({ ...searchParams, page });
+          }
+        },
+        isLoading,
+        pagination,
+      }}
     />
   );
 };

@@ -12,4 +12,5 @@ export type reservationFilterTypes =
   | "COMPLETED"
   | "PENDING"
   | "ALL"
-  | "CLIENT";
+  | "CLIENT"
+  | "OUTDATED";
