@@ -71,8 +71,9 @@ const TableFilterSection = ({
         </button>
       </section>
       <section className=" flex flex-wrap items-center justify-between md:justify-start gap-2 min-w-full max-w-full">
-        {tableFilterOptions.map(({ icon: Icon, label, value }) => (
+        {tableFilterOptions.map(({ icon: Icon, label, value }, i) => (
           <button
+            key={i}
             className={twMerge(
               `w-full sm:w-[45%] md:w-fit
               bg-neutral-500 dark:bg-neutral-900 bg-opacity-10 

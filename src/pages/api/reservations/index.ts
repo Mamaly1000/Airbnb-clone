@@ -1,7 +1,4 @@
-import prisma from "@/libs/prismadb";
-import getCurrentUser from "@/actions/getCurrentUser";
-import { NextRequest, NextResponse } from "next/server";
-import { getReservations } from "@/actions/getReservations";
+import prisma from "@/libs/prismadb"; 
 import { format } from "date-fns";
 import { NotificationTypes } from "@/types/notificationstype";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -174,7 +171,7 @@ export default async function handler(
     if (req.method === "POST") {
       const currentUser = await serverAuth(req, res);
       if (!currentUser) {
-        return NextResponse.error();
+        return res.status(401).json({ message: "Unauthorized" });
       }
       const { totalPrice, startDate, endDate, listingId } = req.body;
       if (!totalPrice || !startDate || !endDate || !listingId) {
