@@ -11,6 +11,7 @@ import { MdOutlineStarPurple500 } from "react-icons/md";
 import { IoSearchOutline } from "react-icons/io5";
 import { useRangeDateModal } from "@/hooks/useRangeDateModal";
 import ReviewRow from "@/components/table/table-row/ReviewRow";
+import { useReviewFilterModal } from "@/hooks/useReviewsFilterModal";
 
 export const ReviewsfilterItems = [
   { label: "rate", icon: MdOutlineStarPurple500, value: "RATING" },
@@ -20,10 +21,15 @@ export const ReviewsfilterItems = [
 ];
 
 const ReviewsPage = () => {
-  const { searchParams, hiddenCols, setQuery, setHiddenCols, setHiddenRows } =
+  const { searchParams, hiddenCols, setQuery, setHiddenCols } =
     useReviewTable();
-  const { isLoading, pagination, reviews } = useReviews(searchParams);
+  const { onOpen: openReviewFilterModal } = useReviewFilterModal();
   const { onOpen: daterangeOpen, Date } = useRangeDateModal();
+  const { isLoading, pagination, reviews } = useReviews({
+    ...searchParams,
+    startDate: Date.startDate,
+    endDate: Date.endDate,
+  });
   const labelOnclick = useCallback(
     (type: ReviewSortTypes) => {
       if (!isLoading) {
@@ -49,8 +55,9 @@ const ReviewsPage = () => {
         isActive: searchParams.sort === "USER_NAME",
         type: searchParams.sortIn,
       },
+      className: "min-w-[200px] max-w-[200px] sticky top-0 -left-3 bg-neutral-300 dark:bg-neutral-900 z-10",
       disabled: isLoading,
-      display: hiddenCols.includes("USER_NAME"),
+      display: !hiddenCols.includes("USER_NAME"),
       onClick: () => labelOnclick("USER_NAME"),
     },
     {
@@ -60,9 +67,9 @@ const ReviewsPage = () => {
         isActive: searchParams.sort === "CREATED_AT",
         type: searchParams.sortIn,
       },
-      className: "sticky top-0 -left-3 bg-neutral-300 dark:bg-neutral-900 z-10",
+      className: "min-w-[220px] max-w-[220px]",
       disabled: isLoading,
-      display: hiddenCols.includes("CREATED_AT"),
+      display: !hiddenCols.includes("CREATED_AT"),
       onClick: () => labelOnclick("CREATED_AT"),
     },
     {
@@ -74,7 +81,7 @@ const ReviewsPage = () => {
       },
       className: "min-w-[300px] max-w-[300px]",
       disabled: isLoading,
-      display: hiddenCols.includes("BODY"),
+      display: !hiddenCols.includes("BODY"),
       onClick: () => labelOnclick("BODY"),
     },
     {
@@ -86,7 +93,7 @@ const ReviewsPage = () => {
       },
       className: "min-w-[300px] max-w-[300px]",
       disabled: isLoading,
-      display: hiddenCols.includes("LISTING_NAME"),
+      display: !hiddenCols.includes("LISTING_NAME"),
       onClick: () => labelOnclick("LISTING_NAME"),
     },
     {
@@ -97,7 +104,7 @@ const ReviewsPage = () => {
         type: searchParams.sortIn,
       },
       disabled: isLoading,
-      display: hiddenCols.includes("CLEANLINESS"),
+      display: !hiddenCols.includes("CLEANLINESS"),
       onClick: () => labelOnclick("CLEANLINESS"),
     },
     {
@@ -108,7 +115,7 @@ const ReviewsPage = () => {
         type: searchParams.sortIn,
       },
       disabled: isLoading,
-      display: hiddenCols.includes("ACCURACY"),
+      display: !hiddenCols.includes("ACCURACY"),
       onClick: () => labelOnclick("ACCURACY"),
     },
     {
@@ -119,7 +126,7 @@ const ReviewsPage = () => {
         type: searchParams.sortIn,
       },
       disabled: isLoading,
-      display: hiddenCols.includes("CHECK_IN"),
+      display: !hiddenCols.includes("CHECK_IN"),
       onClick: () => labelOnclick("CHECK_IN"),
     },
     {
@@ -130,7 +137,7 @@ const ReviewsPage = () => {
         type: searchParams.sortIn,
       },
       disabled: isLoading,
-      display: hiddenCols.includes("COMMUNICATION"),
+      display: !hiddenCols.includes("COMMUNICATION"),
       onClick: () => labelOnclick("COMMUNICATION"),
     },
     {
@@ -141,7 +148,7 @@ const ReviewsPage = () => {
         type: searchParams.sortIn,
       },
       disabled: isLoading,
-      display: hiddenCols.includes("LOCATION"),
+      display: !hiddenCols.includes("LOCATION"),
       onClick: () => labelOnclick("LOCATION"),
     },
     {
@@ -153,7 +160,7 @@ const ReviewsPage = () => {
       },
       className: "sticky top-0 -left-3 dark:bg-neutral-900",
       disabled: isLoading,
-      display: hiddenCols.includes("VALUE"),
+      display: !hiddenCols.includes("VALUE"),
       onClick: () => labelOnclick("VALUE"),
     },
     {
@@ -164,7 +171,7 @@ const ReviewsPage = () => {
         type: searchParams.sortIn,
       },
       disabled: isLoading,
-      display: hiddenCols.includes("RATING"),
+      display: !hiddenCols.includes("RATING"),
       onClick: () => labelOnclick("RATING"),
       className:
         "flex items-center justify-start md:justify-end  lg:sticky top-0 -right-3 bg-neutral-300 dark:bg-neutral-900 ",
@@ -206,7 +213,7 @@ const ReviewsPage = () => {
       }}
       controllSection={{
         colums_control: {
-          label: `showing ${pagination?.totalReviews || 0} reviews`,
+          label: `display columns`,
           columns: labels.map((label) => ({
             label: "hide " + label.label,
             onClick: () => {
@@ -227,9 +234,10 @@ const ReviewsPage = () => {
                 );
               }
             },
-            isActive: searchParams.sort === label.colunm_type,
+            isActive: hiddenCols.includes(label.colunm_type as ReviewSortTypes),
           })),
         },
+        title: `showing ${pagination?.totalReviews || 0} reviews`,
       }}
       filterSectionActions={{
         onResetTableFilter: () => {
@@ -290,7 +298,7 @@ const ReviewsPage = () => {
         filterButton: {
           label: "select filter",
           icon: BiFilter,
-          onClick: () => {},
+          onClick: () => openReviewFilterModal(),
         },
       }}
       tableBody={{

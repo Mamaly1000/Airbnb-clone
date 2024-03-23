@@ -352,7 +352,10 @@ const ReservationsPage = () => {
           }
         },
         isLoading,
-        pagination: { ...pagination, total: pagination.totalReservations },
+        pagination: {
+          ...pagination,
+          total: pagination?.totalReservations || 0,
+        },
       }}
     />
   );

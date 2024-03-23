@@ -41,7 +41,10 @@ enum STEPS {
 const FilterReservationModal = () => {
   const [step, setStep] = useState(STEPS.AMOUNT);
   const { isOpen, onClose } = useReservationFilterModal();
-  const { clients, isLoading: clientsLoading } = useClients();
+  const { clients, isLoading: clientsLoading } = useClients({
+    paginate: false,
+    type: "RESERVATIONS",
+  });
   const { listings, isLoading: listingsLoading } = useListings({
     paginate: false,
     isActive: true,

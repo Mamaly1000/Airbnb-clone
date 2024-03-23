@@ -11,6 +11,7 @@ import SearchModal from "@/components/modals/SearchModal";
 import UpdatePropertyModal from "@/components/modals/UpdatePropertyModal";
 import UpdateReservationModal from "@/components/modals/UpdateReservationModal";
 import React, { useEffect, useState } from "react";
+import ReviewFilterModal from "@/components/modals/ReviewFilterModal";
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
@@ -33,6 +34,7 @@ const ModalProvider = () => {
       <EditprofileModal />
       <DateRangeModal />
       <FilterReservationModal />
+      <ReviewFilterModal />
     </>
   );
 };

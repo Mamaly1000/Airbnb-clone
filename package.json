@@ -38,6 +38,7 @@
     "react-star-ratings": "^2.3.0",
     "react-tooltip": "^5.25.0",
     "react-use-measure": "^2.1.1",
+    "recharts": "^2.12.3",
     "swr": "^2.2.4",
     "tailwind-merge": "^2.1.0",
     "world-countries": "^5.0.0",

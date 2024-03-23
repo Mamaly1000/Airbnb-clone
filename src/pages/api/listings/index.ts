@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import { listingSortType } from "@/components/search-page/SortSelect";
 import { listingFilterType } from "@/components/search-page/FilterSelect";
-import { Listing } from "@prisma/client";
+import { Listing, Prisma } from "@prisma/client";
 
 export default async function handler(
   req: NextApiRequest,
@@ -43,7 +43,7 @@ export default async function handler(
         filter?: listingFilterType;
         page?: string;
       } = req.query;
-      let where: any = {};
+      let where: Prisma.ListingWhereInput = {};
       let orderBy: any = {
         createdAt: "desc",
       };
@@ -101,6 +101,13 @@ export default async function handler(
         if (filter === "FAVORITES") {
           where.id = {
             in: currentUser.currentUser.favoriteIds,
+          };
+        }
+        if (filter === "REVIEWED") {
+          where = {
+            feedbacks: {
+              some: {},
+            },
           };
         }
       }

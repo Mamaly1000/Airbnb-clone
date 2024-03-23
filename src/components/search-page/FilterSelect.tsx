@@ -7,7 +7,11 @@ import { PiBuildingsBold } from "react-icons/pi";
 import { AiOutlineHome } from "react-icons/ai";
 import { usePathname } from "next/navigation";
 
-export type listingFilterType = "FAVORITES" | "ALL" | "MY PROPERTIES";
+export type listingFilterType =
+  | "FAVORITES"
+  | "ALL"
+  | "MY PROPERTIES"
+  | "REVIEWED";
 
 export const filterItems: {
   type: listingFilterType;

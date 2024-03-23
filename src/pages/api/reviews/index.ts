@@ -58,8 +58,8 @@ export default async function handler(
     };
     if (filterType && !!min && !!max) {
       let range = {
-        gt: +min,
-        lt: +max,
+        gte: +min,
+        lte: +max,
       };
       if (filterType === "ACCURACY") {
         where.accuracy = range;
@@ -159,7 +159,7 @@ export default async function handler(
         { body: { endsWith: search } },
       ];
     }
-    let reviews: Feedback[] = [];
+    let reviews: any = [];
     const limit = 10;
     const currentPage = +(page || 1);
     const skip = (currentPage - 1) * limit;
@@ -169,6 +169,24 @@ export default async function handler(
       reviews = await prisma.feedback.findMany({
         where,
         orderBy,
+        include: {
+          user: {
+            select: {
+              name: true,
+              email: true,
+              id: true,
+            },
+          },
+          listing: {
+            select: {
+              title: true,
+              id: true,
+              userId: true,
+              price: true,
+              rate: true,
+            },
+          },
+        },
       });
     }
     if (paginate === "true") {
@@ -177,6 +195,24 @@ export default async function handler(
         orderBy,
         take: limit + 1,
         skip,
+        include: {
+          user: {
+            select: {
+              name: true,
+              email: true,
+              id: true,
+            },
+          },
+          listing: {
+            select: {
+              title: true,
+              id: true,
+              userId: true,
+              price: true,
+              rate: true,
+            },
+          },
+        },
       });
     }
     const hasMore = reviews.length > limit;

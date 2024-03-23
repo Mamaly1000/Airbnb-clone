@@ -1,6 +1,7 @@
 import serverAuth from "@/libs/serverAuth";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
+import { Prisma } from "@prisma/client";
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,16 +15,38 @@ export default async function handler(
     if (!user) {
       return res.status(401).json({ message: "Unauthorized User" });
     }
-    const usersWithReservations = await prisma.user.findMany({
-      where: {
-        reservations: {
-          some: {
-            listing: {
-              userId: user.currentUser.id,
+    const {
+      type,
+      paginate = "false",
+    }: { type?: "RESERVATIONS" | "REVIEWS"; paginate?: "false" | "true" } =
+      req.query;
+    let where: Prisma.UserWhereInput = {};
+    if (type) {
+      if (type === "RESERVATIONS") {
+        where = {
+          reservations: {
+            some: {
+              listing: {
+                userId: user.currentUser.id,
+              },
             },
           },
-        },
-      },
+        };
+      }
+      if (type === "REVIEWS") {
+        where = {
+          feedbacks: {
+            some: {
+              listing: {
+                userId: user.currentUser.id,
+              },
+            },
+          },
+        };
+      }
+    }
+    const usersWithReservations = await prisma.user.findMany({
+      where,
       select: {
         id: true,
         name: true,

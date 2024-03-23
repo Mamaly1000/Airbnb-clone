@@ -55,7 +55,7 @@ const ReviewRow = ({
         >
           <TD
             isSorting={!!searchParams.userId}
-            className="capitalize flex items-center justify-center gap-2 font-semibold py-0 sticky top-0 -left-3 bg-white dark:bg-neutral-800 z-10"
+            className="capitalize flex items-center justify-start gap-2 font-semibold py-0 sticky top-0 -left-3 bg-white dark:bg-neutral-800 z-10 whitespace-nowrap min-w-[200px] max-w-[200px]"
             index={index}
             display={!!hiddenCols.includes("USER_NAME")}
           >
@@ -74,7 +74,7 @@ const ReviewRow = ({
             {format(new Date(row.data.createdAt), "yyyy/MMMM/dd-hh:mm a")}
           </TD>
           <TD
-            className="overflow-hidden py-0 min-w-[300px] max-w-[300px]"
+            className="overflow-hidden py-0 min-w-[300px] max-w-[300px] capitalize"
             isSorting={!!searchParams.search}
             index={index}
             display={!!hiddenCols.includes("BODY")}
@@ -84,7 +84,7 @@ const ReviewRow = ({
           <TD
             isSorting={!!searchParams.listingId}
             index={index}
-            className="overflow-hidden py-0 min-w-[300px] max-w-[300px]"
+            className="overflow-hidden py-0 min-w-[300px] max-w-[300px] capitalize"
             display={!!hiddenCols.includes("LISTING_NAME")}
           >
             {row.data.listing.title.slice(0, 50)}
@@ -92,7 +92,7 @@ const ReviewRow = ({
           <TD
             isSorting={searchParams.sort === "CLEANLINESS"}
             index={index}
-            className="flex items-center justify-center gap-1"
+            className="flex items-center justify-start gap-1"
             display={!!hiddenCols.includes("CLEANLINESS")}
           >
             <MdOutlineStarPurple500 size={15} /> {row.data.cleanliness}
@@ -100,7 +100,7 @@ const ReviewRow = ({
           <TD
             isSorting={searchParams.sort === "ACCURACY"}
             index={index}
-            className="flex items-center justify-center gap-1"
+            className="flex items-center justify-start gap-1"
             display={!!hiddenCols.includes("ACCURACY")}
           >
             <MdOutlineStarPurple500 size={15} /> {row.data.accuracy}
@@ -108,7 +108,7 @@ const ReviewRow = ({
           <TD
             isSorting={searchParams.sort === "CHECK_IN"}
             index={index}
-            className="flex items-center justify-center gap-1"
+            className="flex items-center justify-start gap-1"
             display={!!hiddenCols.includes("CHECK_IN")}
           >
             <MdOutlineStarPurple500 size={15} /> {row.data.checkIn}
@@ -116,7 +116,7 @@ const ReviewRow = ({
           <TD
             isSorting={searchParams.sort === "COMMUNICATION"}
             index={index}
-            className="flex items-center justify-center gap-1"
+            className="flex items-center justify-start gap-1"
             display={!!hiddenCols.includes("COMMUNICATION")}
           >
             <MdOutlineStarPurple500 size={15} /> {row.data.communication}
@@ -124,7 +124,7 @@ const ReviewRow = ({
           <TD
             isSorting={searchParams.sort === "LOCATION"}
             index={index}
-            className="flex items-center justify-center gap-1"
+            className="flex items-center justify-start gap-1"
             display={!!hiddenCols.includes("LOCATION")}
           >
             <MdOutlineStarPurple500 size={15} /> {row.data.location}
@@ -132,7 +132,7 @@ const ReviewRow = ({
           <TD
             isSorting={searchParams.sort === "VALUE"}
             index={index}
-            className="flex items-center justify-center gap-1"
+            className="flex items-center justify-start gap-1"
             display={!!hiddenCols.includes("VALUE")}
           >
             <MdOutlineStarPurple500 size={15} /> {row.data.value}
@@ -144,7 +144,7 @@ const ReviewRow = ({
           >
             <span
               className={twMerge(
-                "px-3 py-2 rounded-lg drop-shadow-2xl flex items-center justify-center gap-1",
+                "px-3 py-2 rounded-lg drop-shadow-2xl flex items-center justify-start gap-1",
                 row.data.rating >= 4 &&
                   "bg-[#18C964] bg-opacity-20 text-[#12A150] dark:text-[#71e8a5] ",
                 (row.data.rating >= 3 || row.data.rating < 4) &&

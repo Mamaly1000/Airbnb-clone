@@ -1,7 +1,7 @@
 "use client";
 
 import { forwardRef } from "react";
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { BiDollar } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 
@@ -15,6 +15,8 @@ interface inputProps extends React.HtmlHTMLAttributes<HTMLInputElement> {
   register: UseFormRegister<any>;
   errors: FieldErrors;
   onBlur?: (e: React.BaseSyntheticEvent) => void;
+  min?: number;
+  max?: number;
 }
 const Input = forwardRef<HTMLInputElement, inputProps>(
   (
@@ -28,6 +30,8 @@ const Input = forwardRef<HTMLInputElement, inputProps>(
       required,
       errors,
       onBlur,
+      min,
+      max,
     },
     _ref
   ) => {
@@ -42,7 +46,7 @@ const Input = forwardRef<HTMLInputElement, inputProps>(
         <input
           id={id}
           disabled={disabled}
-          {...register(id, { required })}
+          {...register(id, { required, min, max })}
           placeholder=" "
           className={twMerge(
             " peer w-full bg-white dark:bg-neutral-800 text-black dark:text-white p-4 pt-6 font-light border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed ",
@@ -53,6 +57,8 @@ const Input = forwardRef<HTMLInputElement, inputProps>(
           )}
           type={type}
           onBlur={onBlur}
+          min={min}
+          max={max}
         />
         <label
           htmlFor={id}
