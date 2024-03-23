@@ -9,6 +9,7 @@ import TD from "../table-shared-components/TD";
 import { useReservationTable } from "@/hooks/useReservationTable";
 import { format } from "date-fns";
 import { twMerge } from "tailwind-merge";
+import { reservationStatusTypes } from "@/hooks/useReservations";
 
 const ReservationRow = ({
   row,
@@ -25,7 +26,7 @@ const ReservationRow = ({
   const { hiddenColumns, SelectedSort, hiddenRows } = useReservationTable();
   return (
     <AnimatePresence>
-      {!hiddenRows.includes(row.row_type) && (
+      {!hiddenRows.includes(row.row_type as reservationStatusTypes) && (
         <motion.tr
           initial={{ opacity: 0, translateX: 10 }}
           animate={{ opacity: 1, translateX: 0 }}

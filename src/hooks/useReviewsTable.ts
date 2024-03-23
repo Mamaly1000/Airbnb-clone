@@ -1,15 +1,15 @@
 "use client";
 
-import { ReviewFilterTypes, ReviewSortTypes } from "@/types/ReviewTypes";
+import { ReviewSortTypes, ReviewsStatusTypes } from "@/types/ReviewTypes";
 import { ReviewQueryHookType } from "./useReviews";
 import { Range } from "react-date-range";
 import { create } from "zustand";
 import { sub } from "date-fns";
 
 interface useReviewTableStore {
-  hiddenRows: ReviewFilterTypes[];
+  hiddenRows: ReviewsStatusTypes[];
   hiddenCols: ReviewSortTypes[];
-  setHiddenRows: (rows: ReviewFilterTypes[]) => void;
+  setHiddenRows: (rows: ReviewsStatusTypes[]) => void;
   setHiddenCols: (rows: ReviewSortTypes[]) => void;
   searchParams: ReviewQueryHookType;
   setQuery: (query: ReviewQueryHookType) => void;

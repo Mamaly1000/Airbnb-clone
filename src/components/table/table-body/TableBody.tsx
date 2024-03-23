@@ -2,11 +2,12 @@
 import Loader from "@/components/ui/Loader";
 import { reservationStatusTypes } from "@/hooks/useReservations";
 import { reservationSortTypes } from "@/types/reservationTypes";
+import { ReviewSortTypes, ReviewsStatusTypes } from "@/types/ReviewTypes";
 import { isEmpty } from "lodash";
 import React from "react";
 export interface RowData {
-  column_type?: reservationSortTypes;
-  row_type: reservationStatusTypes;
+  column_type?: reservationSortTypes | ReviewSortTypes;
+  row_type?: reservationStatusTypes | ReviewsStatusTypes;
   display_row?: boolean;
   display_column?: boolean;
   data: any;

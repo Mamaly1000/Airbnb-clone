@@ -1,16 +1,26 @@
 "use client";
 import React, { useState } from "react";
 import Modal from "./Modal";
-import { useReservationRangeDateModal } from "@/hooks/useReservationRangeDateModal";
+import { useRangeDateModal } from "@/hooks/useRangeDateModal";
 import Heading from "../form/Heading";
-import { useReservationTable } from "@/hooks/useReservationTable";
 import { Range } from "react-date-range";
 import Calendar from "../inputs/Calendar";
+import { sub } from "date-fns";
 
-const ReservationDateRangeModal = () => {
-  const { onClose, isOpen } = useReservationRangeDateModal();
-  const { DisplayDate, setDate: setDateRange } = useReservationTable();
-  const [date, setDate] = useState<Range>(DisplayDate);
+const initDate: Range = {
+  startDate: sub(new Date(), { days: 10 }),
+  endDate: new Date(),
+  key: "selected",
+};
+
+const DateRangeModal = () => {
+  const {
+    onClose,
+    isOpen,
+    Date: currentDate,
+    setDate: onChange,
+  } = useRangeDateModal();
+  const [date, setDate] = useState<Range>(currentDate);
   return (
     <Modal
       isOpen={isOpen}
@@ -20,31 +30,32 @@ const ReservationDateRangeModal = () => {
       body={
         <div className="min-w-full max-w-full min-h-fit flex flex-col items-start justify-start gap-8 bg-white dark:bg-neutral-900">
           <Heading
-            title="set your reservations date range"
-            subtitle="you can set a range of date for reservation."
+            title="set a date range"
+            subtitle="you can set a range of date."
           />
           <Calendar
             onChnage={(val) => {
               setDate(val.selected);
             }}
             value={date}
-            minDate={true}
+            minDate={false}
           />
         </div>
       }
       header={{
-        title: "Update reservation",
+        title: "setting date range",
         close: () => {
           onClose();
-          setDate(DisplayDate);
+          setDate(initDate);
         },
       }}
       footer={{
         primary: {
           label: "update now",
           onClick: () => {
-            setDateRange(date);
+            onChange(date);
             onClose();
+            setDate(initDate);
           },
         },
       }}
@@ -52,4 +63,4 @@ const ReservationDateRangeModal = () => {
   );
 };
 
-export default ReservationDateRangeModal;
+export default DateRangeModal;

@@ -10,7 +10,7 @@ export type TableFooterPropsType = {
   pagination?: {
     hasMore: boolean;
     totalPages: number;
-    totalReservations: number;
+    total: number;
     currentPage: number;
     nextPage: number;
   };

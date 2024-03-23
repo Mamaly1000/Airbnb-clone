@@ -15,7 +15,6 @@ export type ReviewFilterTypes =
   | "LISTING_ID"
   | "SEARCH"
   | "RATING"
-  | "LISTING_NAME"
   | "CLEANLINESS"
   | "ACCURACY"
   | "CHECK_IN"

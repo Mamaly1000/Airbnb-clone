@@ -82,21 +82,18 @@ export default async function handler(
       if (filterType === "VALUE") {
         where.value = range;
       }
-      if (filterType === "LISTING_ID" && listingId) {
-        where.listingId = listingId;
-      }
-      if (filterType === "USER_ID" && userId) {
-        where.userId = userId;
-      }
-      if (filterType === "LISTING_NAME") {
-        where.listing = { title: listing_name };
-      }
-      if (filterType === "CREATED_AT" && startDate && endDate) {
-        where.createdAt = {
-          lte: new Date(endDate),
-          gte: new Date(startDate),
-        };
-      }
+    }
+    if (listingId) {
+      where.listingId = listingId;
+    }
+    if (userId) {
+      where.userId = userId;
+    }
+    if (startDate && endDate) {
+      where.createdAt = {
+        lte: new Date(endDate),
+        gte: new Date(startDate),
+      };
     }
     if (sort) {
       if (sort === "ACCURACY") {

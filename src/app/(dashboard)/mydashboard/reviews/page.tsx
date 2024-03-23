@@ -1,18 +1,29 @@
 "use client";
 import useReviews from "@/hooks/useReviews";
 import { useReviewTable } from "@/hooks/useReviewsTable";
-import React, { useCallback } from "react";
-import { SingleTable_TH_type } from "../../../../components/table/table-shared-components/TableHeaderLabel";
-import { ReviewSortTypes } from "@/types/ReviewTypes";
+import React, { useCallback, useMemo } from "react";
+import { SingleTable_TH_type } from "@/components/table/table-shared-components/TableHeaderLabel";
+import { ReviewFilterTypes, ReviewSortTypes } from "@/types/ReviewTypes";
 import Table from "@/components/table/Table";
-import { BiFilter } from "react-icons/bi";
-import { tableFilterOption } from "@/components/table/table-heading/TableFilterSection";
+import { BiFilter, BiHome, BiUser } from "react-icons/bi";
+import { uniq, without } from "lodash";
+import { MdOutlineStarPurple500 } from "react-icons/md";
+import { IoSearchOutline } from "react-icons/io5";
+import { useRangeDateModal } from "@/hooks/useRangeDateModal";
+import ReviewRow from "@/components/table/table-row/ReviewRow";
 
-const filterItems: tableFilterOption[] = [];
+export const ReviewsfilterItems = [
+  { label: "rate", icon: MdOutlineStarPurple500, value: "RATING" },
+  { label: "search", icon: IoSearchOutline, value: "SEARCH" },
+  { label: "user", icon: BiUser, value: "USER_ID" },
+  { label: "property", value: "LISTING_ID", icon: BiHome },
+];
 
 const ReviewsPage = () => {
-  const { searchParams, hiddenCols, setQuery } = useReviewTable();
+  const { searchParams, hiddenCols, setQuery, setHiddenCols, setHiddenRows } =
+    useReviewTable();
   const { isLoading, pagination, reviews } = useReviews(searchParams);
+  const { onOpen: daterangeOpen, Date } = useRangeDateModal();
   const labelOnclick = useCallback(
     (type: ReviewSortTypes) => {
       if (!isLoading) {
@@ -32,6 +43,17 @@ const ReviewsPage = () => {
   );
   const labels: SingleTable_TH_type[] = [
     {
+      colunm_type: "USER_NAME",
+      label: "user",
+      sort: {
+        isActive: searchParams.sort === "USER_NAME",
+        type: searchParams.sortIn,
+      },
+      disabled: isLoading,
+      display: hiddenCols.includes("USER_NAME"),
+      onClick: () => labelOnclick("USER_NAME"),
+    },
+    {
       colunm_type: "CREATED_AT",
       label: "created at",
       sort: {
@@ -44,23 +66,13 @@ const ReviewsPage = () => {
       onClick: () => labelOnclick("CREATED_AT"),
     },
     {
-      colunm_type: "USER_NAME",
-      label: "user",
-      sort: {
-        isActive: searchParams.sort === "USER_NAME",
-        type: searchParams.sortIn,
-      },
-      disabled: isLoading,
-      display: hiddenCols.includes("USER_NAME"),
-      onClick: () => labelOnclick("USER_NAME"),
-    },
-    {
       colunm_type: "BODY",
       label: "review",
       sort: {
         isActive: searchParams.sort === "BODY",
         type: searchParams.sortIn,
       },
+      className: "min-w-[300px] max-w-[300px]",
       disabled: isLoading,
       display: hiddenCols.includes("BODY"),
       onClick: () => labelOnclick("BODY"),
@@ -72,6 +84,7 @@ const ReviewsPage = () => {
         isActive: searchParams.sort === "LISTING_NAME",
         type: searchParams.sortIn,
       },
+      className: "min-w-[300px] max-w-[300px]",
       disabled: isLoading,
       display: hiddenCols.includes("LISTING_NAME"),
       onClick: () => labelOnclick("LISTING_NAME"),
@@ -157,68 +170,149 @@ const ReviewsPage = () => {
         "flex items-center justify-start md:justify-end  lg:sticky top-0 -right-3 bg-neutral-300 dark:bg-neutral-900 ",
     },
   ];
+  const tableFilterOptions = useMemo(() => {
+    let arr = [];
+    if (searchParams.filterType === "RATING") {
+      arr.push(ReviewsfilterItems.find((i) => i.value === "RATING")!);
+    }
+    if (!!searchParams.userId) {
+      arr.push(ReviewsfilterItems.find((i) => i.value === "USER_ID")!);
+    }
+    if (!!searchParams.listingId) {
+      arr.push(ReviewsfilterItems.find((i) => i.value === "LISTING_ID")!);
+    }
+    if (!!searchParams.search) {
+      arr.push(ReviewsfilterItems.find((i) => i.value === "SEARCH")!);
+    }
+    return arr;
+  }, [searchParams]);
   return (
     <Table
       tableHeaderLabels={labels}
+      header={{
+        heading: {
+          subtitle:
+            "there is a list of reviews that your clients made for their reservations.",
+          title: "Reviews",
+        },
+        headingActions: {
+          calendar: {
+            date: Date,
+            setDate: () => {
+              daterangeOpen();
+            },
+          },
+        },
+      }}
       controllSection={{
         colums_control: {
           label: `showing ${pagination?.totalReviews || 0} reviews`,
-          columns: [],
+          columns: labels.map((label) => ({
+            label: "hide " + label.label,
+            onClick: () => {
+              if (label.display) {
+                setHiddenCols(
+                  uniq([...hiddenCols, label.colunm_type] as ReviewSortTypes[])
+                );
+                if (searchParams.sort === label.colunm_type) {
+                  setQuery({
+                    ...searchParams,
+                    sort: undefined,
+                    sortIn: "desc",
+                  });
+                }
+              } else {
+                setHiddenCols(
+                  without(hiddenCols, label.colunm_type) as ReviewSortTypes[]
+                );
+              }
+            },
+            isActive: searchParams.sort === label.colunm_type,
+          })),
         },
       }}
       filterSectionActions={{
         onResetTableFilter: () => {
-          on();
-          setSelectedFilter([]);
+          setQuery({
+            ...searchParams,
+            filterType: undefined,
+            min: undefined,
+            max: undefined,
+            listingId: undefined,
+            search: undefined,
+            listing_name: undefined,
+            page: 1,
+            userId: undefined,
+          });
         },
         onDeselectTableFilter: (
-          item: unknown & { value: reservationFilterTypes }
+          item: unknown & { value: ReviewFilterTypes }
         ) => {
-          if (item.value === "CLIENT") {
+          if (
+            item.value === "CHECK_IN" ||
+            item.value === "CLEANLINESS" ||
+            item.value === "ACCURACY" ||
+            item.value === "COMMUNICATION" ||
+            item.value === "LOCATION" ||
+            item.value === "RATING" ||
+            item.value === "VALUE"
+          ) {
             setQuery({
               ...searchParams,
-              userId: undefined,
-            });
-          }
-          if (item.value === "COMPLETED") {
-            setQuery({
-              ...searchParams,
-              type: "ALL",
-            });
-          }
-          if (item.value === "LISTING") {
-            setQuery({
-              ...searchParams,
-              listingId: undefined,
-            });
-          }
-          if (item.value === "PENDING") {
-            setQuery({
-              ...searchParams,
-              type: "ALL",
-            });
-          }
-          if (item.value === "PRICE") {
-            setQuery({
-              ...searchParams,
+              filterType: undefined,
               min: undefined,
               max: undefined,
             });
           }
-          setSelectedFilter(without(SelectedFilters, item.value));
+          if (item.value === "LISTING_ID") {
+            setQuery({
+              ...searchParams,
+              listingId: undefined,
+              filterType: undefined,
+            });
+          }
+          if (item.value === "USER_ID") {
+            setQuery({
+              ...searchParams,
+              filterType: undefined,
+              userId: undefined,
+            });
+          }
+          if (item.value === "SEARCH") {
+            setQuery({
+              ...searchParams,
+              filterType: undefined,
+              search: undefined,
+            });
+          }
         },
-        tableFilterOptions: filterItems.filter(
-          (item) => !!SelectedFilters?.includes(item.value)
-        ),
+        tableFilterOptions,
         filterButton: {
           label: "select filter",
           icon: BiFilter,
           onClick: () => {},
         },
       }}
-      footer={{}}
-      header={{}}
-      tableBody={{}}
+      tableBody={{
+        rows: reviews.map((r) => ({
+          data: r,
+        })),
+        isLoading,
+        RowElement: ReviewRow,
+      }}
+      footer={{
+        footerItemOnclick: (page) => {
+          if (page !== searchParams.page) {
+            setQuery({ ...searchParams, page });
+          }
+        },
+        isLoading,
+        pagination: {
+          ...pagination,
+          total: pagination?.totalReviews || 1,
+          totalPages: pagination?.maxPages || 1,
+        },
+      }}
     />
   );
 };

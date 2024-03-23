@@ -3,7 +3,7 @@ import Table from "@/components/table/Table";
 import ReservationRow from "@/components/table/table-row/ReservationRow";
 import { SingleTable_TH_type } from "@/components/table/table-shared-components/TableHeaderLabel";
 import { useReservationFilterModal } from "@/hooks/useReservationFilterModal";
-import { useReservationRangeDateModal } from "@/hooks/useReservationRangeDateModal";
+import { useRangeDateModal } from "@/hooks/useRangeDateModal";
 import useReservations, {
   reservationStatusTypes,
 } from "@/hooks/useReservations";
@@ -70,14 +70,13 @@ const ReservationsPage = () => {
     hiddenRows,
     setHiddenRows,
   } = useReservationTable();
-  const { onOpen: openDaterangeReservationModal } =
-    useReservationRangeDateModal();
+  const { onOpen: openDaterangeReservationModal, Date } = useRangeDateModal();
   const { onOpen: openReservationFilterModal } = useReservationFilterModal();
   const { reservations, isLoading, pagination } = useReservations({
     ...searchParams,
     paginate: true,
-    startDate: DisplayDate.startDate,
-    endDate: DisplayDate.endDate,
+    startDate: Date.startDate,
+    endDate: Date.endDate,
   });
   const tableLabelOnclick = useCallback(
     (labelSortType: reservationSortTypes) => {
@@ -200,7 +199,7 @@ const ReservationsPage = () => {
         },
         headingActions: {
           calendar: {
-            date: DisplayDate,
+            date: Date,
             setDate: () => {
               openDaterangeReservationModal();
             },
@@ -353,7 +352,7 @@ const ReservationsPage = () => {
           }
         },
         isLoading,
-        pagination,
+        pagination: { ...pagination, total: pagination.totalReservations },
       }}
     />
   );
