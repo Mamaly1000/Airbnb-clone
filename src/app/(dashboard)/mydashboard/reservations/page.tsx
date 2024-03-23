@@ -58,7 +58,6 @@ const ReservationsPage = () => {
   const {
     onResetQuery,
     setQuery,
-    DisplayDate,
     SelectedFilters,
     SelectedSort,
     searchParams,

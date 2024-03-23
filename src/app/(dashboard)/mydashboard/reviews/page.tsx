@@ -12,12 +12,13 @@ import { IoSearchOutline } from "react-icons/io5";
 import { useRangeDateModal } from "@/hooks/useRangeDateModal";
 import ReviewRow from "@/components/table/table-row/ReviewRow";
 import { useReviewFilterModal } from "@/hooks/useReviewsFilterModal";
+import { tableFilterOption } from "@/components/table/table-heading/TableFilterSection";
 
-export const ReviewsfilterItems = [
+const ReviewsfilterItems: tableFilterOption[] = [
   { label: "rate", icon: MdOutlineStarPurple500, value: "RATING" },
   { label: "search", icon: IoSearchOutline, value: "SEARCH" },
   { label: "user", icon: BiUser, value: "USER_ID" },
-  { label: "property", value: "LISTING_ID", icon: BiHome },
+  { label: "property", icon: BiHome, value: "LISTING_ID" },
 ];
 
 const ReviewsPage = () => {
@@ -55,7 +56,8 @@ const ReviewsPage = () => {
         isActive: searchParams.sort === "USER_NAME",
         type: searchParams.sortIn,
       },
-      className: "min-w-[200px] max-w-[200px] sticky top-0 -left-3 bg-neutral-300 dark:bg-neutral-900 z-10",
+      className:
+        "min-w-[200px] max-w-[200px] sticky top-0 -left-3 bg-neutral-300 dark:bg-neutral-900 z-10",
       disabled: isLoading,
       display: !hiddenCols.includes("USER_NAME"),
       onClick: () => labelOnclick("USER_NAME"),
@@ -177,7 +179,7 @@ const ReviewsPage = () => {
         "flex items-center justify-start md:justify-end  lg:sticky top-0 -right-3 bg-neutral-300 dark:bg-neutral-900 ",
     },
   ];
-  const tableFilterOptions = useMemo(() => {
+  const tableFilterOptions: tableFilterOption[] = useMemo(() => {
     let arr = [];
     if (searchParams.filterType === "RATING") {
       arr.push(ReviewsfilterItems.find((i) => i.value === "RATING")!);
