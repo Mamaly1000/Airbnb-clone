@@ -1,7 +1,7 @@
 "use client";
-import AnalyticsHeader from "@/components/Analytics/AnalyticsHeader";
 import React from "react";
-import AnalyticsBody from "./AnalyticsBody";
+import AnalyticsHeader from "@/components/Analytics/AnalyticsHeader";
+import AnalyticsBody from "@/components/Analytics/AnalyticsBody";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
 const AnalyticsPage = () => {

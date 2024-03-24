@@ -60,3 +60,11 @@ export interface BarDataItem {
   radius?: number | [number, number, number, number];
   legendType?: LegendType;
 }
+export type ChartValueType = {
+  label: string | number;
+  value: string | number;
+  value2?: number | string;
+  value3?: number | string;
+  value4?: number | string;
+  id: string | number;
+};

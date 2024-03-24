@@ -5,7 +5,7 @@ import {
   BarChartXAxisProps,
   BarChartYAxisProps,
   BarDataItem,
-} from "@/types/BarChartTypes";
+} from "@/types/ChartTypes";
 import React, { useMemo } from "react";
 import CustomBarChart from "@/components/charts/BarChart";
 export type ChartType = {

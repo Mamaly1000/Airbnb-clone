@@ -5,6 +5,10 @@ import { type } from "os";
 import { Range } from "react-date-range";
 import { create } from "zustand";
 
+export type SingleAnalyticType =
+  | LISTING_TOPICS_TYPES
+  | RESERVATION_TOPICS_TYPES
+  | FEEDBACK_TOPICS_TYPES;
 export type AnalyticsCategoryTypes =
   | "RESERVATION"
   | "FEEDBACK"
@@ -46,10 +50,7 @@ interface useAnalyticsStore {
   setTimeFrame: (timeframe: Range) => void;
   category?: AnalyticsCategoryTypes;
   setCategory: (type: AnalyticsCategoryTypes) => void;
-  topic?:
-    | LISTING_TOPICS_TYPES
-    | RESERVATION_TOPICS_TYPES
-    | FEEDBACK_TOPICS_TYPES;
+  topic?: SingleAnalyticType;
 
   setTopic: (
     topic:
