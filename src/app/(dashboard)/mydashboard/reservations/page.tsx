@@ -13,7 +13,7 @@ import {
   reservationSortTypes,
 } from "@/types/reservationTypes";
 import { uniq, without } from "lodash";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { IconType } from "react-icons";
 import { BiFilter, BiTable, BiUser } from "react-icons/bi";
 import {

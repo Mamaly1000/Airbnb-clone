@@ -13,7 +13,20 @@ const CustomSelect = ({
   placeholder,
   isClearable,
   options,
-  formatOptionLabel,
+  formatOptionLabel = (data) => {
+    return (
+      <div className="min-w-full max-w-full flex items-center justify-start gap-2 capitalize">
+        <span
+          className={twMerge(
+            "text-sm max-w-full min-w-full  line-clamp-1 whitespace-nowrap overflow-x-hidden text-left",
+            "text-black dark:text-white"
+          )}
+        >
+          {data.label}
+        </span>
+      </div>
+    );
+  },
   disabled,
 }: {
   formatOptionLabel?: (
