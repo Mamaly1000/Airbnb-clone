@@ -6,6 +6,9 @@ import Heading from "../form/Heading";
 import { Range } from "react-date-range";
 import Calendar from "../inputs/Calendar";
 import { sub } from "date-fns";
+import { useReservationTable } from "@/hooks/useReservationTable";
+import { useAnalytics } from "@/hooks/useAnalytics";
+import { useReviewTable } from "@/hooks/useReviewsTable";
 
 const initDate: Range = {
   startDate: sub(new Date(), { days: 10 }),
@@ -14,13 +17,11 @@ const initDate: Range = {
 };
 
 const DateRangeModal = () => {
-  const {
-    onClose,
-    isOpen,
-    Date: currentDate,
-    setDate: onChange,
-  } = useRangeDateModal();
+  const { onClose, isOpen, date: currentDate, type } = useRangeDateModal();
   const [date, setDate] = useState<Range>(currentDate);
+  const { setDate: setReservationDate } = useReservationTable();
+  const { setTimeFrame: setTimeFrameDate } = useAnalytics();
+  const { setDate: setReviewDate } = useReviewTable();
   return (
     <Modal
       isOpen={isOpen}
@@ -53,7 +54,15 @@ const DateRangeModal = () => {
         primary: {
           label: "update now",
           onClick: () => {
-            onChange(date);
+            if (type === "RESERVATION") {
+              setReservationDate(date);
+            }
+            if (type === "ANALYTIC") {
+              setTimeFrameDate(date);
+            }
+            if (type === "REVIEW") {
+              setReviewDate(date);
+            }
             onClose();
             setDate(initDate);
           },

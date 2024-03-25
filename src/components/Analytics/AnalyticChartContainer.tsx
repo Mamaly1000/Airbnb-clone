@@ -457,9 +457,9 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
             formatter: () => chartData.legend,
           },
           tooltip: {
-            formatter: (val) => [`${val} ratings`, "total"],
+            formatter: (val) => [`${val} reviews`, "total"],
             labelFormatter: (label) => {
-              return `${label} rating`;
+              return `${label} reviews`;
             },
           },
         };

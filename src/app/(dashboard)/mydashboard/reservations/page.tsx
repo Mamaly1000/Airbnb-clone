@@ -68,14 +68,15 @@ const ReservationsPage = () => {
     setSelectedFilter,
     hiddenRows,
     setHiddenRows,
+    DisplayDate,
   } = useReservationTable();
-  const { onOpen: openDaterangeReservationModal, Date } = useRangeDateModal();
+  const { onOpen: openDaterangeReservationModal } = useRangeDateModal();
   const { onOpen: openReservationFilterModal } = useReservationFilterModal();
   const { reservations, isLoading, pagination } = useReservations({
     ...searchParams,
     paginate: true,
-    startDate: Date.startDate,
-    endDate: Date.endDate,
+    startDate: DisplayDate.startDate,
+    endDate: DisplayDate.endDate,
   });
   const tableLabelOnclick = useCallback(
     (labelSortType: reservationSortTypes) => {
@@ -198,9 +199,12 @@ const ReservationsPage = () => {
         },
         headingActions: {
           calendar: {
-            date: Date,
+            date: DisplayDate,
             setDate: () => {
-              openDaterangeReservationModal();
+              openDaterangeReservationModal({
+                type: "RESERVATION",
+                date: DisplayDate,
+              });
             },
           },
           reset: {

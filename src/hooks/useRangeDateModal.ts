@@ -2,22 +2,23 @@ import { sub } from "date-fns";
 import { Range } from "react-date-range";
 import { create } from "zustand";
 
+export type rangeModalTypes = "REVIEW" | "RESERVATION" | "ANALYTIC";
 interface useRangeDateModalStore {
   isOpen: boolean;
-  onOpen: () => void;
+  onOpen: ({ date, type }: { type: rangeModalTypes; date: Range }) => void;
   onClose: () => void;
-  Date: Range;
-  setDate: (range: Range) => void;
+  type?: rangeModalTypes;
+  date: Range;
 }
 
 export const useRangeDateModal = create<useRangeDateModalStore>((set) => ({
   isOpen: false,
-  onOpen: () => set({ isOpen: true }),
-  onClose: () => set({ isOpen: false }),
-  Date: {
+  type: undefined,
+  date: {
     startDate: sub(new Date(), { days: 10 }),
     endDate: new Date(),
     key: "selected",
   },
-  setDate: (date) => set({ Date: date }),
+  onOpen: ({ type, date }) => set({ date, isOpen: true, type }),
+  onClose: () => set({ isOpen: false }),
 }));

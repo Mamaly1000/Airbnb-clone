@@ -22,14 +22,14 @@ const ReviewsfilterItems: tableFilterOption[] = [
 ];
 
 const ReviewsPage = () => {
-  const { searchParams, hiddenCols, setQuery, setHiddenCols } =
+  const { searchParams, hiddenCols, setQuery, setHiddenCols, dateRange } =
     useReviewTable();
   const { onOpen: openReviewFilterModal } = useReviewFilterModal();
-  const { onOpen: daterangeOpen, Date } = useRangeDateModal();
+  const { onOpen: daterangeOpen, date } = useRangeDateModal();
   const { isLoading, pagination, reviews } = useReviews({
     ...searchParams,
-    startDate: Date.startDate,
-    endDate: Date.endDate,
+    startDate: date.startDate,
+    endDate: date.endDate,
   });
   const labelOnclick = useCallback(
     (type: ReviewSortTypes) => {
@@ -206,9 +206,9 @@ const ReviewsPage = () => {
         },
         headingActions: {
           calendar: {
-            date: Date,
+            date: date,
             setDate: () => {
-              daterangeOpen();
+              daterangeOpen({ type: "REVIEW", date: dateRange });
             },
           },
         },

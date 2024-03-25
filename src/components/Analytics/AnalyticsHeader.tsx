@@ -20,8 +20,8 @@ const analyticsCategories: {
   value: AnalyticsCategoryTypes;
   icon: IconType;
 }[] = [
-  { value: "FEEDBACK", label: "reviews", icon: GoCodeReview },
   { value: "LISTING", label: "properties", icon: MdHomeWork },
+  { value: "FEEDBACK", label: "reviews", icon: GoCodeReview },
   { value: "RESERVATION", label: "reservations", icon: IoPricetagsOutline },
   { value: "SINGLE_LISTING", label: "single property", icon: TbHomeStats },
 ];
@@ -96,8 +96,8 @@ export const feedbackTopics: AnalyticsTopicsType = {
 };
 export const allTopics = [listingTopic, reservationsTopic, feedbackTopics];
 const AnalyticsHeader = () => {
-  const { Date, onOpen } = useRangeDateModal();
-  const { setCategory, setTopic, category, topic } = useAnalytics();
+  const { date, onOpen } = useRangeDateModal();
+  const { setCategory, setTopic, category, topic, timeFrame } = useAnalytics();
   const topics = useMemo(() => {
     return (
       [listingTopic, reservationsTopic, feedbackTopics].find(
@@ -111,22 +111,22 @@ const AnalyticsHeader = () => {
       <button
         className="min-h-[64.9px] max-h-[64.9px] rounded-[5px] drop-shadow-2xl flex items-center justify-between gap-2 flex-wrap border-[1px] border-neutral-300 hover:border-neutral-400 px-6 py-2 active:border-rose-500 focus:border-rose-500"
         onClick={() => {
-          onOpen();
+          onOpen({ type: "ANALYTIC", date: timeFrame });
         }}
       >
         <span className="text-black dark:text-white text-sm">TimeFrame:</span>
         <motion.div
           key={`${
-            Date.startDate?.toISOString()! + Date.endDate?.toISOString()
+            date.startDate?.toISOString()! + date.endDate?.toISOString()
           }`}
           initial={{ opacity: 0, translateY: 10 }}
           animate={{ opacity: 1, translateY: 0 }}
           transition={{ duration: 0.1, ease: "linear" }}
           className="flex items-center justify-center gap-1 font-semibold text-sm capitalize text-black dark:text-rose-500 "
         >
-          {format(Date.startDate!, "MMM dd, yyyy")}
+          {format(date.startDate!, "MMM dd, yyyy")}
           {" - "}
-          {format(Date.endDate!, "MMM dd, yyyy")}
+          {format(date.endDate!, "MMM dd, yyyy")}
         </motion.div>
       </button>
       <CustomSelect
