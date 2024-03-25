@@ -72,26 +72,17 @@ export default async function handler(
           const averagePrice =
             listings.reduce((acc, listing) => acc + listing.price, 0) /
             listings.length;
-          const totalRooms = listings.reduce(
-            (acc, listing) => acc + listing.roomCount,
+          const totalRevenue = reservations.reduce(
+            (acc, reservation) => acc + reservation.totalPrice,
             0
-          );
-          const totalBathrooms = listings.reduce(
-            (acc, listing) => acc + listing.bathroomCount,
-            0
-          );
+          ); 
           const totalReservations = reservations.filter(
             (reservation) => reservation.listingId
           ).length;
 
           overviewData = [
             { label: "Average Price", value: averagePrice, iconType: "dollar" },
-            { label: "Total Rooms", value: totalRooms, iconType: "home" },
-            {
-              label: "Total Bathrooms",
-              value: totalBathrooms,
-              iconType: "bath",
-            },
+            { label: "Total Revenue", value: totalRevenue, iconType: "dollar" },
             {
               label: "Total Reservations",
               value: totalReservations,

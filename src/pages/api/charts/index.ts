@@ -17,19 +17,24 @@ export default async function handler(
       return res.status(401).json({ message: "Unauthorized User" });
     }
     const { topic }: { topic?: SingleAnalyticType } = req.query;
-    let results: ChartValueType[] = [];
+    let results: ChartValueType | null = null;
     if (topic) {
+      // listings-chart-data
       if (topic === "LISTING_CATEGORY_COUNT") {
         const result = await prisma.listing.groupBy({
           by: ["category"],
           _count: { id: true },
         });
 
-        results = result.map((item) => ({
-          label: item.category,
-          value: item._count.id,
-          id: item.category,
-        }));
+        results = {
+          legend: "total listings",
+          type: "LISTING_CATEGORY_COUNT",
+          data: result.map((item) => ({
+            label: item.category,
+            value: item._count.id,
+            id: item.category,
+          })),
+        };
       }
       if (topic === "LISTING_CATEGORY_PRICE") {
         const result = await prisma.listing.groupBy({
@@ -37,11 +42,15 @@ export default async function handler(
           _avg: { price: true },
         });
 
-        results = result.map((item) => ({
-          label: item.category,
-          value: item._avg.price || 0,
-          id: item.category,
-        }));
+        results = {
+          data: result.map((item) => ({
+            label: item.category,
+            value: item._avg.price || 0,
+            id: item.category,
+          })),
+          legend: "average properties price",
+          type: "LISTING_CATEGORY_PRICE",
+        };
       }
       if (topic === "LISTING_ENTITIES_COUNT") {
         const result = await prisma.listing.findMany({
@@ -55,24 +64,33 @@ export default async function handler(
             category: true,
           },
         });
-        results = result.map((i) => ({
-          id: i.id,
-          label: i.category,
-          value: i.bathroomCount,
-          value2: i.guestCount,
-          valu3: i.roomCount,
-        }));
+        results = {
+          legend: "",
+          type: "LISTING_ENTITIES_COUNT",
+          data: result.map((i) => ({
+            id: i.id,
+            label: i.category,
+            bathroomCount: i.bathroomCount,
+            guestCount: i.guestCount,
+            roomCount: i.roomCount,
+            title: i.title,
+          })),
+        };
       }
       if (topic === "LISTING_LOCATION_COUNT") {
         const result = await prisma.listing.groupBy({
           by: ["locationValue"],
           _count: { id: true },
         });
-        results = result.map((r) => ({
-          id: r.locationValue,
-          label: r.locationValue,
-          value: r._count.id,
-        }));
+        results = {
+          legend: "total properties",
+          type: "LISTING_LOCATION_COUNT",
+          data: result.map((r) => ({
+            id: r.locationValue,
+            label: r.locationValue,
+            value: r._count.id,
+          })),
+        };
       }
       if (topic === "LISTING_RATE_AVERAGE") {
         const result = await prisma.listing.findMany({
@@ -85,11 +103,15 @@ export default async function handler(
             rate: true,
           },
         });
-        results = result.map((i) => ({
-          label: i.title,
-          value: i.rate,
-          id: i.id,
-        }));
+        results = {
+          legend: "listings average ratings",
+          type: "LISTING_RATE_AVERAGE",
+          data: result.map((i) => ({
+            label: i.title,
+            value: i.rate,
+            id: i.id,
+          })),
+        };
       }
       if (topic === "LISTING_VIEWS_COUNT") {
         const result = await prisma.listing.findMany({
@@ -102,13 +124,18 @@ export default async function handler(
             views: true,
           },
         });
-        results = result.map((i) => ({
-          label: i.title,
-          value: i.views.length,
-          id: i.id,
-        }));
+        results = {
+          legend: "average properties views",
+          type: "LISTING_VIEWS_COUNT",
+          data: result.map((i) => ({
+            label: i.title,
+            value: i.views.length,
+            id: i.id,
+          })),
+        };
       }
-      if (topic === "FEEDBACK_USERS_VAERAGE") {
+      // feedbacks-chart-data
+      if (topic === "FEEDBACK_USERS_AVERAGE") {
       }
       if (topic === "FEEDBACK_LISTING_COUNT") {
       }
@@ -116,6 +143,7 @@ export default async function handler(
       }
       if (topic === "FEEDBACK_TOTAL_AVERAGE") {
       }
+      // reservations-chart-data
       if (topic === "RESERVATION_CREATED_COUNT") {
       }
       if (topic === "RESERVATION_DATE_TOTALPRICE") {

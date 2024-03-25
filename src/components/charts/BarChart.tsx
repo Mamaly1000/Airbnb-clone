@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useTheme } from "@/hooks/useTheme"; 
+import { useTheme } from "@/hooks/useTheme";
 import {
   BarChart,
   Bar,
@@ -21,6 +21,8 @@ const CustomBarChart = ({
   data,
   bars,
   legendProps,
+  tooltip,
+  grid,
 }: ChartType) => {
   const { mode } = useTheme();
   return (
@@ -55,14 +57,16 @@ const CustomBarChart = ({
             verticalAlign={legendProps?.verticalAlign}
             formatter={legendProps?.formatter}
           />
-          <CartesianGrid strokeWidth={1} strokeDasharray="3 3" />
+          {grid && <CartesianGrid strokeWidth={1} strokeDasharray="3 3" />}
           <XAxis
             dataKey={XAxisProps?.dataKey}
             width={XAxisProps?.width || 20}
             fontSize={XAxisProps?.fontSize || 20}
             tickFormatter={XAxisProps?.formatter}
             type={XAxisProps?.type}
-            color={XAxisProps?.color}
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
           />
           <YAxis
             dataKey={YAxisProps?.dataKey}
@@ -70,24 +74,32 @@ const CustomBarChart = ({
             fontSize={YAxisProps?.fontSize || 20}
             tickFormatter={YAxisProps?.formatter}
             type={YAxisProps?.type}
-            color={YAxisProps?.color}
+            color={mode === "dark" ? "#fff" : "#000"}
+            fill={mode === "dark" ? "#fff" : "#000"}
+            tickLine={false}
+            tickMargin={10}
+            allowDecimals={YAxisProps?.decimal}
+            axisLine={false}
+            domain={YAxisProps?.domain}
           />
           <Tooltip
             cursor={false}
             contentStyle={{
               background:
-                mode === "dark" ? "rgba(0 0 0/.6)" : "rgba(255 255 255/.6)",
+                mode === "dark" ? "rgba(0 0 0/.8)" : "rgba(255 255 255/.8)",
               borderColor:
                 mode === "dark"
                   ? "rgba(137 133 133/.6)"
                   : "rgba(137 133 133/.3)",
               borderRadius: 4,
             }}
+            formatter={tooltip?.formatter}
+            labelFormatter={tooltip?.labelFormatter}
           />
           {bars?.map((bar) => (
             <Bar
               key={bar.id}
-              xlinkTitle="sdasdasasd"
+              xlinkTitle={bar.legendTitle}
               legendType={bar.legendType}
               dataKey={bar.dataKey}
               fill={mode === "dark" ? bar.fill?.dark : bar.fill?.light}
@@ -101,7 +113,16 @@ const CustomBarChart = ({
                   stroke={bar.activeBar?.stroke}
                 />
               }
-              radius={bar.radius}
+              radius={bar.radius || 30}
+              stackId={bar.stackId}
+              spacing={2}
+              background={
+                !!!bar.stackId && {
+                  fill:
+                    mode === "dark" ? "rgba(50 50 50/.4)" : "rgba(50 50 50/.1)",
+                  radius: 30,
+                }
+              }
             />
           ))}
         </BarChart>
@@ -110,4 +131,4 @@ const CustomBarChart = ({
   );
 };
 
-export default React.memo(CustomBarChart);
+export default CustomBarChart;

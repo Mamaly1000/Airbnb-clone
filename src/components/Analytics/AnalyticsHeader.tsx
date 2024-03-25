@@ -92,7 +92,7 @@ export const feedbackTopics: AnalyticsTopicsType = {
       label: "Distribution of feedback ratings (e.g., 1 star, 2 stars, etc.)",
       value: "FEEDBACK_RATE_COUNT",
     },
-    { label: "Average rating given by users", value: "FEEDBACK_USERS_VAERAGE" },
+    { label: "Average rating given by users", value: "FEEDBACK_USERS_AVERAGE" },
   ],
 };
 export const allTopics = [listingTopic, reservationsTopic, feedbackTopics];
@@ -108,7 +108,7 @@ const AnalyticsHeader = () => {
   }, [category]);
 
   return (
-    <section className="min-w-full max-w-full flex-wrap items-center justify-start gap-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3">
+    <section className="min-w-full max-w-full flex-wrap items-center pb-5 justify-start gap-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3">
       <button
         className="min-h-[64.9px] max-h-[64.9px] rounded-[5px] drop-shadow-2xl flex items-center justify-between gap-2 flex-wrap border-[1px] border-neutral-300 hover:border-neutral-400 px-6 py-2 active:border-rose-500 focus:border-rose-500"
         onClick={() => {

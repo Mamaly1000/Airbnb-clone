@@ -3,8 +3,7 @@ import Loader from "@/components/ui/Loader";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import useOverView from "@/hooks/useOverView";
 import React from "react";
-import OverviewBox from "./OverviewBox";
-import { BiHome } from "react-icons/bi";
+import OverviewBox from "./OverviewBox"; 
 
 const OverviewSection = () => {
   const { category } = useAnalytics();
@@ -12,7 +11,7 @@ const OverviewSection = () => {
   return (
     <div
       key={category}
-      className="min-w-full max-w-full grid grid-cols-1 md:grid-cols-3 gap-3"
+      className="min-w-full max-w-full grid grid-cols-1 md:grid-cols-3 gap-3 py-5"
     >
       {isLoading ? (
         <Loader

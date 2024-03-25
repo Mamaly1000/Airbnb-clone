@@ -1,5 +1,6 @@
 import { LegendType } from "recharts";
 import { Formatter } from "recharts/types/component/DefaultLegendContent";
+import { AxisDomain } from "recharts/types/util/types";
 
 export type BarChartLegendProps = {
   iconType?:
@@ -30,6 +31,8 @@ export type BarChartYAxisProps = {
   type?: "number" | "category" | undefined;
   color?: string;
   dataKey?: any;
+  decimal?: boolean;
+  domain?: AxisDomain;
 };
 export type BarChartXAxisProps = {
   fontSize?: number;
@@ -59,12 +62,33 @@ export interface BarDataItem {
   };
   radius?: number | [number, number, number, number];
   legendType?: LegendType;
+  legendTitle?: string;
+  stackId?: string;
 }
-export type ChartValueType = {
-  label: string | number;
-  value: string | number;
-  value2?: number | string;
-  value3?: number | string;
-  value4?: number | string;
-  id: string | number;
-};
+export type ChartValueType =
+  | {
+      legend: string;
+      type:
+        | "LISTING_CATEGORY_COUNT"
+        | "LISTING_CATEGORY_PRICE"
+        | "LISTING_LOCATION_COUNT"
+        | "LISTING_RATE_AVERAGE"
+        | "LISTING_VIEWS_COUNT";
+      data: {
+        label: string;
+        value: number;
+        id: string;
+      }[];
+    }
+  | {
+      legend: string;
+      type: "LISTING_ENTITIES_COUNT";
+      data: {
+        id: string;
+        label: string;
+        bathroomCount: number;
+        guestCount: number;
+        roomCount: number;
+        title: string;
+      }[];
+    };

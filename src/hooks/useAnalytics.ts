@@ -44,7 +44,7 @@ export type FEEDBACK_TOPICS_TYPES =
   | "FEEDBACK_TOTAL_AVERAGE"
   | "FEEDBACK_LISTING_COUNT"
   | "FEEDBACK_RATE_COUNT"
-  | "FEEDBACK_USERS_VAERAGE";
+  | "FEEDBACK_USERS_AVERAGE";
 interface useAnalyticsStore {
   timeFrame: Range;
   setTimeFrame: (timeframe: Range) => void;

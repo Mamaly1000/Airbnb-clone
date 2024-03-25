@@ -10,7 +10,7 @@ const useCharts = (params?: { topic?: SingleAnalyticType }) => {
   const query = qs.stringifyUrl({ url: "/api/charts", query: params });
   const { data, error, isLoading, mutate } = useSWR(query, fetcher);
   return {
-    chartData: (data || []) as ChartValueType[],
+    chartData: (data || null) as ChartValueType,
     error,
     isLoading,
     mutate,
