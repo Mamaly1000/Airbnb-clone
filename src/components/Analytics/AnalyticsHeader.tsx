@@ -92,7 +92,6 @@ export const feedbackTopics: AnalyticsTopicsType = {
       label: "Distribution of feedback ratings (e.g., 1 star, 2 stars, etc.)",
       value: "FEEDBACK_RATE_COUNT",
     },
-    { label: "Average rating given by users", value: "FEEDBACK_USERS_AVERAGE" },
   ],
 };
 export const allTopics = [listingTopic, reservationsTopic, feedbackTopics];

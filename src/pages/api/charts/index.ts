@@ -135,13 +135,80 @@ export default async function handler(
         };
       }
       // feedbacks-chart-data
-      if (topic === "FEEDBACK_USERS_AVERAGE") {
+      if (topic === "FEEDBACK_TOTAL_AVERAGE") {
+        const result = await prisma.feedback.findMany({
+          where: { listing: { userId: user.currentUser.id } },
+          select: {
+            id: true,
+            cleanliness: true,
+            accuracy: true,
+            checkIn: true,
+            communication: true,
+            location: true,
+            rating: true,
+            userId: true,
+            listing: { select: { title: true } },
+          },
+        });
+        results = {
+          type: "FEEDBACK_TOTAL_AVERAGE",
+          legend: "average feedbacks rate",
+          data: result.map((r) => ({
+            id: r.id,
+            userId: r.userId,
+            rating: r.rating,
+            cleanliness: r.cleanliness,
+            accuracy: r.accuracy,
+            checkIn: r.checkIn,
+            communication: r.communication,
+            location: r.location,
+            listing_name: r.listing.title,
+          })),
+        };
       }
       if (topic === "FEEDBACK_LISTING_COUNT") {
+        const result = await prisma.listing.findMany({
+          where: {
+            userId: user.currentUser.id,
+          },
+          select: {
+            title: true,
+            id: true,
+            feedbacks: {
+              select: { _count: true, id: true },
+            },
+          },
+        });
+        results = {
+          type: "FEEDBACK_LISTING_COUNT",
+          legend: "total reviews for listings",
+          data: result.map((r) => ({
+            label: r.title,
+            value: r.feedbacks.length,
+            id: r.id,
+          })),
+        };
       }
       if (topic === "FEEDBACK_RATE_COUNT") {
-      }
-      if (topic === "FEEDBACK_TOTAL_AVERAGE") {
+        const result = await prisma.feedback.findMany({
+          where: { listing: { userId: user.currentUser.id } },
+          select: {
+            id: true,
+            rating: true,
+            user: { select: { name: true, email: true, id: true } },
+            listing: { select: { title: true } },
+          },
+        });
+        results = {
+          legend: "review ratings by users",
+          type: "FEEDBACK_RATE_COUNT",
+          data: result.map((r) => ({
+            label: (r.user.name! || r.user.email! || r.user.id)!,
+            id: r.id,
+            value: r.rating,
+            title: r.listing.title,
+          })),
+        };
       }
       // reservations-chart-data
       if (topic === "RESERVATION_CREATED_COUNT") {

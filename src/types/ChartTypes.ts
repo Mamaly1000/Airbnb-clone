@@ -73,7 +73,8 @@ export type ChartValueType =
         | "LISTING_CATEGORY_PRICE"
         | "LISTING_LOCATION_COUNT"
         | "LISTING_RATE_AVERAGE"
-        | "LISTING_VIEWS_COUNT";
+        | "LISTING_VIEWS_COUNT"
+        | "FEEDBACK_LISTING_COUNT";
       data: {
         label: string;
         value: number;
@@ -89,6 +90,31 @@ export type ChartValueType =
         bathroomCount: number;
         guestCount: number;
         roomCount: number;
+        title: string;
+      }[];
+    }
+  | {
+      type: "FEEDBACK_TOTAL_AVERAGE";
+      legend: string;
+      data: {
+        id: string;
+        userId: string;
+        rating: number;
+        cleanliness: number;
+        accuracy: number;
+        checkIn: number;
+        communication: number;
+        location: number;
+        listing_name: string;
+      }[];
+    }
+  | {
+      legend: string;
+      type: "FEEDBACK_RATE_COUNT";
+      data: {
+        label: string;
+        id: string;
+        value: number;
         title: string;
       }[];
     };

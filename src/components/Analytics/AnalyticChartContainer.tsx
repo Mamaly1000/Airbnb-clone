@@ -309,6 +309,205 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
           },
         };
       }
+      // feedback charts
+      if (
+        topic === "FEEDBACK_TOTAL_AVERAGE" &&
+        chartData.type === "FEEDBACK_TOTAL_AVERAGE"
+      ) {
+        return {
+          data: chartData.data,
+          bars: [
+            {
+              dataKey: "cleanliness",
+              id: "cleanliness",
+              legendTitle: "cleanliness",
+              legendType: "circle",
+              fill: {
+                dark: "#28b463",
+                light: "#28b463",
+              },
+              activeBar: {
+                fill: {
+                  dark: "#169d4f",
+                  light: "#169d4f",
+                },
+              },
+
+              stackId: "a",
+            },
+            {
+              dataKey: "accuracy",
+              id: "accuracy",
+              legendTitle: "accuracy",
+              legendType: "cross",
+              fill: {
+                dark: "#00b8d9",
+                light: "#00b8d9",
+              },
+              activeBar: {
+                fill: {
+                  dark: "#7ec4e3",
+                  light: "#7ec4e3",
+                },
+              },
+              stackId: "a",
+            },
+            {
+              dataKey: "checkIn",
+              id: "checkIn",
+              legendTitle: "checkIn",
+              legendType: "square",
+              fill: {
+                dark: "#ff5249",
+                light: "#ff5249",
+              },
+              activeBar: {
+                fill: {
+                  dark: "#fd7e77",
+                  light: "#fd7e77",
+                },
+              },
+
+              stackId: "a",
+            },
+            {
+              dataKey: "communication",
+              id: "communication",
+              legendTitle: "communication",
+              legendType: "diamond",
+              fill: {
+                dark: "#ffb000",
+                light: "#ffb000",
+              },
+              activeBar: {
+                fill: {
+                  dark: "#ffbd4a",
+                  light: "#ffbd4a",
+                },
+              },
+
+              stackId: "a",
+            },
+            {
+              dataKey: "location",
+              id: "location",
+              legendTitle: "location",
+              legendType: "plainline",
+              fill: {
+                dark: "#e91e63",
+                light: "#e91e63",
+              },
+              activeBar: {
+                fill: {
+                  dark: "#c90036",
+                  light: "#c90036",
+                },
+              },
+              stackId: "a",
+            },
+          ],
+          XAxisProps: {
+            dataKey: "listing_name",
+            fontSize: 14,
+          },
+          YAxisProps: {
+            fontSize: 14,
+            type: "number",
+            decimal: false,
+            domain: [0, 25],
+          },
+          tooltip: {
+            formatter: (val) => `${(+val).toFixed(2)} stars`,
+          },
+        };
+      }
+      if (
+        topic === "FEEDBACK_LISTING_COUNT" &&
+        chartData.type === "FEEDBACK_LISTING_COUNT"
+      ) {
+        return {
+          data: chartData.data,
+          bars: [
+            {
+              dataKey: "value",
+              id: "listing-total-rate",
+              legendType: "star",
+              fill: {
+                dark: "#33691e",
+                light: "#33691e",
+              },
+              activeBar: {
+                fill: {
+                  dark: "#284500",
+                  light: "#284500",
+                },
+              },
+            },
+          ],
+          XAxisProps: {
+            dataKey: "label",
+            fontSize: 14,
+          },
+          YAxisProps: {
+            dataKey: "value",
+            fontSize: 14,
+            type: "number",
+          },
+          legendProps: {
+            formatter: () => chartData.legend,
+          },
+          tooltip: {
+            formatter: (val) => [`${val} ratings`, "total"],
+            labelFormatter: (label) => {
+              return `${label} rating`;
+            },
+          },
+        };
+      }
+      if (
+        topic === "FEEDBACK_RATE_COUNT" &&
+        chartData.type === "FEEDBACK_RATE_COUNT"
+      ) {
+        return {
+          data: chartData.data,
+          bars: [
+            {
+              dataKey: "value",
+              id: "feedback-rate",
+              legendType: "star",
+              fill: {
+                dark: "#0097e6",
+                light: "#0097e6",
+              },
+              activeBar: {
+                fill: {
+                  dark: "#3771c9",
+                  light: "#3771c9",
+                },
+              },
+            },
+          ],
+          XAxisProps: {
+            dataKey: "label",
+            fontSize: 14,
+          },
+          YAxisProps: {
+            dataKey: "value",
+            fontSize: 14,
+            type: "number",
+            domain: [0, 5],
+          },
+          legendProps: {
+            formatter: () => chartData.legend,
+          },
+          tooltip: {
+            formatter: (val) => [`${val} ratings`, "total"],
+            labelFormatter: (label) => {
+              return `${label} rating`;
+            },
+          },
+        };
+      }
     }
     return {} as ChartType;
   }, [topic, chartData]);

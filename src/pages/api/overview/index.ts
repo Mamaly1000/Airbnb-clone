@@ -35,10 +35,7 @@ export default async function handler(
           const averageRating =
             feedbacks.reduce((acc, feedback) => acc + feedback.rating, 0) /
             feedbacks.length;
-          const totalCleanliness = feedbacks.reduce(
-            (acc, feedback) => acc + feedback.cleanliness,
-            0
-          );
+          const totalReviews = feedbacks.length;
           const uniqueUsers = new Set(
             feedbacks.map((feedback) => feedback.userId)
           ).size;
@@ -46,9 +43,9 @@ export default async function handler(
           overviewData = [
             { label: "Average Rating", value: averageRating, iconType: "star" },
             {
-              label: "Total Cleanliness",
-              value: totalCleanliness,
-              iconType: "clean",
+              label: "Total Reviews",
+              value: totalReviews,
+              iconType: "star",
             },
             {
               label: "Total Users Rating",
