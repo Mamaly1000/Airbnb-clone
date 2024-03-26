@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { IconType } from "react-icons";
 import { GoCodeReview } from "react-icons/go";
 import { IoPricetagsOutline } from "react-icons/io5";
-import { TbHomeStats, TbReportAnalytics } from "react-icons/tb";
+import { TbReportAnalytics } from "react-icons/tb";
 import { MdHomeWork } from "react-icons/md";
 
 const analyticsCategories: {
@@ -23,7 +23,6 @@ const analyticsCategories: {
   { value: "LISTING", label: "properties", icon: MdHomeWork },
   { value: "FEEDBACK", label: "reviews", icon: GoCodeReview },
   { value: "RESERVATION", label: "reservations", icon: IoPricetagsOutline },
-  { value: "SINGLE_LISTING", label: "single property", icon: TbHomeStats },
 ];
 
 export const listingTopic: AnalyticsTopicsType = {
@@ -96,7 +95,7 @@ export const feedbackTopics: AnalyticsTopicsType = {
 };
 export const allTopics = [listingTopic, reservationsTopic, feedbackTopics];
 const AnalyticsHeader = () => {
-  const { date, onOpen } = useRangeDateModal();
+  const { onOpen } = useRangeDateModal();
   const { setCategory, setTopic, category, topic, timeFrame } = useAnalytics();
   const topics = useMemo(() => {
     return (
@@ -117,16 +116,17 @@ const AnalyticsHeader = () => {
         <span className="text-black dark:text-white text-sm">TimeFrame:</span>
         <motion.div
           key={`${
-            date.startDate?.toISOString()! + date.endDate?.toISOString()
+            timeFrame.startDate?.toISOString()! +
+            timeFrame.endDate?.toISOString()
           }`}
           initial={{ opacity: 0, translateY: 10 }}
           animate={{ opacity: 1, translateY: 0 }}
           transition={{ duration: 0.1, ease: "linear" }}
           className="flex items-center justify-center gap-1 font-semibold text-sm capitalize text-black dark:text-rose-500 "
         >
-          {format(date.startDate!, "MMM dd, yyyy")}
+          {format(timeFrame.startDate!, "MMM dd, yyyy")}
           {" - "}
-          {format(date.endDate!, "MMM dd, yyyy")}
+          {format(timeFrame.endDate!, "MMM dd, yyyy")}
         </motion.div>
       </button>
       <CustomSelect

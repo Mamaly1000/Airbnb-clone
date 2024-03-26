@@ -1,5 +1,6 @@
 import { LegendType } from "recharts";
 import { Formatter } from "recharts/types/component/DefaultLegendContent";
+import { CurveType } from "recharts/types/shape/Curve";
 import { AxisDomain } from "recharts/types/util/types";
 
 export type BarChartLegendProps = {
@@ -33,6 +34,8 @@ export type BarChartYAxisProps = {
   dataKey?: any;
   decimal?: boolean;
   domain?: AxisDomain;
+  yAxisId?: string;
+  orientation?: "left" | "right" | undefined;
 };
 export type BarChartXAxisProps = {
   fontSize?: number;
@@ -64,6 +67,12 @@ export interface BarDataItem {
   legendType?: LegendType;
   legendTitle?: string;
   stackId?: string;
+}
+export interface LineDataItem extends BarDataItem {
+  yAxisId?: string;
+  activeDot: { r: number };
+  type?: CurveType;
+  stroke?: string;
 }
 export type ChartValueType =
   | {
@@ -116,5 +125,52 @@ export type ChartValueType =
         id: string;
         value: number;
         title: string;
+      }[];
+    }
+  | {
+      type: "RESERVATION_CREATED_COUNT";
+      legend: string;
+      data: {
+        total: number;
+        createdAt: Date;
+        id: string;
+        title: string;
+      }[];
+    }
+  | {
+      type: "RESERVATION_DATE_TOTALPRICE";
+      legend: string;
+      data: { title: string; endDate: Date; totalPrice: number; id: string }[];
+    }
+  | {
+      type: "RESERVATION_REVENUE_COUNT";
+      legend: string;
+      data: {
+        id: string | undefined;
+        title: string | undefined;
+        average: number | null;
+        createdAt: Date | undefined;
+      }[];
+    }
+  | {
+      type: "RESERVATION_STATUS";
+      legend: string;
+      data: {
+        id: string;
+        status: string;
+        title: string;
+        startDate: Date;
+        endDate: Date;
+        totalPrice: number;
+      }[];
+    }
+  | {
+      type: "RESERVATION_USER_COUNT";
+      legend: string;
+      data: {
+        label: string;
+        id: string;
+        totalReservations: number;
+        createdAt: Date;
       }[];
     };

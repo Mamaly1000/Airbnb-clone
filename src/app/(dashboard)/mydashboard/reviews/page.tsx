@@ -28,8 +28,8 @@ const ReviewsPage = () => {
   const { onOpen: daterangeOpen, date } = useRangeDateModal();
   const { isLoading, pagination, reviews } = useReviews({
     ...searchParams,
-    startDate: date.startDate,
-    endDate: date.endDate,
+    startDate: dateRange.startDate,
+    endDate: dateRange.endDate,
   });
   const labelOnclick = useCallback(
     (type: ReviewSortTypes) => {

@@ -3,6 +3,7 @@ import serverAuth from "@/libs/serverAuth";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import { ChartValueType } from "@/types/ChartTypes";
+import { sub } from "date-fns";
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,14 +17,27 @@ export default async function handler(
     if (!user) {
       return res.status(401).json({ message: "Unauthorized User" });
     }
-    const { topic }: { topic?: SingleAnalyticType } = req.query;
+    const {
+      topic,
+      startDate,
+      endDate,
+    }: {
+      startDate?: string;
+      endDate?: string;
+      topic?: SingleAnalyticType;
+    } = req.query;
     let results: ChartValueType | null = null;
+    const createdAt = {
+      gte: new Date(startDate || sub(new Date(), { days: 10 })),
+      lte: new Date(endDate || new Date()),
+    };
     if (topic) {
       // listings-chart-data
       if (topic === "LISTING_CATEGORY_COUNT") {
         const result = await prisma.listing.groupBy({
           by: ["category"],
           _count: { id: true },
+          where: { createdAt },
         });
 
         results = {
@@ -40,6 +54,7 @@ export default async function handler(
         const result = await prisma.listing.groupBy({
           by: ["category"],
           _avg: { price: true },
+          where: { createdAt },
         });
 
         results = {
@@ -54,7 +69,7 @@ export default async function handler(
       }
       if (topic === "LISTING_ENTITIES_COUNT") {
         const result = await prisma.listing.findMany({
-          where: { userId: user.currentUser.id },
+          where: { userId: user.currentUser.id, createdAt },
           select: {
             bathroomCount: true,
             id: true,
@@ -81,6 +96,7 @@ export default async function handler(
         const result = await prisma.listing.groupBy({
           by: ["locationValue"],
           _count: { id: true },
+          where: { createdAt },
         });
         results = {
           legend: "total properties",
@@ -96,6 +112,7 @@ export default async function handler(
         const result = await prisma.listing.findMany({
           where: {
             userId: user.currentUser.id,
+            createdAt,
           },
           select: {
             id: true,
@@ -117,6 +134,7 @@ export default async function handler(
         const result = await prisma.listing.findMany({
           where: {
             userId: user.currentUser.id,
+            createdAt,
           },
           select: {
             id: true,
@@ -137,7 +155,7 @@ export default async function handler(
       // feedbacks-chart-data
       if (topic === "FEEDBACK_TOTAL_AVERAGE") {
         const result = await prisma.feedback.findMany({
-          where: { listing: { userId: user.currentUser.id } },
+          where: { listing: { userId: user.currentUser.id }, createdAt },
           select: {
             id: true,
             cleanliness: true,
@@ -170,6 +188,7 @@ export default async function handler(
         const result = await prisma.listing.findMany({
           where: {
             userId: user.currentUser.id,
+            createdAt,
           },
           select: {
             title: true,
@@ -191,7 +210,7 @@ export default async function handler(
       }
       if (topic === "FEEDBACK_RATE_COUNT") {
         const result = await prisma.feedback.findMany({
-          where: { listing: { userId: user.currentUser.id } },
+          where: { listing: { userId: user.currentUser.id }, createdAt },
           select: {
             id: true,
             rating: true,
@@ -212,14 +231,144 @@ export default async function handler(
       }
       // reservations-chart-data
       if (topic === "RESERVATION_CREATED_COUNT") {
+        const result = await prisma.listing.findMany({
+          where: { createdAt, userId: user.currentUser.id },
+          select: {
+            user: {
+              select: { name: true, email: true },
+            },
+            createdAt: true,
+            id: true,
+            title: true,
+            reservations: { select: { id: true } },
+          },
+        });
+        results = {
+          type: "RESERVATION_CREATED_COUNT",
+          legend: "reservations date range",
+          data: result.map((r) => ({
+            createdAt: r.createdAt,
+            total: r.reservations.length,
+            id: r.id,
+            title: r.title,
+          })),
+        };
       }
       if (topic === "RESERVATION_DATE_TOTALPRICE") {
+        const result = await prisma.reservation.findMany({
+          where: { createdAt, listing: { userId: user.currentUser.id } },
+          select: {
+            id: true,
+            totalPrice: true,
+            listing: { select: { title: true } },
+            endDate: true,
+          },
+        });
+        results = {
+          type: "RESERVATION_DATE_TOTALPRICE",
+          legend: "reservations revenue",
+          data: result.map((r) => ({
+            endDate: r.endDate,
+            id: r.id,
+            title: r.listing.title,
+            totalPrice: r.totalPrice,
+          })),
+        };
       }
       if (topic === "RESERVATION_REVENUE_COUNT") {
+        const averageReservationsPriceByListing =
+          await prisma.reservation.groupBy({
+            by: ["listingId"],
+            _avg: {
+              totalPrice: true,
+            },
+            where: { createdAt, listing: { userId: user.currentUser.id } },
+          });
+
+        const listingsWithAveragePrice = await prisma.listing.findMany({
+          where: {
+            id: {
+              in: averageReservationsPriceByListing.map((avg) => avg.listingId),
+            },
+          },
+          select: {
+            title: true,
+            createdAt: true,
+            id: true,
+          },
+        });
+
+        const result = averageReservationsPriceByListing.map((avg) => {
+          const listing = listingsWithAveragePrice.find(
+            (l) => l.id === avg.listingId
+          );
+          return {
+            id: listing?.id,
+            title: listing?.title,
+            average: avg._avg.totalPrice,
+            createdAt: listing?.createdAt,
+          };
+        });
+        results = {
+          type: "RESERVATION_REVENUE_COUNT",
+          legend: "average reservations revenue",
+          data: result,
+        };
       }
       if (topic === "RESERVATION_STATUS") {
+        const result = await prisma.reservation.findMany({
+          where: { createdAt, listing: { userId: user.currentUser.id } },
+          select: {
+            id: true,
+            status: true,
+            listing: { select: { title: true } },
+            startDate: true,
+            endDate: true,
+            totalPrice: true,
+          },
+        });
+        results = {
+          type: "RESERVATION_STATUS",
+          legend: "reservations status",
+          data: result.map((r) => ({
+            id: r.id,
+            status: r.status,
+            title: r.listing.title,
+            startDate: r.startDate,
+            endDate: r.endDate,
+            totalPrice: r.totalPrice,
+          })),
+        };
       }
       if (topic === "RESERVATION_USER_COUNT") {
+        const result = await prisma.user.findMany({
+          where: {
+            reservations: {
+              some: {
+                listing: {
+                  userId: user.currentUser.id,
+                },
+              },
+            },
+          },
+          select: {
+            id: true,
+            createdAt: true,
+            reservations: { select: { id: true } },
+            name: true,
+            email: true,
+          },
+        });
+        results = {
+          type: "RESERVATION_USER_COUNT",
+          legend: "users reservations",
+          data: result.map((r) => ({
+            label: (r?.name! || r?.email)!,
+            id: r.id,
+            totalReservations: r.reservations.length,
+            createdAt: r.createdAt!,
+          })),
+        };
       }
     }
     return res.status(200).json(results);

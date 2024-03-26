@@ -5,6 +5,7 @@ import {
   BarChartXAxisProps,
   BarChartYAxisProps,
   BarDataItem,
+  LineDataItem,
 } from "@/types/ChartTypes";
 import React, { useMemo } from "react";
 import CustomBarChart from "@/components/charts/BarChart";
@@ -15,6 +16,7 @@ import {
   Payload,
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
+import CustomLineChart from "./CustomLineChart";
 export type ChartType = {
   data?: any[];
   grid?: boolean;
@@ -32,6 +34,8 @@ export type ChartType = {
         ) => React.ReactNode)
       | undefined;
   };
+  YAxisMap?: BarChartYAxisProps[];
+  Lines?: LineDataItem[];
 };
 const CustomChart = ({
   type,
@@ -54,6 +58,9 @@ const CustomChart = ({
           grid={chartData.grid}
         />
       );
+    }
+    if (type === "LINE") {
+      return <CustomLineChart chartData={chartData} />;
     }
   }, [type]);
   return content;

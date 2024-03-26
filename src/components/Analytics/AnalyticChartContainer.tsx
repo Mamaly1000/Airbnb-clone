@@ -7,13 +7,33 @@ import React, { useMemo } from "react";
 import Loader from "../ui/Loader";
 import { twMerge } from "tailwind-merge";
 import useCountry from "@/hooks/useCountry";
+import { format } from "date-fns";
+function isDate(value: any): value is Date {
+  const date = new Date(value);
 
+  return (
+    !isNaN(date.valueOf()) &&
+    Object.prototype.toString.call(date) === "[object Date]"
+  );
+}
 const AnalyticChartContainer = ({ className }: { className?: string }) => {
-  const { topic } = useAnalytics();
+  const { topic, timeFrame, category } = useAnalytics();
   const { getByValue } = useCountry();
-  const { isLoading, chartData } = useCharts({ topic });
+  const { isLoading, chartData } = useCharts({
+    topic,
+    startDate: timeFrame.startDate,
+    endDate: timeFrame.endDate,
+  });
+  const type = useMemo(() => {
+    if (category === "RESERVATION") {
+      return "LINE";
+    } else {
+      return "BAR";
+    }
+  }, [category]);
   const Data: ChartType = useMemo(() => {
     if (chartData) {
+      // properties chart data
       if (
         topic === "LISTING_CATEGORY_COUNT" &&
         chartData.type === "LISTING_CATEGORY_COUNT"
@@ -508,6 +528,308 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
           },
         };
       }
+      // reservations charts data
+      if (
+        topic === "RESERVATION_CREATED_COUNT" &&
+        chartData.type === "RESERVATION_CREATED_COUNT"
+      ) {
+        return {
+          data: chartData.data.map((r) => ({
+            ...r,
+            createdAt: new Date(r.createdAt).getTime(),
+          })),
+          Lines: [
+            {
+              activeDot: { r: 10 },
+              id: "reservations-createdAt",
+              dataKey: "createdAt",
+              yAxisId: "left",
+              stroke: "#4fc1e3",
+              type: "bump",
+              legendTitle:
+                "createdAt(notice that the timeframe is set to your selected time.)",
+            },
+            {
+              activeDot: { r: 10 },
+              id: "reservations-total",
+              dataKey: "total",
+              yAxisId: "right",
+              stroke: "#0097e6",
+              type: "monotone",
+              legendTitle:
+                "total(notice that the timeframe is set to your selected time.)",
+            },
+          ],
+          YAxisMap: [
+            {
+              dataKey: "createdAt",
+              yAxisId: "left",
+              formatter: (val) => {
+                return format(new Date(val), "yy/MM/dd");
+              },
+              fontSize: 12,
+              type: "category",
+            },
+            {
+              dataKey: "total",
+              yAxisId: "right",
+              orientation: "right",
+              type: "number",
+              fontSize: 12,
+            },
+          ],
+          XAxisProps: {
+            dataKey: "title",
+            fontSize: 12,
+          },
+          tooltip: {
+            formatter: (val, _name, _item, index) => {
+              if (index === 0) {
+                return format(new Date(val as any), "yyyy/MMMM/dd-hh:mm a");
+              }
+              if (index === 1) {
+                return `${val} reservations`;
+              }
+            },
+          },
+        };
+      }
+      if (
+        topic === "RESERVATION_DATE_TOTALPRICE" &&
+        chartData.type === "RESERVATION_DATE_TOTALPRICE"
+      ) {
+        return {
+          data: chartData.data.map((r) => ({
+            ...r,
+            endDate: new Date(r.endDate).getTime(),
+          })),
+          Lines: [
+            {
+              activeDot: { r: 10 },
+              id: "reservations-endDate",
+              dataKey: "endDate",
+              yAxisId: "left",
+              stroke: "#28b463",
+              type: "bump",
+              legendTitle:
+                "createdAt(notice that the timeframe is set to your selected time.)",
+            },
+            {
+              activeDot: { r: 10 },
+              id: "reservations-totalPrice",
+              dataKey: "totalPrice",
+              yAxisId: "right",
+              stroke: "#fd7e77",
+              type: "monotone",
+              legendTitle:
+                "totalPrice(notice that the timeframe is set to your selected time.)",
+            },
+          ],
+          YAxisMap: [
+            {
+              dataKey: "endDate",
+              yAxisId: "left",
+              formatter: (val) => {
+                return format(new Date(val), "yy/MM/dd");
+              },
+              fontSize: 12,
+              type: "category",
+              width: 50,
+            },
+            {
+              dataKey: "totalPrice",
+              yAxisId: "right",
+              orientation: "right",
+              fontSize: 12,
+              width: 50,
+              formatter: (val) => `$${(+val).toFixed(2)}`,
+            },
+          ],
+          XAxisProps: {
+            dataKey: "title",
+            fontSize: 12,
+          },
+          tooltip: {
+            formatter: (val, _m, _n, i) => {
+              if (i === 0) {
+                return format(new Date(val as any), "yyyy/MMMM/dd-hh:mm a");
+              }
+              if (i === 1) {
+                return `$${(+val).toFixed(2)}`;
+              }
+            },
+          },
+        };
+      }
+      if (
+        topic === "RESERVATION_REVENUE_COUNT" &&
+        chartData.type === "RESERVATION_REVENUE_COUNT"
+      ) {
+        return {
+          data: chartData.data.map((r) => ({
+            ...r,
+            createdAt: new Date(r.createdAt!).getTime(),
+          })),
+          Lines: [
+            {
+              activeDot: { r: 10 },
+              id: "reservations-createdAt",
+              dataKey: "createdAt",
+              yAxisId: "left",
+              stroke: "#33691e",
+              type: "bump",
+              legendTitle:
+                "createdAt(notice that the timeframe is set to your selected time.)",
+            },
+            {
+              activeDot: { r: 10 },
+              id: "reservations-average",
+              dataKey: "average",
+              yAxisId: "right",
+              stroke: "#8e24aa",
+              type: "monotone",
+              legendTitle:
+                "average(notice that the timeframe is set to your selected time.)",
+            },
+          ],
+          YAxisMap: [
+            {
+              dataKey: "createdAt",
+              yAxisId: "left",
+              formatter: (val) => {
+                return format(new Date(val), "yy/MM/dd");
+              },
+              fontSize: 12,
+              type: "category",
+              width: 50,
+            },
+            {
+              dataKey: "average",
+              yAxisId: "right",
+              orientation: "right",
+              fontSize: 12,
+              width: 50,
+              formatter: (val) => `$${(+val).toFixed(2)}`,
+            },
+          ],
+          XAxisProps: {
+            dataKey: "title",
+            fontSize: 12,
+          },
+          tooltip: {
+            formatter: (val, _m, _n, i) => {
+              if (i === 0) {
+                return format(new Date(val as any), "yyyy/MMMM/dd-hh:mm a");
+              }
+              if (i === 1) {
+                return `$${(+val).toFixed(2)}`;
+              }
+            },
+          },
+        };
+      }
+      if (
+        topic === "RESERVATION_STATUS" &&
+        chartData.type === "RESERVATION_STATUS"
+      ) {
+        return {
+          data: chartData.data,
+          Lines: [
+            {
+              activeDot: { r: 10 },
+              id: "reservations-totalPrice",
+              dataKey: "totalPrice",
+              yAxisId: "left",
+              stroke: "#0097e6",
+              type: "bump",
+              legendTitle:
+                "totalPrice(notice that the timeframe is set to your selected time.)",
+            },
+            {
+              activeDot: { r: 10 },
+              id: "reservations-status",
+              dataKey: "status",
+              yAxisId: "right",
+              stroke: "#ff5249",
+              type: "step",
+              legendTitle:
+                "status(notice that the timeframe is set to your selected time.)",
+            },
+          ],
+          YAxisMap: [
+            {
+              dataKey: "totalPrice",
+              yAxisId: "left",
+              formatter: (val) => {
+                return format(new Date(val), "yy/MM/dd");
+              },
+              fontSize: 12,
+              type: "number",
+              width: 50,
+            },
+            {
+              dataKey: "status",
+              yAxisId: "right",
+              orientation: "right",
+              fontSize: 12,
+              width: 50,
+            },
+          ],
+          XAxisProps: {
+            dataKey: "title",
+            fontSize: 12,
+          },
+          tooltip: {
+            formatter: (val, _m, _n, i) => {
+              if (i === 0) {
+                return `$${(+val).toFixed(2)}`;
+              }
+              if (i === 1) {
+                return val;
+              }
+            },
+          },
+        };
+      }
+      if (
+        topic === "RESERVATION_USER_COUNT" &&
+        chartData.type === "RESERVATION_USER_COUNT"
+      ) {
+        return {
+          data: chartData.data,
+          Lines: [
+            {
+              activeDot: { r: 10 },
+              id: "reservations-totalReservations",
+              dataKey: "totalReservations",
+              yAxisId: "left",
+              stroke: "#7ec4e3",
+              type: "monotone",
+              legendTitle:
+                "totalReservations(notice that the timeframe is set to your selected time.)",
+            },
+          ],
+          YAxisMap: [
+            {
+              dataKey: "totalReservations",
+              fontSize: 12,
+              type: "number",
+              width: 50,
+              yAxisId: "left",
+              decimal: true,
+            },
+          ],
+          XAxisProps: {
+            dataKey: "label",
+            fontSize: 12,
+          },
+          tooltip: {
+            formatter: (val) => {
+              return `${val} reservations`;
+            },
+          },
+        };
+      }
     }
     return {} as ChartType;
   }, [topic, chartData]);
@@ -525,7 +847,7 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
           )}
           key={topic}
         >
-          <CustomChart chartData={Data} type={"BAR"} />
+          <CustomChart chartData={Data} type={type} />
         </motion.section>
       ) : (
         <Loader
