@@ -13,6 +13,7 @@ import TableMainContainer from "./table-body/TableMainContainer";
 import { TableHeaderTypes } from "./table-body/TableHead";
 import { TableBodyPropsType } from "./table-body/TableBody";
 import TableFooter, { TableFooterPropsType } from "./table-footer/TableFooter";
+import FootNote, { FootNotePropsType } from "../shared/FootNote";
 
 const Table = ({
   filterSectionActions,
@@ -22,6 +23,7 @@ const Table = ({
   header,
   tableBody,
   footer,
+  footNote,
 }: TableControllSectionPropsType &
   TableHeaderTypes & {
     classNames?: {
@@ -31,11 +33,13 @@ const Table = ({
       controllSection?: string;
       mainTable?: string;
       footer?: string;
+      footNote?: string;
     };
     footer: TableFooterPropsType;
     filterSectionActions: TableFilterSectionPropsType;
     header: tableHeaderPropsType;
     tableBody: TableBodyPropsType;
+    footNote?: FootNotePropsType;
   }) => {
   return (
     <section
@@ -74,6 +78,11 @@ const Table = ({
         isLoading={footer.isLoading}
         pagination={footer.pagination}
         className={classNames?.footer}
+      />
+      <FootNote
+        className={classNames?.footNote}
+        notes={footNote?.notes}
+        ul={footNote?.ul}
       />
     </section>
   );

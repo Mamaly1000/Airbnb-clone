@@ -323,6 +323,19 @@ const ReviewsPage = () => {
           totalPages: pagination?.maxPages || 1,
         },
       }}
+      classNames={{
+        filterSection: "px-3",
+      }}
+      footNote={{
+        notes: [
+          {
+            note: "if there is no review in the table it might be for the selected date.",
+          },
+          {
+            note: "you can click on table heads to sort data.",
+          },
+        ],
+      }}
     />
   );
 };

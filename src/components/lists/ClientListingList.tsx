@@ -23,6 +23,7 @@ const ClientListingList = ({
   className,
   main,
   deletingId,
+  loader,
 }: {
   deletingId?: string;
   main?: boolean;
@@ -38,6 +39,7 @@ const ClientListingList = ({
   };
   containerClassName?: string;
   params?: listingQueryHookType;
+  loader?: { size?: number };
 } & listingActionsType) => {
   const { isLoading, listings } = useListings(params);
   if (!isLoading && isEmpty(listings)) {
@@ -59,7 +61,7 @@ const ClientListingList = ({
           "min-w-full max-w-full flex items-center justify-center",
           emptyState?.className
         )}
-        size={20}
+        size={loader?.size || 20}
       />
     );
   }
@@ -73,7 +75,7 @@ const ClientListingList = ({
         className={twMerge(
           "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8",
           containerClassName,
-          header ? "mt-10" : ""
+          header ? "mt-5" : ""
         )}
       >
         {listings.map((listing, i) => {

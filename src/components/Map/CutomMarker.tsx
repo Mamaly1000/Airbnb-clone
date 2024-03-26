@@ -1,7 +1,6 @@
 import useCountry from "@/hooks/useCountry";
 import { LocationDataType } from "@/hooks/useLocations";
 import { LatLngExpression } from "leaflet";
-import Link from "next/link";
 import React, { useMemo } from "react";
 import { Marker, Popup, Tooltip } from "react-leaflet";
 
@@ -23,7 +22,13 @@ const CutomMarker = ({
     return `${l?.label},${l?.region}`;
   }, [location]);
   return (
-    <Marker position={geo}>
+    <Marker
+      eventHandlers={{
+        click: () => onClick(location),
+      }}
+      riseOnHover
+      position={geo}
+    >
       <Popup
         position={geo}
         offset={[0, 3]}
@@ -38,7 +43,7 @@ const CutomMarker = ({
           </div>
           <div className="min-w-full max-w-full flex items-center justify-between gap-2">
             <span>categories:</span>
-            <span className="font-semibold text-black dark:text-white  ">
+            <span className="font-semibold text-black dark:text-white  max-w-[50%] line-clamp-1">
               {location.relatedCategories.toString()}
             </span>
           </div>
@@ -48,12 +53,6 @@ const CutomMarker = ({
               {location.listingsCount}
             </span>
           </div>
-          <button
-            onClick={(e) => onClick(location)}
-            className="min-w-full max-w-full flex items-center justify-center px-3 py-2 rounded-lg drop-shadow-2xl bg-black dark:bg-rose-500 text-white dark:text-white capitalize font-semibold"
-          >
-            check now
-          </button>
         </div>
       </Popup>
       <Tooltip

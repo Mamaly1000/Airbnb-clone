@@ -2,8 +2,9 @@
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { SingleAnalyticType } from "@/hooks/useAnalytics";
-import { allTopics } from "@/components/Analytics/AnalyticsHeader"; 
+import { allTopics } from "@/components/Analytics/AnalyticsHeader";
 import AnalyticChartContainer from "./AnalyticChartContainer";
+import FootNote from "../shared/FootNote";
 
 const AnalyticsBody = ({ topic }: { topic?: SingleAnalyticType }) => {
   const currentTopic = useMemo(() => {

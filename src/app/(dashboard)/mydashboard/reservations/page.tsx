@@ -360,6 +360,16 @@ const ReservationsPage = () => {
           total: pagination?.totalReservations || 0,
         },
       }}
+      footNote={{
+        notes: [
+          {
+            note: "if there is no reservation in the table it might be for the selected date.",
+          },
+          {
+            note: "you can click on table heads to sort data.",
+          },
+        ],
+      }}
     />
   );
 };

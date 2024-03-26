@@ -63,14 +63,7 @@ export const sidebarItems: {
     route: "/mydashboard/reviews",
     description:
       "The reviews page displays all the reviews that have been left for the user's properties. Users can view and respond to reviews, as well as mark reviews as helpful or unhelpful.",
-  },
-  {
-    label: "clients",
-    Icon: HiUsers,
-    route: "/mydashboard/clients",
-    description:
-      "The clients page displays a list of all the clients that have booked properties with the user. Users can view client details, such as contact information, past reservations, and reviews.",
-  },
+  }, 
   {
     label: "analytics",
     Icon: IoAnalytics,
