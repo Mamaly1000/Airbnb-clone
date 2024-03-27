@@ -13,7 +13,8 @@ export type AnalyticsCategoryTypes =
   | "RESERVATION"
   | "FEEDBACK"
   | "LISTING"
-  | "SINGLE_LISTING";
+  | "SINGLE_LISTING"
+  | "MAIN";
 export type AnalyticsTopicsType =
   | {
       type: "LISTING";

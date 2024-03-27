@@ -1,7 +1,9 @@
 import { LegendType } from "recharts";
+import { LineDot } from "recharts/types/cartesian/Line";
 import { Formatter } from "recharts/types/component/DefaultLegendContent";
+import { Props } from "recharts/types/container/Surface";
 import { CurveType } from "recharts/types/shape/Curve";
-import { AxisDomain } from "recharts/types/util/types";
+import { ActiveShape, AxisDomain } from "recharts/types/util/types";
 
 export type BarChartLegendProps = {
   iconType?:
@@ -23,6 +25,7 @@ export type BarChartLegendProps = {
   height?: number;
   margin?: { top?: number; left?: number; right?: number; bottom?: number };
   fill?: { dark?: string; light?: string };
+  display?: boolean;
   formatter?: Formatter;
 };
 export type BarChartYAxisProps = {
@@ -36,6 +39,7 @@ export type BarChartYAxisProps = {
   domain?: AxisDomain;
   yAxisId?: string;
   orientation?: "left" | "right" | undefined;
+  hide?: boolean;
 };
 export type BarChartXAxisProps = {
   fontSize?: number;
@@ -44,6 +48,15 @@ export type BarChartXAxisProps = {
   type?: "number" | "category" | undefined;
   color?: string;
   dataKey?: any;
+  hide?: boolean;
+  padding?:
+    | "gap"
+    | {
+        left?: number | undefined;
+        right?: number | undefined;
+      }
+    | "no-gap"
+    | undefined;
 };
 export type BarChartSizePorp = {
   width: number | string;
@@ -70,9 +83,11 @@ export interface BarDataItem {
 }
 export interface LineDataItem extends BarDataItem {
   yAxisId?: string;
-  activeDot: { r: number };
+  activeDot?: ActiveShape<any> | undefined;
   type?: CurveType;
   stroke?: string;
+  dot?: LineDot;
+  strokeWidth?: string | number | undefined;
 }
 export type ChartValueType =
   | {

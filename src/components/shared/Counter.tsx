@@ -7,9 +7,21 @@ import { twMerge } from "tailwind-merge";
 const Counter = ({
   endValue,
   className,
+  decimals = 2,
+  decimal = ".",
+  suffix,
+  delay,
+  duration = 2,
+  prefix,
 }: {
+  delay?: number;
+  duration?: number;
+  suffix?: string;
+  decimals?: number;
+  decimal?: string;
   className?: string;
   endValue: number;
+  prefix?: string;
 }) => {
   const [startAnimation, setStartAnimation] = useState(false);
 
@@ -24,7 +36,15 @@ const Counter = ({
       animate={{ opacity: 1 }}
     >
       {startAnimation && (
-        <CountUp end={endValue} duration={2} decimals={2} decimal="." />
+        <CountUp
+          end={endValue}
+          duration={duration}
+          decimals={decimals}
+          decimal={decimal}
+          suffix={suffix}
+          delay={delay}
+          prefix={prefix}
+        />
       )}
     </motion.div>
   );

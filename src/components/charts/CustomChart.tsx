@@ -17,6 +17,7 @@ import {
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
 import CustomLineChart from "./CustomLineChart";
+import { Margin } from "recharts/types/util/types";
 export type ChartType = {
   data?: any[];
   grid?: boolean;
@@ -36,6 +37,7 @@ export type ChartType = {
   };
   YAxisMap?: BarChartYAxisProps[];
   Lines?: LineDataItem[];
+  margin?: Margin | undefined
 };
 const CustomChart = ({
   type,

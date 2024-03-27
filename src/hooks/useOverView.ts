@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { AnalyticsCategoryTypes } from "./useAnalytics";
 import fetcher from "@/libs/fetcher";
 import qs from "query-string";
+import { OverviewType } from "@/types/OverviewType";
 
 const useOverView = (params: { category?: AnalyticsCategoryTypes }) => {
   const query = qs.stringifyUrl({
@@ -12,11 +13,7 @@ const useOverView = (params: { category?: AnalyticsCategoryTypes }) => {
   });
   const { data, error, isLoading, mutate } = useSWR(query, fetcher);
   return {
-    overViews: (data || []) as {
-      label: string;
-      value: number;
-      iconType: string;
-    }[],
+    overViews: (data || []) as OverviewType[],
     error,
     isLoading,
     mutate,

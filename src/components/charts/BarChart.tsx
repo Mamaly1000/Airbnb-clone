@@ -23,6 +23,7 @@ const CustomBarChart = ({
   legendProps,
   tooltip,
   grid,
+  margin,
 }: ChartType) => {
   const { mode } = useTheme();
   return (
@@ -30,33 +31,25 @@ const CustomBarChart = ({
       style={{ width: size?.width || "100%", height: size?.height || "400px" }}
     >
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <Legend
-            fill={
-              mode === "dark"
-                ? legendProps?.fill?.dark
-                : legendProps?.fill?.light
-            }
-            width={legendProps?.width}
-            height={legendProps?.height}
-            align={legendProps?.align}
-            layout={legendProps?.layout}
-            iconSize={legendProps?.iconSize}
-            iconType={legendProps?.iconType}
-            margin={legendProps?.margin}
-            verticalAlign={legendProps?.verticalAlign}
-            formatter={legendProps?.formatter}
-          />
+        <BarChart width={500} height={300} data={data} margin={margin}>
+          {legendProps?.display && (
+            <Legend
+              fill={
+                mode === "dark"
+                  ? legendProps?.fill?.dark
+                  : legendProps?.fill?.light
+              }
+              width={legendProps?.width}
+              height={legendProps?.height}
+              align={legendProps?.align}
+              layout={legendProps?.layout}
+              iconSize={legendProps?.iconSize}
+              iconType={legendProps?.iconType}
+              margin={legendProps?.margin}
+              verticalAlign={legendProps?.verticalAlign}
+              formatter={legendProps?.formatter}
+            />
+          )}
           {grid && <CartesianGrid strokeWidth={1} strokeDasharray="3 3" />}
           <XAxis
             dataKey={XAxisProps?.dataKey}
@@ -67,6 +60,7 @@ const CustomBarChart = ({
             tickLine={false}
             tickMargin={10}
             axisLine={false}
+            hide={XAxisProps?.hide}
           />
           <YAxis
             dataKey={YAxisProps?.dataKey}
@@ -81,6 +75,7 @@ const CustomBarChart = ({
             allowDecimals={YAxisProps?.decimal}
             axisLine={false}
             domain={YAxisProps?.domain}
+            hide={YAxisProps?.hide}
           />
           <Tooltip
             cursor={false}
@@ -92,9 +87,15 @@ const CustomBarChart = ({
                   ? "rgba(137 133 133/.6)"
                   : "rgba(137 133 133/.3)",
               borderRadius: 4,
+              maxWidth: "200px",
+              overflow: "hidden",
+            }}
+            itemStyle={{
+              fontSize: "13px",
             }}
             formatter={tooltip?.formatter}
             labelFormatter={tooltip?.labelFormatter}
+            labelClassName="line-clamp-1 max-w-full text-sm md:text-auto"
           />
           {bars?.map((bar) => (
             <Bar

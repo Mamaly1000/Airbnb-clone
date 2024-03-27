@@ -18,8 +18,10 @@ export default async function handler(
     const {
       type,
       paginate = "false",
-    }: { type?: "RESERVATIONS" | "REVIEWS"; paginate?: "false" | "true" } =
-      req.query;
+    }: {
+      type?: "RESERVATIONS" | "REVIEWS" | "MAIN_DASHBOARD";
+      paginate?: "false" | "true";
+    } = req.query;
     let where: Prisma.UserWhereInput = {};
     if (type) {
       if (type === "RESERVATIONS") {
@@ -44,15 +46,55 @@ export default async function handler(
           },
         };
       }
+      if (type === "MAIN_DASHBOARD") {
+        where = {
+          reservations: {
+            some: {
+              listing: {
+                userId: user.currentUser.id,
+              },
+            },
+          },
+        };
+      }
     }
-    const usersWithReservations = await prisma.user.findMany({
-      where,
-      select: {
-        id: true,
-        name: true,
-        email: true,
-      },
-    });
+    let usersWithReservations: any = [];
+    if (type === "MAIN_DASHBOARD") {
+      usersWithReservations = await prisma.user.findMany({
+        where,
+        select: {
+          name: true,
+          id: true,
+          email: true,
+          reservations: {
+            where: {
+              listing: {
+                userId: user.currentUser.id,
+              },
+            },
+          },
+          feedbacks: {
+            where:{
+              listing:{
+                userId:user.currentUser.id
+              }
+            }
+          },
+          createdAt: true,
+        },
+        take: 5,
+      });
+    }
+    if (type !== "MAIN_DASHBOARD") {
+      usersWithReservations = await prisma.user.findMany({
+        where,
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      });
+    }
     return res.status(200).json(usersWithReservations || []);
   } catch (error) {
     console.log(error);

@@ -3,7 +3,7 @@ import Loader from "@/components/ui/Loader";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import useOverView from "@/hooks/useOverView";
 import React from "react";
-import OverviewBox from "./OverviewBox"; 
+import OverviewBox from "../../ui/OverviewBox"; 
 
 const OverviewSection = () => {
   const { category } = useAnalytics();

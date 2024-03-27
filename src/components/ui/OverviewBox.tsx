@@ -1,3 +1,4 @@
+"use client";
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
@@ -65,11 +66,18 @@ const OverviewBox = ({
   style,
   className,
   data,
+  progress,
 }: {
+  progress?: {
+    minWidth: string | number;
+    percentage: number;
+    color?: string;
+  };
   data: {
     value: number;
     label: string;
     icon: icontypes;
+    isMoney?: boolean;
   };
   style?: {
     background?: {
@@ -104,16 +112,49 @@ const OverviewBox = ({
         className
       )}
     >
-      <div className="min-w-full max-w-full flex items-start justify-between flex-wrap gap-2">
+      <div className="min-w-full max-w-full flex items-start justify-between flex-row gap-2">
         <Counter
           className="text-2xl capitalize font-bold"
           endValue={data.value}
+          decimal={data.isMoney ? "." : ""}
+          decimals={data.isMoney ? 2 : 0}
+          prefix={data.isMoney ? "$" : undefined}
         />
         <Icon size={style?.icon?.size} color={style?.icon?.color} />
       </div>
       <span className="text-sm capitalize text-neutral-800 dark:text-neutral-300 font-light">
         {data.label}
       </span>
+      {progress && (
+        <div className="min-w-full max-w-full flex items-center justify-between gap-2 py-2">
+          <div className="min-h-[5px] min-w-[75%] max-w-[75%] rounded-full drop-shadow-2xl bg-neutral-500 flex items-center justify-start p-0 m-0">
+            <motion.div
+              transition={{
+                duration: 1,
+                delay: delay ? delay + 1 : 2,
+                ease: "easeInOut",
+              }}
+              initial={{ minWidth: "3%" }}
+              animate={{
+                minWidth: progress.minWidth,
+                background: progress.color
+                  ? progress.color
+                  : "rgb(244 63 94 / var(--tw-bg-opacity))",
+              }}
+              className={twMerge("min-h-[5px] rounded-full")}
+            ></motion.div>
+          </div>
+          <Counter
+            className="min-w-[20%] max-w-[20%] text-sm text-neutral-700 dark:text-neutral-300 text-end"
+            endValue={progress.percentage}
+            decimal=""
+            decimals={0}
+            suffix="%"
+            delay={2}
+            duration={1}
+          />
+        </div>
+      )}
     </motion.article>
   );
 };

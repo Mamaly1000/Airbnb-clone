@@ -12,7 +12,6 @@ import {
 } from "recharts";
 import { ChartType } from "./CustomChart";
 import { useTheme } from "@/hooks/useTheme";
-import { AxisDomain } from "recharts/types/util/types";
 
 const CustomLineChart = ({
   chartData: {
@@ -25,6 +24,7 @@ const CustomLineChart = ({
     size,
     tooltip,
     YAxisMap,
+    margin,
   },
 }: {
   chartData: ChartType;
@@ -38,17 +38,7 @@ const CustomLineChart = ({
       }}
     >
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
+        <LineChart width={500} height={300} data={data} margin={margin}>
           {grid && (
             <CartesianGrid color="#898585" widths={2} strokeDasharray="3 3" />
           )}
@@ -61,6 +51,8 @@ const CustomLineChart = ({
             tickLine={false}
             tickMargin={10}
             axisLine={false}
+            hide={XAxisProps?.hide}
+            padding={XAxisProps?.padding}
           />
           {YAxisMap ? (
             YAxisMap.map((y) => (
@@ -79,6 +71,7 @@ const CustomLineChart = ({
                 domain={y?.domain}
                 yAxisId={y?.yAxisId}
                 orientation={y?.orientation}
+                hide={y?.hide}
               />
             ))
           ) : (
@@ -97,6 +90,7 @@ const CustomLineChart = ({
               domain={YAxisProps?.domain}
               yAxisId={YAxisProps?.yAxisId}
               orientation={YAxisProps?.orientation}
+              hide={YAxisProps?.hide}
             />
           )}
           <Tooltip
@@ -109,26 +103,34 @@ const CustomLineChart = ({
                   ? "rgba(137 133 133/.6)"
                   : "rgba(137 133 133/.3)",
               borderRadius: 4,
+              maxWidth: "200px",
+              overflow: "hidden",
+            }}
+            itemStyle={{
+              fontSize: "13px",
             }}
             formatter={tooltip?.formatter}
             labelFormatter={tooltip?.labelFormatter}
+            labelClassName="line-clamp-1 max-w-full text-sm md:text-auto"
           />
-          <Legend
-            fill={
-              mode === "dark"
-                ? legendProps?.fill?.dark
-                : legendProps?.fill?.light
-            }
-            width={legendProps?.width}
-            height={legendProps?.height}
-            align={legendProps?.align}
-            layout={legendProps?.layout}
-            iconSize={legendProps?.iconSize}
-            iconType={legendProps?.iconType}
-            margin={legendProps?.margin}
-            verticalAlign={legendProps?.verticalAlign}
-            formatter={legendProps?.formatter}
-          />
+          {legendProps?.display && (
+            <Legend
+              fill={
+                mode === "dark"
+                  ? legendProps?.fill?.dark
+                  : legendProps?.fill?.light
+              }
+              width={legendProps?.width}
+              height={legendProps?.height}
+              align={legendProps?.align}
+              layout={legendProps?.layout}
+              iconSize={legendProps?.iconSize}
+              iconType={legendProps?.iconType}
+              margin={legendProps?.margin}
+              verticalAlign={legendProps?.verticalAlign}
+              formatter={legendProps?.formatter}
+            />
+          )}
           {Lines &&
             Lines.map((l) => (
               <Line
@@ -137,6 +139,8 @@ const CustomLineChart = ({
                 dataKey={l.dataKey}
                 stroke={l.stroke}
                 activeDot={l.activeDot}
+                dot={l.dot}
+                strokeWidth={l.strokeWidth}
               />
             ))}
         </LineChart>
