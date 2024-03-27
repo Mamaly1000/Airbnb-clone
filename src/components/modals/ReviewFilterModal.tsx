@@ -170,7 +170,7 @@ const ReviewFilterModal = () => {
             }}
             options={clients.map((c) => ({
               icon: BiUser,
-              label: c.name,
+              label: c.name!,
               value: c.id,
             }))}
             value={

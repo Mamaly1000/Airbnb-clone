@@ -57,6 +57,7 @@ const CustomLineChart = ({
           {YAxisMap ? (
             YAxisMap.map((y) => (
               <YAxis
+                key={y?.dataKey}
                 dataKey={y?.dataKey}
                 width={y?.width || 20}
                 fontSize={y?.fontSize || 20}
@@ -134,6 +135,7 @@ const CustomLineChart = ({
           {Lines &&
             Lines.map((l) => (
               <Line
+                key={l.dataKey}
                 yAxisId={l.yAxisId}
                 type={l.type}
                 dataKey={l.dataKey}

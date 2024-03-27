@@ -29,6 +29,7 @@ const DashboardOverviewSection = () => {
                 size: 30,
               },
             }}
+            key={i}
           />
         ))
       ) : (
