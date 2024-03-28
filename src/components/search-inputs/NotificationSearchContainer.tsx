@@ -108,6 +108,9 @@ const NotificationSearchContainer = () => {
       filter: selectedFilter?.value,
       sort: selectedSort?.value,
     });
+    return () => {
+      searchDebounce.cancel();
+    };
   }, [search, selectedFilter, selectedSort]);
 
   return (
