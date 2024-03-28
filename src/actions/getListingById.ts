@@ -1,9 +1,11 @@
 "use server";
 import prisma from "@/libs/prismadb";
 import { safeListingType } from "@/types/safeListing";
-import { safeUserType } from "@/types/safeuser"; 
+import { safeUserType } from "@/types/safeuser";
+import getCurrentUser from "./getCurrentUser";
 
 export async function getListingById(id?: string) {
+  const user = await getCurrentUser();
   if (!id) {
     return null;
   }
@@ -14,9 +16,21 @@ export async function getListingById(id?: string) {
     },
   });
 
-  if (!listing) {
+  if (!listing || !user) {
     return null;
-  } 
+  }
+
+  try {
+    await prisma.listingView.create({
+      data: {
+        listingId: listing.id,
+        viewerId: user.id,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+
   return {
     ...listing,
     createdAt: listing.createdAt.toISOString(),
