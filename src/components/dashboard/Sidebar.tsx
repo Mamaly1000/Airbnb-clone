@@ -1,7 +1,7 @@
 "use client";
 import React, { Fragment } from "react";
 import { BsTags } from "react-icons/bs";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaAirbnb, FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineManageSearch, MdOutlineSpaceDashboard } from "react-icons/md";
 import { TbHomeSignal } from "react-icons/tb";
 import { twMerge } from "tailwind-merge";
@@ -24,6 +24,7 @@ import useDashboardSidebar from "@/hooks/useDashboardSidebar";
 import { AiOutlineLogout } from "react-icons/ai";
 import { signOut } from "next-auth/react";
 import { BiHome } from "react-icons/bi";
+import useRentModal from "@/hooks/useRentModal";
 
 export const sidebarItems: {
   label: string;
@@ -103,6 +104,7 @@ const Sidebar = () => {
   const { isCollapse, onExpand, onCollapse, isOpen } = useDashboardSidebar();
   const { mode, setTheme } = useTheme();
   const pathname = usePathname();
+  const { onOpen: openRentModal } = useRentModal();
   return (
     <>
       <section
@@ -149,6 +151,21 @@ const Sidebar = () => {
               )}
             </Fragment>
           ))}
+          <hr
+            className={twMerge(
+              "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
+              isCollapse ? "block" : "block md:hidden"
+            )}
+          />
+          <SidebarItem
+            user={user}
+            index={5}
+            size={25}
+            Icon={FaAirbnb}
+            label={"Add new"}
+            onClick={() => openRentModal()}
+            disabled={!user}
+          />
           <hr
             className={twMerge(
               "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
@@ -251,6 +268,21 @@ const Sidebar = () => {
               )}
             </Fragment>
           ))}
+          <hr
+            className={twMerge(
+              "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
+              isCollapse ? "block" : "block md:hidden"
+            )}
+          />
+          <SidebarItem
+            user={user}
+            index={5}
+            size={25}
+            Icon={FaAirbnb}
+            label={"Add new"}
+            onClick={() => openRentModal()}
+            disabled={!user}
+          />
           <hr
             className={twMerge(
               "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
