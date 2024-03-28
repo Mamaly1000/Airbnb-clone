@@ -8,6 +8,9 @@ import { IoHeartDislikeSharp, IoNotificationsOutline } from "react-icons/io5";
 import { IconType } from "react-icons";
 import { MdOutlineFavorite } from "react-icons/md";
 import { FaTag } from "react-icons/fa";
+import { NotificationTypes } from "@/types/notificationstype";
+import { twMerge } from "tailwind-merge";
+import { isEmpty } from "lodash";
 import {
   TbHomeCheck,
   TbHomeDot,
@@ -15,8 +18,6 @@ import {
   TbHomeEdit,
   TbHomeX,
 } from "react-icons/tb";
-import { NotificationTypes } from "@/types/notificationstype";
-import { twMerge } from "tailwind-merge";
 
 const NotifToggle = ({
   className,
@@ -96,6 +97,10 @@ const NotifToggle = ({
     );
   }, [notifications]);
 
+  const showNotifs = useMemo(() => {
+    return !notifsLoading && !!user && !isEmpty(content) && !userLoading;
+  }, [notifsLoading, user, content, userLoading]);
+
   return (
     <AnimatePresence>
       <motion.section className="relative flex items-center justify-center max-w-fit max-h-fit">
@@ -104,10 +109,12 @@ const NotifToggle = ({
         ) : (
           <motion.button
             onClick={(e) => {
-              e.stopPropagation();
-              router.push("/mydashboard/notifications");
+              if (user) {
+                e.stopPropagation();
+                router.push("/mydashboard/notifications");
+              }
             }}
-            disabled={userLoading || notifsLoading}
+            disabled={!showNotifs}
             className={twMerge(
               "p-1 min-w-[40px] min-h-[40px]  flex items-center justify-center rounded-full border-[1px] border-neutral-200 dark:border-neutral-600 disabled:opacity-50 text-inherit bg-inherit relative",
               className
@@ -120,7 +127,7 @@ const NotifToggle = ({
           </motion.button>
         )}
         <AnimatePresence initial={true} mode="wait">
-          {!notifsLoading && display && (
+          {showNotifs && display && (
             <motion.section
               exit={{ opacity: 0, translateY: -20 }}
               initial={{ opacity: 0, translateY: -10 }}
@@ -146,7 +153,12 @@ const NotifToggle = ({
                   children ? "end-[5px] top-[-2px] rounded-br-md" : ""
                 )}
               ></div>
-              {content}
+              {content.slice(0, 2)}
+              {!!(content.length > 3) && (
+                <span className="flex items-center justify-center gap-1 text-sm whitespace-nowrap">
+                  +{content.length > 3 && content.length - 2}
+                </span>
+              )}
             </motion.section>
           )}
         </AnimatePresence>

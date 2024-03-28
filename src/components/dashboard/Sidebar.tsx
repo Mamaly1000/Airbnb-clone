@@ -12,7 +12,6 @@ import {
   IoChevronForwardCircleOutline,
   IoNotificationsOutline,
 } from "react-icons/io5";
-import { HiUsers } from "react-icons/hi";
 import SmallUserprofile from "../shared/SmallUserprofile";
 import useUser from "@/hooks/useUser";
 import SidebarItem from "./SidebarItem";
@@ -22,6 +21,8 @@ import { useTheme } from "@/hooks/useTheme";
 import { LuMoonStar } from "react-icons/lu";
 import { GoSun } from "react-icons/go";
 import useDashboardSidebar from "@/hooks/useDashboardSidebar";
+import { AiOutlineLogout } from "react-icons/ai";
+import { signOut } from "next-auth/react";
 
 export const sidebarItems: {
   label: string;
@@ -155,7 +156,24 @@ const Sidebar = () => {
             mobileOnly={true}
             onClick={() => setTheme()}
             disabled={false}
-          />{" "}
+          />
+          <hr
+            className={twMerge(
+              "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
+              isCollapse ? "block" : "block md:hidden"
+            )}
+          />
+          <SidebarItem
+            user={user}
+            index={5}
+            size={25}
+            Icon={AiOutlineLogout}
+            label={"log out"}
+            onClick={() => {
+              signOut({ redirect: true, callbackUrl: "/" });
+            }}
+            disabled={!user}
+          />
           <hr
             className={twMerge(
               "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
@@ -176,7 +194,7 @@ const Sidebar = () => {
               isCollapse ? onExpand() : onCollapse();
             }}
             disabled={false}
-          />
+          />{" "}
         </section>
       </section>
       <section
@@ -240,6 +258,23 @@ const Sidebar = () => {
             mobileOnly={true}
             onClick={() => setTheme()}
             disabled={false}
+          />
+          <hr
+            className={twMerge(
+              "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
+              isCollapse ? "block" : "block md:hidden"
+            )}
+          />
+          <SidebarItem
+            user={user}
+            index={5}
+            size={25}
+            Icon={AiOutlineLogout}
+            label={"log out"}
+            onClick={() => {
+              signOut({ redirect: true, callbackUrl: "/" });
+            }}
+            disabled={!user}
           />
           <hr
             className={twMerge(
