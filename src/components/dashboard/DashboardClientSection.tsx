@@ -9,6 +9,7 @@ import { sum } from "lodash";
 import Counter from "../shared/Counter";
 import { TbReportAnalytics } from "react-icons/tb";
 import Loader from "../ui/Loader";
+import { PiWarningCircleLight } from "react-icons/pi";
 
 const DashboardClientSection = () => {
   const { clients, isLoading } = useClients({ type: "MAIN_DASHBOARD" });
@@ -78,7 +79,7 @@ const DashboardClientSection = () => {
             decimal=","
             decimals={2}
             prefix="$"
-            className="min-w-[200px] max-w-[200px]  flex items-center justify-end capitalize text-sm gap-1 bg-white dark:bg-neutral-900 md:sticky top-0 right-0 z-10" 
+            className="min-w-[200px] max-w-[200px]  flex items-center justify-end capitalize text-sm gap-1 bg-white dark:bg-neutral-900 md:sticky top-0 right-0 z-10"
           />
         </div>
       );
@@ -99,12 +100,21 @@ const DashboardClientSection = () => {
         />
       ) : (
         <div className="min-w-full max-w-full flex flex-col items-start justify-start overflow-auto">
-          <div className="min-w-full max-w-full flex items-center">
-            {labels}
-          </div>
-          <div className="min-w-full max-w-fit flex flex-col items-start justify-start">
-            {clients.map((client) => clientItem(client))}
-          </div>
+          {clients.length === 0 ? (
+            <div className="min-w-full max-w-full p-3 flex gap-1 items-center justify-center min-h-[200px]">
+              <PiWarningCircleLight size={20} />
+              currently,there is no data
+            </div>
+          ) : (
+            <>
+              <div className="min-w-full max-w-full flex items-center">
+                {labels}
+              </div>
+              <div className="min-w-full max-w-fit flex flex-col items-start justify-start">
+                {clients.map((client) => clientItem(client))}
+              </div>
+            </>
+          )}
         </div>
       )}
     </section>

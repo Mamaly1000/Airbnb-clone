@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-import { AiOutlineLogin, AiOutlineMenu } from "react-icons/ai";
+import { AiFillProfile, AiOutlineLogin, AiOutlineMenu } from "react-icons/ai";
 import Avatar from "./Avatar";
 import MenuItems from "./MenuItems";
 import useRegisterModal from "@/hooks/useAuthModal";
@@ -20,6 +20,11 @@ import { RiLogoutCircleLine } from "react-icons/ri";
 import NotifToggle from "./NotifToggle";
 import { IoNotificationsOutline } from "react-icons/io5";
 import useScrollAnimation from "@/hooks/useScroll";
+import { BiCalendar, BiHome, BiKey, BiTrip } from "react-icons/bi";
+import { GrDashboard, GrFavorite } from "react-icons/gr";
+import { PiTagSimple } from "react-icons/pi";
+import { VscSymbolProperty } from "react-icons/vsc";
+import { TbHomeCheck } from "react-icons/tb";
 const UserMenu = ({ user }: { user: safeUserType | null }) => {
   const [isOpen, setOpen] = useState(false);
   const { isScrolling } = useScrollAnimation({});
@@ -85,11 +90,20 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                   user
                     ? [
                         {
+                          id: 6323454567246,
+                          label: "Dashboard",
+                          onClick: () => {
+                            router.push("/mydashboard");
+                          },
+                          Icon: GrDashboard,
+                        },
+                        {
                           id: 6323454567856,
                           label: "Home",
                           onClick: () => {
                             router.push("/");
                           },
+                          Icon: BiHome,
                         },
                         {
                           id: 2340,
@@ -97,6 +111,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                           onClick: () => {
                             router.push("/trips");
                           },
+                          Icon: BiTrip,
                         },
                         {
                           id: 67754,
@@ -104,6 +119,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                           onClick: () => {
                             router.push("/favorites");
                           },
+                          Icon: GrFavorite,
                         },
                         {
                           id: 63453,
@@ -111,6 +127,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                           onClick: () => {
                             router.push("/reservations");
                           },
+                          Icon: PiTagSimple,
                         },
                         {
                           id: 63345,
@@ -118,11 +135,13 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                           onClick: () => {
                             router.push("/properties");
                           },
+                          Icon: VscSymbolProperty,
                         },
                         {
                           id: 4345,
                           label: "Airbnb my home",
                           onClick: onRent,
+                          Icon: BiKey,
                         },
                         {
                           id: 456,
@@ -130,6 +149,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                           onClick: () => {
                             router.push(`/outdated`);
                           },
+                          Icon: BiCalendar,
                         },
                         {
                           id: 7456345,
@@ -138,6 +158,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                             router.push(`/completed-reservations`);
                           },
                           hr: true,
+                          Icon: TbHomeCheck,
                         },
                         {
                           id: 324534565,
@@ -145,6 +166,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                           onClick: () => {
                             EditprofileModal.onOpen();
                           },
+                          Icon: AiFillProfile,
                         },
                         {
                           id: 7455345,

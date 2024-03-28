@@ -83,18 +83,17 @@ const NotifToggle = ({
         ).length,
       },
     ];
-    return data.map(
-      ({ Icon, count }, i) =>
-        !!count && (
-          <div
-            key={i}
-            className="flex items-center justify-center gap-1 relative z-10"
-          >
-            <Icon size={15} />
-            {count}
-          </div>
-        )
-    );
+    return data
+      .filter((c) => c.count !== 0)
+      .map(({ Icon, count }, i) => (
+        <div
+          key={i}
+          className="flex items-center justify-center gap-1 relative z-10"
+        >
+          <Icon size={15} />
+          {count}
+        </div>
+      ));
   }, [notifications]);
 
   const showNotifs = useMemo(() => {

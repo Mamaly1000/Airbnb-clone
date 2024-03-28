@@ -77,7 +77,9 @@ const BarChartRating = ({
                 animate={{
                   minWidth: `${data.value}%`,
                 }}
-                className={twMerge("bg-black min-h-[6px]  dark:bg-rose-500")}
+                className={twMerge(
+                  "bg-black min-h-[6px]  dark:bg-rose-500 rounded-full"
+                )}
               ></motion.div>
             </motion.div>
           </div>

@@ -2,6 +2,7 @@ import { safeListingType } from "@/types/safeListing";
 import React from "react";
 import ListingList from "../lists/ListingList";
 import Link from "next/link";
+import { isEmpty } from "lodash";
 
 const RelatedListings = ({
   listings,
@@ -19,18 +20,22 @@ const RelatedListings = ({
         emptyState={{
           title: "no related listing!",
           subTitle: "there is no listing with the same category.",
+          className:
+            "min-w-full max-w-full min-h-[300px] max-h-[300px] h-[300px]",
         }}
         header={{
           title: "related Listings",
         }}
         pagination={{ hasMore: false } as any}
       />
-      <Link
-        className="min-w-full px-3 py-2 rounded-lg drop-shadow-2xl hover:bg-opacity-70 active:scale-90 max-w-full bg-black dark:bg-rose-500 text-white capitalize text-lg font-light text-center transition-all"
-        href={`/?category=${category}`}
-      >
-        view all
-      </Link>
+      {!isEmpty(listings) && (
+        <Link
+          className="min-w-full px-3 py-2 rounded-lg drop-shadow-2xl hover:bg-opacity-70 active:scale-90 max-w-full bg-black dark:bg-rose-500 text-white capitalize text-lg font-light text-center transition-all"
+          href={`/?category=${category}`}
+        >
+          view all
+        </Link>
+      )}
     </section>
   );
 };

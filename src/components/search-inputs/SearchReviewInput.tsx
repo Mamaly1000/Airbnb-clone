@@ -37,7 +37,7 @@ const SearchReviewInput = ({
     }
   }, 3000);
 
-  useMemo(() => {
+  useEffect(() => {
     searchDebounce(search);
     return () => {
       searchDebounce.cancel();

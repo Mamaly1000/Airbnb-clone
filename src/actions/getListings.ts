@@ -1,5 +1,6 @@
 "use server";
 import prisma from "@/libs/prismadb";
+import { Prisma } from "@prisma/client";
 export type ListingQueryType = {
   userId?: string | undefined;
   roomCount?: number | undefined;
@@ -17,9 +18,10 @@ export type ListingQueryType = {
   min?: number;
   max?: number;
   search?: string;
+  not?: string[];
 };
 export default async function getListings(params?: ListingQueryType) {
-  let query: any = {};
+  let query: Prisma.ListingWhereInput | undefined = {};
   const limit = params?.limit || 10;
   const page = params?.page || 1;
   const skip = (page - 1) * limit; // Pr
@@ -149,6 +151,16 @@ export default async function getListings(params?: ListingQueryType) {
           hasMore: false,
           total: listings.length,
           maxPages: 1,
+        },
+      };
+    }
+    if (params.not && params.not.length > 0) {
+      query = {
+        ...query,
+        id: {
+          not: {
+            in: params.not,
+          },
         },
       };
     }

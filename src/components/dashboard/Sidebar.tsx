@@ -23,6 +23,7 @@ import { GoSun } from "react-icons/go";
 import useDashboardSidebar from "@/hooks/useDashboardSidebar";
 import { AiOutlineLogout } from "react-icons/ai";
 import { signOut } from "next-auth/react";
+import { BiHome } from "react-icons/bi";
 
 export const sidebarItems: {
   label: string;
@@ -32,6 +33,13 @@ export const sidebarItems: {
   mobileOnly?: boolean;
   desktopOnly?: boolean;
 }[] = [
+  {
+    label: "Home",
+    Icon: BiHome,
+    route: "/",
+    description:
+      "This menu item directs users to the main page that displays a summary of relevant information about their properties, reservations, and clients.",
+  },
   {
     label: "Dashboard",
     Icon: MdOutlineSpaceDashboard,

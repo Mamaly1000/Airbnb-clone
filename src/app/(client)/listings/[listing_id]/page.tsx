@@ -15,18 +15,8 @@ export default async function SingleListingPage({
 }: {
   params: { listing_id: string };
 }) {
-  const listingData = await getListingById(params.listing_id);
   const user = await getCurrentUser();
   const { reservations } = await getReservations({ ...params, type: "ALL" });
-  const reviewsData = await getFeedbacks({
-    listingId: listingData?.id,
-    limit: 5,
-  });
-  const { listings: relatedListing } = await getListings({
-    category: listingData?.category,
-    limit: 3,
-  });
-
   if (isNull(user)) {
     return (
       <EmptyState
@@ -36,6 +26,7 @@ export default async function SingleListingPage({
       />
     );
   }
+  const listingData = await getListingById(params.listing_id);
   if (isNull(listingData)) {
     return (
       <EmptyState
@@ -45,6 +36,16 @@ export default async function SingleListingPage({
       />
     );
   }
+  const reviewsData = await getFeedbacks({
+    listingId: listingData?.id,
+    limit: 5,
+  });
+  const { listings: relatedListing } = await getListings({
+    category: listingData?.category,
+    limit: 3,
+    not: [listingData.id],
+  });
+
   return (
     <ListingClient
       relatedListings={relatedListing}
