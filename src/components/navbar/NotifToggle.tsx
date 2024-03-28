@@ -109,7 +109,7 @@ const NotifToggle = ({
             }}
             disabled={userLoading || notifsLoading}
             className={twMerge(
-              "p-1 min-w-[40px] min-h-[40px]  flex items-center justify-center rounded-full border-[1px] border-neutral-200 disabled:opacity-50 text-inherit bg-inherit relative",
+              "p-1 min-w-[40px] min-h-[40px]  flex items-center justify-center rounded-full border-[1px] border-neutral-200 dark:border-neutral-600 disabled:opacity-50 text-inherit bg-inherit relative",
               className
             )}
           >

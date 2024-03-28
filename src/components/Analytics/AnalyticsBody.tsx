@@ -1,12 +1,13 @@
 "use client";
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
-import { SingleAnalyticType } from "@/hooks/useAnalytics";
+import { SingleAnalyticType, useAnalytics } from "@/hooks/useAnalytics";
 import { allTopics } from "@/components/Analytics/AnalyticsHeader";
 import AnalyticChartContainer from "./AnalyticChartContainer";
 import FootNote from "../shared/FootNote";
 
-const AnalyticsBody = ({ topic }: { topic?: SingleAnalyticType }) => {
+const AnalyticsBody = () => {
+  const { topic } = useAnalytics();
   const currentTopic = useMemo(() => {
     if (!topic) {
       return null;

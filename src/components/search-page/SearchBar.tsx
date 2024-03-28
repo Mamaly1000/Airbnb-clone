@@ -120,7 +120,7 @@ const SearchBar = () => {
 
   return (
     <>
-      <section className="flex items-center flex-wrap justify-start gap-3 min-w-full max-w-full">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 min-w-full max-w-full ">
         <ListingSearchInput
           search={search}
           setSearch={(val) => setSearch(val)}
@@ -130,15 +130,10 @@ const SearchBar = () => {
           handlePriceRangeChange={handlePriceRangeChange}
         />
         <CategorySelect
-          className="min-w-full md:min-w-[300px] "
           value={category}
           onChange={(val) => setCategory(val as any)}
         />
-        <CountrySelect
-          className="min-w-full md:min-w-[300px]"
-          onChange={(val) => setLocation(val)}
-          value={location}
-        />
+        <CountrySelect onChange={(val) => setLocation(val)} value={location} />
         <SortSelect value={selectedSort} onChange={setSort} />
         <FilterSelect value={selectedFilter} onChange={setFilter} />
       </section>

@@ -55,7 +55,7 @@ const ReviewRow = ({
         >
           <TD
             isSorting={!!searchParams.userId}
-            className="capitalize flex items-center justify-start gap-2 font-semibold py-0 sticky top-0 -left-3 bg-white dark:bg-neutral-800 z-10 whitespace-nowrap min-w-[200px] max-w-[200px]"
+            className="capitalize flex items-center justify-start gap-2 font-semibold py-0 md:sticky top-0 -left-3 bg-white dark:bg-neutral-800 z-10 whitespace-nowrap min-w-[200px] max-w-[200px]"
             index={index}
             display={!!hiddenCols.includes("USER_NAME")}
           >

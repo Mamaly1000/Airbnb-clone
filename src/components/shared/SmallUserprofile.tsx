@@ -3,8 +3,10 @@ import { safeUserType } from "@/types/safeuser";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import Avatar from "../ui/Avatar";
+import useDashboardSidebar from "@/hooks/useDashboardSidebar";
 
 const SmallUserprofile = ({ user }: { user: safeUserType | null }) => {
+  const { isCollapse } = useDashboardSidebar();
   return user ? (
     <section
       className={twMerge(
@@ -12,24 +14,28 @@ const SmallUserprofile = ({ user }: { user: safeUserType | null }) => {
       )}
     >
       <Avatar
-        className={twMerge(`
-        min-w-[35px] max-w-[35px] min-h-[35px] max-h-[35px] 
-        md:min-w-[50px] md:max-w-[50px] md:min-h-[50px] max:max-h-[50px] 
-        lg:min-w-[100px] lg:max-w-[100px] lg:min-h-[100px] lg:max-h-[100px]  
-        `)}
+        className={twMerge(
+          isCollapse
+            ? "min-w-[35px] max-w-[35px] min-h-[35px] max-h-[35px]"
+            : `min-w-[35px] max-w-[35px] min-h-[35px] max-h-[35px] 
+            md:min-w-[50px] md:max-w-[50px] md:min-h-[50px] max:max-h-[50px] 
+            lg:min-w-[100px] lg:max-w-[100px] lg:min-h-[100px] lg:max-h-[100px]`
+        )}
         userId={user.id}
       />
-      <div className=" hidden md:flex min-w-full max-w-full items-center justify-center flex-col capitalize">
-        <p className="text-[13px] text-gray-500 dark:text-gray-300 mb-1">
-          wellcome back
-        </p>
-        <p className="text-[16px] text-black dark:text-white font-semibold">
-          {user.name}
-        </p>
-        <p className="text-[13px] font-light text-gray-400 dark:text-gray-500">
-          {user.email}
-        </p>
-      </div>
+      {!isCollapse && (
+        <div className=" hidden md:flex min-w-full max-w-full items-center justify-center flex-col capitalize">
+          <p className="text-[13px] text-gray-500 dark:text-gray-300 mb-1">
+            wellcome back
+          </p>
+          <p className="text-[16px] text-black dark:text-white font-semibold">
+            {user.name}
+          </p>
+          <p className=" text-[13px] 2xl:text-[14px] font-light text-gray-600 dark:text-gray-400  hidden xl:block">
+            {user.email}
+          </p>
+        </div>
+      )}
     </section>
   ) : (
     <section

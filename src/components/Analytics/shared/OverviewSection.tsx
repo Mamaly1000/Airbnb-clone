@@ -3,7 +3,7 @@ import Loader from "@/components/ui/Loader";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import useOverView from "@/hooks/useOverView";
 import React from "react";
-import OverviewBox from "../../ui/OverviewBox"; 
+import OverviewBox from "../../ui/OverviewBox";
 
 const OverviewSection = () => {
   const { category } = useAnalytics();
@@ -16,7 +16,7 @@ const OverviewSection = () => {
       {isLoading ? (
         <Loader
           size={20}
-          className="min-w-full max-w-full min-h-[300px] h-[300px] flex items-center justify-center col-span-full"
+          className="min-w-full max-w-full min-h-[150px] h-[150px] flex items-center justify-center col-span-full"
         />
       ) : (
         overViews.map((o, i) => (
@@ -28,7 +28,12 @@ const OverviewSection = () => {
                 size: "30px",
               },
             }}
-            data={{ icon: o.iconType as any, label: o.label, value: o.value }}
+            data={{
+              icon: o.iconType as any,
+              label: o.label,
+              value: o.value,
+              isMoney: o.isMoney,
+            }}
           />
         ))
       )}

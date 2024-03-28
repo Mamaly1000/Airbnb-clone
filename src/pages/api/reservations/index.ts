@@ -1,8 +1,8 @@
-import prisma from "@/libs/prismadb"; 
+import prisma from "@/libs/prismadb";
 import { format } from "date-fns";
 import { NotificationTypes } from "@/types/notificationstype";
 import { NextApiRequest, NextApiResponse } from "next";
-import { Reservation } from "@prisma/client";
+import { Prisma, Reservation } from "@prisma/client";
 import serverAuth from "@/libs/serverAuth";
 import { reservationSortTypes } from "@/types/reservationTypes";
 import { reservationStatusTypes } from "@/hooks/useReservations";
@@ -45,7 +45,11 @@ export default async function handler(
         startDate?: string;
         endDate?: string;
       } = req.query;
-      let where: any = {};
+      let where: Prisma.ReservationWhereInput | undefined = {
+        listing: {
+          userId: currentUser.currentUser.id,
+        },
+      };
       let orderBy: any = {
         createdAt: sortType,
       };
@@ -134,12 +138,7 @@ export default async function handler(
       const totalPages = Math.ceil(totalReservations / limit);
       if (paginate === "true") {
         reservations = await prisma.reservation.findMany({
-          where: {
-            ...where,
-            listing: {
-              userId: currentUser.currentUser.id,
-            },
-          },
+          where,
           orderBy,
           skip,
           take: limit + 1,

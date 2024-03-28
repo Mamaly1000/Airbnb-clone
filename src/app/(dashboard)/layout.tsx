@@ -2,12 +2,12 @@
 import "../globals.css";
 import Sidebar from "@/components/dashboard/Sidebar";
 import { twMerge } from "tailwind-merge";
-import DashboardHeading from "@/components/dashboard/DashboardHeading";
 import useUser from "@/hooks/useUser";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import useLoginModal from "@/hooks/useLoginModal";
+import useDashboardSidebar from "@/hooks/useDashboardSidebar";
+import DashboardHeading from "@/components/dashboard/DashboardHeading";
 
 export default function RootLayout({
   children,
@@ -15,11 +15,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const { user, isLoading } = useUser();
-  const router = useRouter();
+  const { isCollapse, isOpen } = useDashboardSidebar();
   const loginModal = useLoginModal();
   useEffect(() => {
     if (!user && !isLoading) {
-      router.push("/");
       toast.error("please login to your account!");
       loginModal.onOpen();
     }
@@ -33,9 +32,13 @@ export default function RootLayout({
       <Sidebar />
       <section
         className={twMerge(
-          `col-span-10 md:col-span-9 lg:col-span-10  
-          min-h-screen w-full flex flex-col items-start justify-start gap-4
-          bg-white dark:bg-neutral-800 text-black dark:text-white`
+          `min-h-screen w-full min-w-full max-w-full flex flex-col items-start justify-start gap-4
+          bg-white dark:bg-neutral-800 text-black dark:text-white`,
+          isOpen
+            ? isCollapse
+              ? "col-span-12 sm:col-span-11 md:col-span-11 lg:col-span-11"
+              : "col-span-12 sm:col-span-9 md:col-span-9 lg:col-span-10"
+            : "col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12"
         )}
       >
         <DashboardHeading />

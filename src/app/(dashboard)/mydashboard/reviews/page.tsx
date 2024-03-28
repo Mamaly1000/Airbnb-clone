@@ -57,7 +57,7 @@ const ReviewsPage = () => {
         type: searchParams.sortIn,
       },
       className:
-        "min-w-[200px] max-w-[200px] sticky top-0 -left-3 bg-neutral-300 dark:bg-neutral-900 z-10",
+        "min-w-[200px] max-w-[200px] md:sticky top-0 -left-3 bg-neutral-300 dark:bg-neutral-900 z-10",
       disabled: isLoading,
       display: !hiddenCols.includes("USER_NAME"),
       onClick: () => labelOnclick("USER_NAME"),

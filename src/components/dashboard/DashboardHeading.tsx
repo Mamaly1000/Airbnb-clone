@@ -6,26 +6,27 @@ import qs from "query-string";
 import { sidebarItems } from "./Sidebar";
 import useScrollAnimation from "@/hooks/useScroll";
 import { AnimatePresence, motion } from "framer-motion";
-import useMeasure from "react-use-measure";
 import ToggleTheme from "../navbar/ToggleTheme";
 import NotifToggle from "../navbar/NotifToggle";
+import useDashboardSidebar from "@/hooks/useDashboardSidebar";
+import SidebarToggle from "../navbar/SidebarToggle";
 const DashboardHeading = () => {
   const pathname = usePathname();
-  const [ref, { height }] = useMeasure();
+  const { isCollapse } = useDashboardSidebar();
   const { scrolled } = useScrollAnimation({});
+  const hideDescription = useMemo(() => {
+    return !!!(isCollapse || scrolled);
+  }, [scrolled, isCollapse]);
   const heading = useMemo(() => {
     const query = qs.parseUrl(pathname!);
     return sidebarItems.find((item) => item.route.match(query.url));
   }, [pathname]);
   return (
     <motion.section
-      animate={{ minHeight: scrolled ? 100 : height }}
       className={twMerge(`
-     min-w-full max-w-full p-3 md:p-5 z-10 bg-white dark:bg-neutral-800
-     border-b-[1px] border-neutral-300 dark:border-neutral-600
-     sticky top-0 left-0 flex flex-col items-start justify-start gap-2 transition-all
-        `)}
-      ref={ref}
+      min-w-full max-w-full p-3 md:p-5 z-10 bg-white dark:bg-neutral-800
+      border-b-[1px] border-neutral-300 dark:border-neutral-600
+      sticky top-0 left-0 flex flex-col items-start justify-start gap-2 transition-all`)}
       transition={{ duration: 1 }}
     >
       <section className="min-w-full max-w-full flex items-center justify-between flex-wrap gap-2">
@@ -33,12 +34,17 @@ const DashboardHeading = () => {
           {heading?.label}
         </h1>
         <div className="flex items-center justify-start md:justify-end gap-2">
-          <NotifToggle className="hidden md:flex" />
-          <ToggleTheme className="" />
+          <NotifToggle
+            className={twMerge(isCollapse ? "hidden" : "hidden md:flex")}
+          />
+          <ToggleTheme
+            className={twMerge(isCollapse ? "hidden" : "hidden md:flex")}
+          />
+          <SidebarToggle className="" />
         </div>
       </section>
       <AnimatePresence>
-        {!scrolled && (
+        {hideDescription && (
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

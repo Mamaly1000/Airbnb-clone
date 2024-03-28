@@ -78,8 +78,18 @@ export default async function handler(
           ).length;
 
           overviewData = [
-            { label: "Average Price", value: averagePrice, iconType: "dollar" },
-            { label: "Total Revenue", value: totalRevenue, iconType: "dollar" },
+            {
+              label: "Average Price",
+              value: averagePrice,
+              iconType: "dollar",
+              isMoney: true,
+            },
+            {
+              label: "Total Revenue",
+              value: totalRevenue,
+              iconType: "dollar",
+              isMoney: true,
+            },
             {
               label: "Total Reservations",
               value: totalReservations,
@@ -110,7 +120,12 @@ export default async function handler(
               value: totalReservations,
               iconType: "calendar",
             },
-            { label: "Total Revenue", value: totalRevenue, iconType: "dollar" },
+            {
+              label: "Total Revenue",
+              value: totalRevenue,
+              iconType: "dollar",
+              isMoney: true,
+            },
             {
               label: "Completed Reservations",
               value: completedReservations,

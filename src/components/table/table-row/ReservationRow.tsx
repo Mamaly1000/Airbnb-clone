@@ -10,6 +10,7 @@ import { useReservationTable } from "@/hooks/useReservationTable";
 import { format } from "date-fns";
 import { twMerge } from "tailwind-merge";
 import { reservationStatusTypes } from "@/hooks/useReservations";
+import Avatar from "@/components/ui/Avatar";
 
 const ReservationRow = ({
   row,
@@ -53,10 +54,14 @@ const ReservationRow = ({
         >
           <TD
             isSorting={SelectedSort === "USER_NAME"}
-            className="capitalize font-semibold py-0 sticky top-0 -left-3 bg-white dark:bg-neutral-800 z-10"
+            className="capitalize font-semibold py-0 md:sticky top-0 -left-3 bg-white dark:bg-neutral-800 z-10 flex items-center justify-start gap-2 whitespace-nowrap min-w-[230px] max-w[230px] "
             index={index}
             display={!!hiddenColumns.includes("USER_NAME")}
           >
+            <Avatar
+              userId={row.data.userId}
+              className="w-[30px] h-[30px] max-w-[30px] max-h-[30px] min-h-[30px] min-w-[30px]"
+            />
             {row.data.user.name}
           </TD>
           <TD

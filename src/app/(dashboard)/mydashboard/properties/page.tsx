@@ -1,7 +1,7 @@
 "use client";
 import ClientListingList from "@/components/lists/ClientListingList";
 import SearchBar from "@/components/search-page/SearchBar";
-import { listingQueryHookType } from "@/hooks/useListings";
+import useListings, { listingQueryHookType } from "@/hooks/useListings";
 import { useUpdateProperty } from "@/hooks/useUpdateProperty";
 import useUser from "@/hooks/useUser";
 import { safeListingType } from "@/types/safeListing";
@@ -17,6 +17,7 @@ const PropertiesPage = ({
 }) => {
   const updateProperyModal = useUpdateProperty();
   const { user } = useUser();
+  const { mutate } = useListings({ ...searchParams, userId: user?.id });
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
 
@@ -28,6 +29,7 @@ const PropertiesPage = ({
         .then((res: { data: { message: string } }) => {
           toast.success(res.data.message);
           router.refresh();
+          mutate();
         })
         .catch((err) => {
           console.log(err);

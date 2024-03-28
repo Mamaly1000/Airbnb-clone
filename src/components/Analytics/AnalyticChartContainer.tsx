@@ -8,14 +8,11 @@ import Loader from "../ui/Loader";
 import { twMerge } from "tailwind-merge";
 import useCountry from "@/hooks/useCountry";
 import { format } from "date-fns";
-function isDate(value: any): value is Date {
-  const date = new Date(value);
+import EmptyState from "../ui/EmptyState";
+import { isEmpty } from "lodash";
+import { Margin } from "recharts/types/util/types";
+import shortNumber from "@/utils/TextFormatter";
 
-  return (
-    !isNaN(date.valueOf()) &&
-    Object.prototype.toString.call(date) === "[object Date]"
-  );
-}
 const AnalyticChartContainer = ({ className }: { className?: string }) => {
   const { topic, timeFrame, category } = useAnalytics();
   const { getByValue } = useCountry();
@@ -31,6 +28,10 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
       return "BAR";
     }
   }, [category]);
+  const margin: Margin = {
+    left: 50,
+    right: 50,
+  };
   const Data: ChartType = useMemo(() => {
     if (chartData) {
       // properties chart data
@@ -592,6 +593,7 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
               }
             },
           },
+          margin,
         };
       }
       if (
@@ -634,15 +636,13 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
               },
               fontSize: 12,
               type: "category",
-              width: 50,
             },
             {
               dataKey: "totalPrice",
               yAxisId: "right",
               orientation: "right",
               fontSize: 12,
-              width: 50,
-              formatter: (val) => `$${(+val).toFixed(2)}`,
+              formatter: (val) => `$${shortNumber(+val)}`,
             },
           ],
           XAxisProps: {
@@ -659,6 +659,7 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
               }
             },
           },
+          margin,
         };
       }
       if (
@@ -701,15 +702,13 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
               },
               fontSize: 12,
               type: "category",
-              width: 50,
             },
             {
               dataKey: "average",
               yAxisId: "right",
               orientation: "right",
               fontSize: 12,
-              width: 50,
-              formatter: (val) => `$${(+val).toFixed(2)}`,
+              formatter: (val) => `$${shortNumber(+val)}`,
             },
           ],
           XAxisProps: {
@@ -726,6 +725,7 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
               }
             },
           },
+          margin,
         };
       }
       if (
@@ -765,14 +765,12 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
               },
               fontSize: 12,
               type: "number",
-              width: 50,
             },
             {
               dataKey: "status",
               yAxisId: "right",
               orientation: "right",
               fontSize: 12,
-              width: 50,
             },
           ],
           XAxisProps: {
@@ -789,6 +787,7 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
               }
             },
           },
+          margin,
         };
       }
       if (
@@ -814,7 +813,6 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
               dataKey: "totalReservations",
               fontSize: 12,
               type: "number",
-              width: 50,
               yAxisId: "left",
               decimal: true,
             },
@@ -828,6 +826,7 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
               return `${val} reservations`;
             },
           },
+          margin,
         };
       }
     }
@@ -847,7 +846,15 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
           )}
           key={topic}
         >
-          <CustomChart chartData={Data} type={type} />
+          {isEmpty(Data.data) ? (
+            <EmptyState
+              title="no data available"
+              subTitle="if there is no data you can change timeframe or topic."
+              className="min-w-full max-w-full flex flex-col justify-center items-center max-h-[300px] min-h-[300px] h-[300px]"
+            />
+          ) : (
+            <CustomChart chartData={Data} type={type} />
+          )}
         </motion.section>
       ) : (
         <Loader
@@ -860,15 +867,3 @@ const AnalyticChartContainer = ({ className }: { className?: string }) => {
 };
 
 export default AnalyticChartContainer;
-const colorList = [
-  ["Electric Blue", "#00b8d9", "#7ec4e3"],
-  ["Coral Orange", "#fd7e77", "#ff5249"],
-  ["Cool Green", "#28b463", "#169d4f"],
-  ["Candy Purple", "#8e24aa", "#9e30b6"],
-  ["Sky Blue", "#4fc1e3", "#449ad2"],
-  ["Vibrant Yellow", "#ffbd4a", "#ffb000"],
-  ["Bright Red", "#f44336", "#e81116"],
-  ["Chill Blue", "#0097e6", "#3771c9"],
-  ["Deep Pink", "#e91e63", "#c90036"],
-  ["Bold Green", "#33691e", "#284500"],
-];

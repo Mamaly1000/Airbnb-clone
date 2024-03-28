@@ -15,7 +15,7 @@ const ToggleTheme = ({ className }: { className?: string }) => {
         setTheme();
       }}
       className={twMerge(
-        "p-2 min-w-[40px] min-h-[40px]  flex items-center justify-center rounded-full border-[1px] border-neutral-200 text-inherit bg-inherit relative",
+        "p-2 min-w-[40px] min-h-[40px]  flex items-center justify-center rounded-full border-[1px] border-neutral-200 dark:border-neutral-600 text-inherit bg-inherit relative",
         className
       )}
     >

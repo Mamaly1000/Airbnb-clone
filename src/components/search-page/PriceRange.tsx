@@ -13,9 +13,9 @@ const PriceRange: React.FC<{
   const [values, setValues] = React.useState([0, MAX / 2]);
   const emptyColor = "rgb(212 212 212 / var(--tw-border-opacity))";
   return (
-    <div className="rounded-[5px] bg-white dark:bg-neutral-800 border-[1px] border-neutral-300 hover:border-neutral-400 px-4 py-2 flex items-center justify-between gap-2 w-full md:w-[330px] min-h-[65.6px] max-h-[65.6px] flex-wrap text-[17px] text-neutral-500  ">
+    <div className="rounded-[5px] bg-white dark:bg-neutral-800 border-[1px] border-neutral-300 hover:border-neutral-400 px-4 py-2 flex items-center justify-between gap-2 min-h-[65.6px] max-h-[65.6px]   text-[17px] text-neutral-500 whitespace-nowrap">
       price :
-      <div className="flex justify-center flex-wrap items-center min-w-[200px] px-2">
+      <div className="flex justify-center flex-wrap items-center min-w-[70%] px-2">
         <Range
           values={values}
           step={STEP}
@@ -29,7 +29,7 @@ const PriceRange: React.FC<{
             <div
               onMouseDown={props.onMouseDown}
               onTouchStart={props.onTouchStart}
-              className="min-w-[200px] transition-all duration-300"
+              className="min-w-[100%] transition-all duration-300"
             >
               <div
                 ref={props.ref}

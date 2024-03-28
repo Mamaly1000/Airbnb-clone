@@ -113,7 +113,8 @@ const ReservationsPage = () => {
       disabled: isLoading,
       onClick: () => tableLabelOnclick("USER_NAME"),
       colunm_type: "USER_NAME",
-      className: "sticky top-0 -left-3 bg-neutral-300 dark:bg-neutral-900 z-10",
+      className:
+        "md:sticky top-0 -left-3 bg-neutral-300 dark:bg-neutral-900 z-10 min-w-[230px] max-w-[230px]",
     },
     {
       label: "created at",
@@ -369,6 +370,9 @@ const ReservationsPage = () => {
             note: "you can click on table heads to sort data.",
           },
         ],
+      }}
+      classNames={{
+        filterSection: "px-3",
       }}
     />
   );

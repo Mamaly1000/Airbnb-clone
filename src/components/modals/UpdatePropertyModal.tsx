@@ -18,11 +18,12 @@ import axios from "axios";
 import useProperty from "@/hooks/useProperty";
 import Loader from "../ui/Loader";
 import useCountry from "@/hooks/useCountry";
+import useListings from "@/hooks/useListings";
 
 const UpdatePropertyModal = () => {
-  const { id, onClose } = useUpdateProperty();
+  const { id, onClose, params } = useUpdateProperty();
   const { property, mutate, isLoading: propertyLoading } = useProperty(id);
-
+  const { mutate: ListingsMutate } = useListings(params);
   const { getByValue } = useCountry();
 
   const router = useRouter();
@@ -235,6 +236,7 @@ const UpdatePropertyModal = () => {
           setSteps(STEPS.CATEGORY);
           onClose();
           mutate();
+          ListingsMutate();
           router.refresh();
         })
         .catch((error) => {

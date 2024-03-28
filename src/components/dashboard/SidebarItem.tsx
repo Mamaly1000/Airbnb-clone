@@ -6,6 +6,7 @@ import { twMerge } from "tailwind-merge";
 import { AnimatePresence, motion } from "framer-motion";
 import { safeUserType } from "@/types/safeuser";
 import useLoginModal from "@/hooks/useLoginModal";
+import useDashboardSidebar from "@/hooks/useDashboardSidebar";
 
 const SidebarItem = ({
   label,
@@ -30,6 +31,8 @@ const SidebarItem = ({
   Icon: IconType;
   onClick?: () => void;
 }) => {
+  const { isCollapse, isOpen, onClose, onCollapse, onExpand, onOpen } =
+    useDashboardSidebar();
   const router = useRouter();
   const loginModal = useLoginModal();
   const OnclickHandler = useCallback(
@@ -56,25 +59,47 @@ const SidebarItem = ({
       animate={{ opacity: 1, translateX: 0 }}
       transition={{ duration: 0.12, delay: index / 10 + 0.01 }}
       className={twMerge(
-        `relative peer p-1 md:px-3 md:py-2 rounded-lg 
+        `relative peer rounded-lg 
          disabled:cursor-not-allowed disabled:opacity-50
          hover:scale-100 hover:bg-opacity-70 cursor-pointer
-         min-w-full max-w-full hover:bg-black border-white
+          hover:bg-black border-white
          text-neutral-700 dark:text-neutral-300 hover:text-white
-         dark:hover:text-white flex items-center justify-center md:justify-start gap-2`,
+         dark:hover:text-white flex  gap-2`,
         isActive &&
           `text-white dark:text-white bg-black dark:bg-rose-500 font-bold`,
-        mobileOnly && "flex md:hidden"
+        mobileOnly && (isCollapse ? "flex" : "flex md:hidden"),
+        isCollapse
+          ? "items-center justify-center md:justify-start"
+          : "items-center justify-start md:justify-start",
+        isCollapse ? "w-fit" : " w-fit sm:min-w-full sm:max-w-full",
+        "p-2 md:px-3 md:py-2"
       )}
       disabled={disabled}
       onClick={OnclickHandler}
     >
-      <Icon size={size} />
-      <p className="hidden md:block text-inherit">{label}</p>
+      <motion.div
+        initial={{ rotate: 90 }}
+        animate={{ rotate: 0 }}
+        transition={{ duration: 0.1, ease: "linear" }}
+        key={Icon.toString()}
+      >
+        <Icon size={size} />
+      </motion.div>
+      <p
+        className={twMerge(
+          "text-inherit capitalize",
+          isCollapse ? "hidden" : " block"
+        )}
+      >
+        {label}
+      </p>
       <AnimatePresence>
         {isActive && (
           <motion.hr
-            className="min-w-[3px] border-none rounded-full    bg-white absolute z-10 end-1 md:end-3 drop-shadow-2xl"
+            className={twMerge(
+              "min-w-[3px] border-none rounded-full bg-white absolute z-10 end-1 md:end-3 drop-shadow-2xl ",
+              isCollapse ? "hidden " : "hidden md:block"
+            )}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 25, opacity: 1 }}
             exit={{ opacity: 0 }}
