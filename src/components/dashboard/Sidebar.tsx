@@ -101,7 +101,8 @@ export const sidebarItems: {
 ];
 const Sidebar = () => {
   const { user } = useUser();
-  const { isCollapse, onExpand, onCollapse, isOpen } = useDashboardSidebar();
+  const { isCollapse, onExpand, onCollapse, isOpen, onClose } =
+    useDashboardSidebar();
   const { mode, setTheme } = useTheme();
   const pathname = usePathname();
   const { onOpen: openRentModal } = useRentModal();
@@ -280,7 +281,10 @@ const Sidebar = () => {
             size={25}
             Icon={FaAirbnb}
             label={"Add new"}
-            onClick={() => openRentModal()}
+            onClick={() => {
+              onClose();
+              openRentModal();
+            }}
             disabled={!user}
           />
           <hr
@@ -312,6 +316,7 @@ const Sidebar = () => {
             Icon={AiOutlineLogout}
             label={"log out"}
             onClick={() => {
+              onClose();
               signOut({ redirect: true, callbackUrl: "/" });
             }}
             disabled={!user}
@@ -333,6 +338,7 @@ const Sidebar = () => {
             }
             label={isCollapse ? "expand" : "collapse"}
             onClick={() => {
+              onClose();
               isCollapse ? onExpand() : onCollapse();
             }}
             disabled={false}
