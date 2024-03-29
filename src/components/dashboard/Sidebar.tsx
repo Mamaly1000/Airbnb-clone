@@ -338,7 +338,6 @@ const Sidebar = () => {
             }
             label={isCollapse ? "expand" : "collapse"}
             onClick={() => {
-              onClose();
               isCollapse ? onExpand() : onCollapse();
             }}
             disabled={false}
