@@ -24,9 +24,8 @@ import {
 } from "react-icons/tb";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { IoEyeOffOutline, IoEyeOutline, IoHeartDislike } from "react-icons/io5";
-import { debounce } from "lodash";
-import qs from "query-string";
-import { useRouter } from "next/navigation";
+import { debounce } from "lodash"; 
+import { useNotificationSearch } from "@/hooks/useNotificationSearch";
 
 const sortItems: {
   label: string;
@@ -75,8 +74,9 @@ const filterItems: {
   { label: "updated bookings", value: "UPDATING", icon: TbHomeEdit },
 ];
 const NotificationSearchContainer = () => {
-  const router = useRouter();
-  const [search, setSearch] = useState("");
+  const { setParams, params } = useNotificationSearch();
+
+  const [search, setSearch] = useState(params.search || "");
   const [selectedSort, setSort] = useState<
     | {
         icon: IconType;
@@ -84,7 +84,7 @@ const NotificationSearchContainer = () => {
         label: string;
       }
     | undefined
-  >(undefined);
+  >(sortItems.find((i) => i.value === params.sort) || undefined);
   const [selectedFilter, setFilter] = useState<
     | {
         icon: IconType;
@@ -92,14 +92,10 @@ const NotificationSearchContainer = () => {
         label: string;
       }
     | undefined
-  >(undefined);
+  >(filterItems.find((i) => i.value === params.filter) || undefined);
 
   const searchDebounce = debounce((val) => {
-    const query = qs.stringifyUrl({
-      url: "/mydashboard/notifications",
-      query: val,
-    });
-    router.push(query);
+    setParams(val);
   }, 2000);
 
   useEffect(() => {

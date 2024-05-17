@@ -6,19 +6,14 @@ import {
   NotificationFilterTypes,
   NotificationSortTypes,
 } from "@/hooks/useNotifications";
+import { useNotificationSearch } from "@/hooks/useNotificationSearch";
 
-const NotificationsPage = (params: {
-  params: any;
-  searchParams: {
-    search?: string;
-    filter?: NotificationFilterTypes;
-    sort?: NotificationSortTypes;
-  };
-}) => {
+const NotificationsPage = () => {
+  const { params } = useNotificationSearch();
   return (
     <section className="min-w-full max-w-full flex flex-col items-start justify-start gap-4 relative">
       <NotificationSearchContainer />
-      <NotificationList params={params.searchParams} />
+      <NotificationList params={params} />
     </section>
   );
 };
