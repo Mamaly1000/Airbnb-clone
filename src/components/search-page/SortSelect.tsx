@@ -7,7 +7,7 @@ import CustomSelect from "../inputs/CustomSelect";
 
 export type listingSortType = "NEWEST" | "OLDEST" | "TOP PRICE" | "LOWER PRICE";
 
-const sortsItems: {
+export const sortsItems: {
   type: listingSortType;
   label: string;
   icon: IconType;

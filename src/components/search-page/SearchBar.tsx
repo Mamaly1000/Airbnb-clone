@@ -2,35 +2,39 @@
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import ListingSearchInput from "./ListingSearchInput";
 import PriceRange from "./PriceRange";
-import CategorySelect from "./CategorySelect";
+import CategorySelect, { formattedCategories } from "./CategorySelect";
 import CountrySelect from "../inputs/CountrySelect";
-import { SingleCountryType } from "@/hooks/useCountry";
+import useCountry, { SingleCountryType } from "@/hooks/useCountry";
 import { IconType } from "react-icons";
 import { debounce } from "lodash";
 import useListings from "@/hooks/useListings";
-import SortSelect, { listingSortType } from "./SortSelect";
-import FilterSelect, { listingFilterType } from "./FilterSelect";
+import SortSelect, { listingSortType, sortsItems } from "./SortSelect";
+import FilterSelect, { filterItems, listingFilterType } from "./FilterSelect";
 import { AnimatePresence, motion } from "framer-motion";
 import { BiSearch } from "react-icons/bi";
 import { MdAttachMoney } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
-import qs from "query-string";
-import { usePathname, useRouter } from "next/navigation";
+import { usePropertySearch } from "@/hooks/usePropertySearch";
 
 const SearchBar = () => {
-  const router = useRouter();
+  const { params, setParams } = usePropertySearch();
+  const { getAll } = useCountry();
+
   const { maxPrice } = useListings();
-  const [search, setSearch] = useState("");
-  const [priceRange, setRange] = useState({ min: 0, max: maxPrice / 2 });
+  const [search, setSearch] = useState(params?.search || "");
+  const [priceRange, setRange] = useState({
+    min: params?.min || 0,
+    max: params?.max || maxPrice / 2,
+  });
   const [location, setLocation] = useState<SingleCountryType | undefined>(
-    undefined
+    getAll().find((i) => i.value === params?.location)
   );
   const [category, setCategory] = useState<
     { icon: IconType; label: string; value: string } | undefined
-  >(undefined);
+  >(formattedCategories.find((i) => i.value === params?.category));
   const [selectedSort, setSort] = useState<
     { type: listingSortType; label: string; icon: IconType } | undefined
-  >(undefined);
+  >(sortsItems.find((i) => i.type === params?.sort) || undefined);
   const [selectedFilter, setFilter] = useState<
     { type: listingFilterType; label: string; icon: IconType } | undefined
   >(undefined);
@@ -38,23 +42,16 @@ const SearchBar = () => {
   const handlePriceRangeChange = (range: { min: number; max: number }) => {
     setRange(range);
   };
-  const pathname = usePathname();
   const debounceFilter = debounce((val) => {
-    const query = qs.stringifyUrl({
-      url: pathname!,
-      query: {
-        category: val.category?.label,
-        location: val.location?.value,
-        max: val.priceRange.max,
-        min: val.priceRange.min,
-        search: !!val.search ? val.search.trim() : undefined,
-        sort: !!val.selectedSort?.type ? val.selectedSort.type : undefined,
-        filter: !!val.selectedFilter?.type
-          ? val.selectedFilter.type
-          : undefined,
-      },
+    setParams({
+      category: val.category?.label,
+      location: val.location?.value,
+      max: val.priceRange.max,
+      min: val.priceRange.min,
+      search: !!val.search ? val.search.trim() : undefined,
+      sort: !!val.selectedSort?.type ? val.selectedSort.type : undefined,
+      filter: !!val.selectedFilter?.type ? val.selectedFilter.type : undefined,
     });
-    router.push(query);
   }, 2000);
 
   useEffect(() => {

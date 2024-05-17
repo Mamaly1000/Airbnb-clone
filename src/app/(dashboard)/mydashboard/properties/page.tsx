@@ -1,7 +1,8 @@
 "use client";
 import ClientListingList from "@/components/lists/ClientListingList";
 import SearchBar from "@/components/search-page/SearchBar";
-import useListings, { listingQueryHookType } from "@/hooks/useListings";
+import useListings from "@/hooks/useListings";
+import { usePropertySearch } from "@/hooks/usePropertySearch";
 import { useUpdateProperty } from "@/hooks/useUpdateProperty";
 import useUser from "@/hooks/useUser";
 import { safeListingType } from "@/types/safeListing";
@@ -10,14 +11,11 @@ import { useRouter } from "next/navigation";
 import React, { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 
-const PropertiesPage = ({
-  searchParams,
-}: {
-  searchParams: listingQueryHookType;
-}) => {
+const PropertiesPage = () => {
+  const { params } = usePropertySearch();
   const updateProperyModal = useUpdateProperty();
   const { user } = useUser();
-  const { mutate } = useListings({ ...searchParams, userId: user?.id });
+  const { mutate } = useListings({ ...params, userId: user?.id });
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
 
@@ -41,6 +39,7 @@ const PropertiesPage = ({
     },
     [router]
   );
+
   return (
     <section className="min-w-full max-w-full flex flex-col items-start justify-start gap-8">
       <SearchBar />
@@ -51,7 +50,7 @@ const PropertiesPage = ({
           className:
             "min-w-full max-w-full flex flex-col items-center justify-center",
         }}
-        params={{ ...searchParams, userId: user?.id }}
+        params={{ ...params, userId: user?.id }}
         className="pt-12 min-w-full max-w-full"
         Remove={{
           label: "Delete Property",

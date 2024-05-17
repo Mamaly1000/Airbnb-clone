@@ -1,9 +1,16 @@
 "use client";
-import React from "react"; 
+import React from "react";
 import { twMerge } from "tailwind-merge";
 import { categories } from "../categories/Categories";
-import { IconType } from "react-icons"; 
+import { IconType } from "react-icons";
 import CustomSelect from "../inputs/CustomSelect";
+
+export const formattedCategories = categories.map((c) => ({
+  label: c.label,
+  icon: c.icon,
+  value: c.label,
+}));
+
 const CategorySelect = ({
   value,
   onChange,
@@ -16,11 +23,7 @@ const CategorySelect = ({
   return (
     <CustomSelect
       className={className}
-      options={categories.map((c) => ({
-        label: c.label,
-        icon: c.icon,
-        value: c.label,
-      }))}
+      options={formattedCategories}
       value={value}
       onChange={(newval) => {
         onChange(newval as any);

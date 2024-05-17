@@ -69,18 +69,12 @@ export default async function handler(
           OR: [
             {
               title: { contains: search },
-              description: { contains: search },
+            },
+            {
               category: { contains: search },
             },
             {
-              title: { startsWith: search },
-              description: { startsWith: search },
-              category: { startsWith: search },
-            },
-            {
-              title: { endsWith: search },
-              description: { endsWith: search },
-              category: { endsWith: search },
+              description: { contains: search },
             },
           ],
         };
@@ -89,7 +83,7 @@ export default async function handler(
         where.locationValue = location;
       }
       if (category) {
-        where.category = category;
+        where.category = { contains: category };
       }
       if (filter) {
         if (filter === "ALL") {
@@ -99,9 +93,7 @@ export default async function handler(
           where.userId = currentUser.currentUser.id;
         }
         if (filter === "FAVORITES") {
-          where.id = {
-            in: currentUser.currentUser.favoriteIds,
-          };
+          where.id = { in: currentUser.currentUser.favoriteIds };
         }
         if (filter === "REVIEWED") {
           where = {

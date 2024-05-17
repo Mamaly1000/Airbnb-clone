@@ -13,7 +13,7 @@ export type listingQueryHookType = {
   category?: string | undefined;
   location?: string | undefined;
   sort?: listingSortType | undefined;
-  filters?: listingFilterType | undefined;
+  filter ?: listingFilterType | undefined;
   userId?: string;
   isActive?: boolean;
   paginate?: boolean;
