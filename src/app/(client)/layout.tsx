@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
-import "../globals.css";
-import { Nunito } from "next/font/google";
+import "../globals.css"; 
 import Navbar from "@/components/navbar/Navbar";
 import getCurrentUser from "@/actions/getCurrentUser";
 import "react-tooltip/dist/react-tooltip.css";
-import { twMerge } from "tailwind-merge";
-import Body from "@/components/shared/CustomBody";
+ 
+import BottomBar from "@/components/bottom-bar/BottomBar";
 export const metadata: Metadata = {
   title: "Airbnb",
   description: "wellcome to Airbnb",
 };
-const font = Nunito({
-  subsets: ["latin"],
-});
+ 
 export default async function RootLayout({
   children,
 }: {
@@ -22,9 +19,10 @@ export default async function RootLayout({
   return (
     <>
       <Navbar user={user} />
-      <div className="z-0  relative bg-white dark:bg-neutral-800">
+      <div className="z-0  relative bg-white dark:bg-neutral-800 pb-[80px]">
         {children}
       </div>
+      <BottomBar />
     </>
   );
 }

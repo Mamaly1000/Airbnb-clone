@@ -2,7 +2,7 @@
 import useNotifications from "@/hooks/useNotifications";
 import useUser from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
-import React, { ReactNode, useMemo, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoHeartDislikeSharp, IoNotificationsOutline } from "react-icons/io5";
 import { IconType } from "react-icons";
@@ -18,6 +18,7 @@ import {
   TbHomeEdit,
   TbHomeX,
 } from "react-icons/tb";
+import useScrollAnimation from "@/hooks/useScroll";
 
 const NotifToggle = ({
   className,
@@ -30,6 +31,7 @@ const NotifToggle = ({
   const [display, setDisplay] = useState(true);
   const { user, isLoading: userLoading } = useUser();
   const { notifications, isLoading: notifsLoading } = useNotifications();
+  const { isScrolling } = useScrollAnimation({});
 
   const content = useMemo(() => {
     const unReadNotifs = notifications.filter((n) => n.read === false);
@@ -99,6 +101,12 @@ const NotifToggle = ({
   const showNotifs = useMemo(() => {
     return !notifsLoading && !!user && !isEmpty(content) && !userLoading;
   }, [notifsLoading, user, content, userLoading]);
+
+  useEffect(() => {
+    if (isScrolling) {
+      setDisplay(false);
+    }
+  }, [isScrolling]);
 
   return (
     <AnimatePresence>

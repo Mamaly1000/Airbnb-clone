@@ -20,24 +20,24 @@ const Navbar = ({
   return (
     <div
       className={twMerge(
-        "fixed top-0 left-0 min-w-full max-w-full min-h-[50px] z-10 bg-inherit shadow-sm shadow-gray-400 ",
+        "fixed top-0 left-0 min-w-full max-w-full min-h-[50px] z-10 bg-white dark:bg-neutral-800 shadow-sm shadow-gray-400 ",
         !!Categories ? "py-0" : "py-4",
         scrolled && isScrolling && "translate-y-[-70px]"
       )}
     >
       <Container
         classname={twMerge(
-          `border-b-[1px] relative z-20 flex items-center justify-center dark:border-neutral-500 py-4 max-h-[70px]`,
+          `border-b-[1px] relative z-20 flex items-center justify-center border-neutral-200 dark:border-neutral-600 py-4 max-h-[80px] md:max-h-[70px]`,
           className
         )}
       >
-        <div className="min-w-full max-w-full flex flex-row items-center justify-between gap-3 md:gap-0 relative z-20">
+        <div className="min-w-full max-w-full flex flex-row items-center justify-between gap-1 md:gap-0 relative z-20">
           <Logo />
           <Search />
           <UserMenu user={user} />
         </div>
       </Container>
-      <Categories  />
+      <Categories />
     </div>
   );
 };

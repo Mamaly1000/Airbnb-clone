@@ -25,6 +25,8 @@ import { GrDashboard, GrFavorite } from "react-icons/gr";
 import { PiTagSimple } from "react-icons/pi";
 import { VscSymbolProperty } from "react-icons/vsc";
 import { TbHomeCheck } from "react-icons/tb";
+import { FaAirbnb } from "react-icons/fa";
+
 const UserMenu = ({ user }: { user: safeUserType | null }) => {
   const [isOpen, setOpen] = useState(false);
   const { isScrolling } = useScrollAnimation({});
@@ -55,16 +57,17 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
     <div className="relative capitalize">
       <div className="flex flex-row items-center gap-3 [&>button:hover]:border-rose-500 [&>button:hover]:text-rose-500">
         <button
-          className="hidden border-[1px] border-neutral-200 md:block text-sm font-semibold py-3 px-4 rounded-full transition cursor-pointer"
+          className="hidden border-[1px] border-neutral-200 dark:border-neutral-600 md:block text-sm font-semibold lg:py-3 lg:px-4 rounded-full transition cursor-pointer w-[40px] h-[40px] lg:w-auto lg:h-auto p-2 items-center justify-center lg:flex"
           onClick={onRent}
         >
-          Airbnb your home
+          <FaAirbnb size={15} className="mx-auto lg:hidden" />
+          <span className="hidden lg:block">Airbnb your home</span>
         </button>
         <NotifToggle className="hidden md:flex" />
         <ToggleTheme className="hidden md:flex" />
         <NotifToggle>
           <button
-            className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-sm transition"
+            className="p-4 md:py-1 md:px-2 border-[1px] flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-sm transition border-neutral-200 dark:border-neutral-600"
             onClick={toggleOpen}
           >
             <AiOutlineMenu />
@@ -96,6 +99,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                             router.push("/mydashboard");
                           },
                           Icon: GrDashboard,
+                          pcOnly: true,
                         },
                         {
                           id: 6323454567856,
@@ -104,6 +108,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                             router.push("/");
                           },
                           Icon: BiHome,
+                          pcOnly: true,
                         },
                         {
                           id: 2340,
@@ -112,6 +117,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                             router.push("/trips");
                           },
                           Icon: BiTrip,
+                          pcOnly: true,
                         },
                         {
                           id: 67754,
@@ -120,6 +126,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                             router.push("/favorites");
                           },
                           Icon: GrFavorite,
+                          pcOnly: true,
                         },
                         {
                           id: 63453,
@@ -167,6 +174,7 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                             EditprofileModal.onOpen();
                           },
                           Icon: AiFillProfile,
+                          pcOnly: true,
                         },
                         {
                           id: 7455345,

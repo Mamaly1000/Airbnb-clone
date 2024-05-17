@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import useLoginModal from "@/hooks/useLoginModal";
 import useDashboardSidebar from "@/hooks/useDashboardSidebar";
 import DashboardHeading from "@/components/dashboard/DashboardHeading";
+import DashboardBottomBar from "@/components/bottom-bar/DashboardBottomBar";
 
 export default function RootLayout({
   children,
@@ -42,10 +43,11 @@ export default function RootLayout({
         )}
       >
         <DashboardHeading />
-        <section className="min-w-full max-w-full p-2 md:p-5 ">
+        <section className="min-w-full max-w-full p-2 md:p-5 pb-[80px] md:pb-5">
           {children}
         </section>
       </section>
+      <DashboardBottomBar />
     </section>
   );
 }

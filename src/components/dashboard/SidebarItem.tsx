@@ -18,8 +18,10 @@ const SidebarItem = ({
   index = 0,
   disabled,
   user,
+  pcOnly,
   mobileOnly,
 }: {
+  pcOnly?: boolean;
   mobileOnly?: boolean;
   user: safeUserType | null;
   disabled?: boolean;
@@ -31,8 +33,7 @@ const SidebarItem = ({
   Icon: IconType;
   onClick?: () => void;
 }) => {
-  const { isCollapse, isOpen, onClose, onCollapse, onExpand, onOpen } =
-    useDashboardSidebar();
+  const { isCollapse, isOpen, onClose } = useDashboardSidebar();
   const router = useRouter();
   const loginModal = useLoginModal();
   const OnclickHandler = useCallback(
@@ -53,6 +54,7 @@ const SidebarItem = ({
     },
     [route, disabled, onClick]
   );
+
   return (
     <motion.button
       initial={{ opacity: 0, translateX: -10 }}
@@ -68,6 +70,7 @@ const SidebarItem = ({
         isActive &&
           `text-white dark:text-white bg-black dark:bg-rose-500 font-bold`,
         mobileOnly && (isCollapse ? "flex" : "flex md:hidden"),
+        pcOnly && "hidden md:flex",
         isCollapse
           ? "items-center justify-center md:justify-start"
           : "items-center justify-start md:justify-start",
@@ -83,7 +86,7 @@ const SidebarItem = ({
         transition={{ duration: 0.1, ease: "linear" }}
         key={Icon.toString()}
       >
-        <Icon size={size} />
+        <Icon size={size} className="duration-300" />
       </motion.div>
       <p
         className={twMerge(

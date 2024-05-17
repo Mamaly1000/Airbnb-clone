@@ -10,7 +10,7 @@ const Avatar = ({
   className,
 }: {
   className?: string;
-  userId: string;
+  userId?: string;
 }) => {
   const { profile, isLoading } = useProfileImage(userId);
   if (!profile && isLoading) {

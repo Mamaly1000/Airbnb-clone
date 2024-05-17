@@ -2,7 +2,7 @@
 import Container from "@/components/ui/Container";
 import { usePathname, useSearchParams } from "next/navigation";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { TbBeach, TbMountain, TbPool } from "react-icons/tb";
 import {
   GiBarn,
@@ -103,48 +103,39 @@ const Categories = () => {
   const params = useSearchParams();
   const category = params?.get("category");
   const pathname = usePathname();
-  const [displayLabels, setDisplayLabels] = useState(true);
-  const { scrolled, isScrolling } = useScrollAnimation({});
+  const { scrolled } = useScrollAnimation({});
 
   const isMain = pathname === "/";
-
-  useEffect(() => {
-    if (scrolled) {
-      setDisplayLabels(false);
-    } else {
-      setDisplayLabels(true);
-    }
-  }, [scrolled]);
 
   if (!isMain) {
     return null;
   }
 
   return (
-    <Container
-      classname={twMerge(
-        `pt-4 flex flex-row items-center 
-        justify-between overflow-x-auto 
-        gap-2 max-w-full py-3`,
-        isScrolling ? "sticky top-0 left-0 z-0":"relative z-0",
-        scrolled && " z-10 py-2 "
-      )}
-    >
-      {categories.map((c) => {
-        return (
-          <CategoryBox
-            className={twMerge(
-              category?.toLowerCase() === c.label.toLowerCase()
-                ? "border-b-neutral-800 text-neutral-800 dark:border-b-rose-500 dark:text-rose-500"
-                : "border-transparent text-neutral-500 dark:text-gray-500"
-            )}
-            displayLabel={displayLabels}
-            category={c}
-            key={c.description}
-          />
-        );
-      })}
-    </Container>
+    !scrolled && (
+      <Container
+        classname={twMerge(
+          `pt-4 flex flex-row items-center 
+          justify-between overflow-x-auto 
+          gap-1 md:gap-2 max-w-full py-0 md:py-3 scroll-hidden shadow-lg shadow-gray-400`,
+          scrolled && " z-10 py-0 md:py-2 "
+        )}
+      >
+        {categories.map((c) => {
+          return (
+            <CategoryBox
+              className={twMerge(
+                category?.toLowerCase() === c.label.toLowerCase()
+                  ? "border-black border-b-[4px] md:border-b-0 text-black dark:border-b-rose-500 dark:hover:text-rose-500 dark:text-rose-500"
+                  : "border-transparent text-neutral-500 dark:text-gray-500 dark:hover:text-rose-500"
+              )}
+              category={c}
+              key={c.description}
+            />
+          );
+        })}
+      </Container>
+    )
   );
 };
 

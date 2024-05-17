@@ -12,7 +12,7 @@ interface useDashboardSidebarStore {
 
 const useDashboardSidebar = create<useDashboardSidebarStore>((set) => ({
   isCollapse: false,
-  isOpen: true,
+  isOpen: false,
   onClose: () => set({ isOpen: false }),
   onOpen: () => set({ isOpen: true }),
   onCollapse: () => set({ isCollapse: true }),

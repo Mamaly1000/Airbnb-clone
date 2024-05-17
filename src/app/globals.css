@@ -42,7 +42,7 @@ button {
   @apply bg-black dark:bg-rose-500;
 }
 .scroll-hidden::-webkit-scrollbar {
-  @apply hidden;
+  @apply hidden md:block;
 }
 input {
   @apply outline-none focus-within:outline-none focus:outline-none hover:outline-none active:outline-none autofill:outline-none;

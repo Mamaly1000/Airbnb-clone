@@ -15,6 +15,7 @@ const MenuItems = ({
     onClick: () => void;
     hr?: boolean;
     mobileOnly?: boolean;
+    pcOnly?: boolean;
   }[];
 }) => {
   return (
@@ -29,6 +30,7 @@ const MenuItems = ({
                 item.onClick();
                 onClose!();
               }}
+              pcOnly={item.pcOnly}
               mobileOnly={item.mobileOnly}
               Icon={item.Icon}
             />

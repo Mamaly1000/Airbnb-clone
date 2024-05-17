@@ -10,12 +10,11 @@ import {
   IoAnalytics,
   IoChevronBackCircleOutline,
   IoChevronForwardCircleOutline,
-  IoNotificationsOutline,
 } from "react-icons/io5";
 import SmallUserprofile from "../shared/SmallUserprofile";
 import useUser from "@/hooks/useUser";
 import SidebarItem from "./SidebarItem";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { IconType } from "react-icons";
 import { useTheme } from "@/hooks/useTheme";
 import { LuMoonStar } from "react-icons/lu";
@@ -25,9 +24,11 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { signOut } from "next-auth/react";
 import { BiHome } from "react-icons/bi";
 import useRentModal from "@/hooks/useRentModal";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const sidebarItems: {
   label: string;
+  pcOnly?: boolean;
   Icon: IconType;
   route: string;
   description: string;
@@ -40,6 +41,7 @@ export const sidebarItems: {
     route: "/",
     description:
       "This menu item directs users to the main page that displays a summary of relevant information about their properties, reservations, and clients.",
+    pcOnly: true,
   },
   {
     label: "Dashboard",
@@ -47,6 +49,7 @@ export const sidebarItems: {
     route: "/mydashboard",
     description:
       "This menu item directs users to the main page that displays a summary of relevant information about their properties, reservations, and clients.",
+    pcOnly: true,
   },
   {
     label: "search",
@@ -54,6 +57,7 @@ export const sidebarItems: {
     route: "/mydashboard/search",
     description:
       "The search page allows users to search for properties based on various filters, such as location, price, and amenities.",
+    pcOnly: true,
   },
   {
     label: "properties",
@@ -89,23 +93,19 @@ export const sidebarItems: {
     route: "/mydashboard/analytics",
     description:
       "The analytics page displays data about the user's properties and reservations. Users can view statistics on revenue, occupancy, and other metrics, as well as track their performance over time.",
-  },
-  {
-    label: "notifications",
-    Icon: IoNotificationsOutline,
-    route: "/mydashboard/notifications",
-    description:
-      "The notifications page displays your notifications which generally are about booking,rebooking,canceling,updating,like,dislike and reviews.",
-    mobileOnly: true,
+    pcOnly: true,
   },
 ];
 const Sidebar = () => {
+  const router = useRouter();
+
   const { user } = useUser();
   const { isCollapse, onExpand, onCollapse, isOpen, onClose } =
     useDashboardSidebar();
   const { mode, setTheme } = useTheme();
   const pathname = usePathname();
   const { onOpen: openRentModal } = useRentModal();
+
   return (
     <>
       <section
@@ -223,6 +223,17 @@ const Sidebar = () => {
           />{" "}
         </section>
       </section>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            onClick={() => onClose()}
+            className="fixed sm:hidden top-0 left-0 w-full h-screen z-[49] bg-black/50"
+          />
+        )}
+      </AnimatePresence>
       <section
         className={twMerge(
           `fixed sm:hidden top-0 left-0 z-[50]
@@ -258,12 +269,21 @@ const Sidebar = () => {
                 disabled={!!!user}
                 route={item.route}
                 mobileOnly={item.mobileOnly}
+                pcOnly={item.pcOnly}
+                onClick={() => {
+                  onClose();
+                  router.push(item.route);
+                }}
               />
               {i !== arr.length - 1 && (
                 <hr
                   className={twMerge(
                     "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
-                    isCollapse ? "block" : "block md:hidden"
+                    item.pcOnly
+                      ? "hidden md:block"
+                      : isCollapse
+                      ? "block"
+                      : "block md:hidden"
                   )}
                 />
               )}
@@ -272,7 +292,7 @@ const Sidebar = () => {
           <hr
             className={twMerge(
               "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
-              isCollapse ? "block" : "block md:hidden"
+              "hidden md:block"
             )}
           />
           <SidebarItem

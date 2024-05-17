@@ -10,7 +10,9 @@ const MenuItem = ({
   Icon,
   index,
   mobileOnly,
+  pcOnly,
 }: {
+  pcOnly?: boolean;
   mobileOnly?: boolean;
   index?: number;
   Icon?: any;
@@ -26,7 +28,8 @@ const MenuItem = ({
         `flex items-center justify-between gap-2 px-4 py-3
        hover:bg-neutral-100 dark:hover:bg-rose-500
         font-semibold min-w-fit whitespace-nowrap`,
-        mobileOnly && "md:hidden"
+        mobileOnly && "md:hidden",
+        pcOnly && "hidden md:flex"
       )}
       onClick={onClick}
     >
