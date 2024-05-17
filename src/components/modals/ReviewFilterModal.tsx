@@ -28,7 +28,7 @@ const ReviewFilterModal = () => {
     type: "REVIEWS",
   });
   const { isLoading: listingsLoading, listings } = useListings({
-    filters: "REVIEWED",
+    filter: "REVIEWED",
     paginate: false,
   });
   const form = useForm<{
