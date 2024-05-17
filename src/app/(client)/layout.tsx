@@ -19,7 +19,7 @@ export default async function RootLayout({
   return (
     <>
       <Navbar user={user} />
-      <div className="z-0  relative bg-white dark:bg-neutral-800 pb-[80px]">
+      <div className="z-0  relative bg-white dark:bg-neutral-800 pb-[80px] md:pb-0">
         {children}
       </div>
       <BottomBar />
