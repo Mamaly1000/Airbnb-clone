@@ -99,7 +99,7 @@ const RegisterModal = () => {
         },
         AdditionalActions: (
           <div className="min-w-full flex flex-col gap-3 justify-start items-start">
-            <Button
+            {/* <Button
               label="countinue with google"
               onClick={() => {
                 signIn("google");
@@ -116,7 +116,7 @@ const RegisterModal = () => {
               Icon={AiFillGithub}
               outline
             />
-            <hr />
+            <hr /> */}
             <div className="min-w-full text-neutral-500 text-center font-light">
               <div className="min-w-full flex flex-wrap items-center justify-center gap-3 capitalize">
                 <div>already have an account?</div>
