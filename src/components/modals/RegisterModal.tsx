@@ -14,15 +14,16 @@ import axios from "axios";
 import useLoginModal from "@/hooks/useLoginModal";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import useUser from "@/hooks/useUser";
 const RegisterModal = () => {
   const router = useRouter();
+  const { mutate } = useUser();
   const { isOpen, onClose } = useRegisterModal();
-  const [isLoading, setLoading] = useState(false);
   const loginModal = useLoginModal();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FieldValues>({
     defaultValues: {
       name: "",
@@ -30,20 +31,24 @@ const RegisterModal = () => {
       password: "",
     },
   });
+
+  const isLoading = isSubmitting;
+
   const submitHandler: SubmitHandler<FieldValues> = (data) => {
-    setLoading(true);
     axios
       .post("/api/register", data)
       .then((res) => {
         onClose();
         loginModal.onOpen();
         toast.success("wellcome to Airbnb " + res.data.name);
+        loginModal.onClose();
+        router.refresh();
+        mutate();
       })
       .catch((err) => {
         toast.error("failed to register");
         console.log(err);
-      })
-      .finally(() => setLoading(false));
+      });
   };
   const handleModal = (val: boolean) => {
     if (!val) {

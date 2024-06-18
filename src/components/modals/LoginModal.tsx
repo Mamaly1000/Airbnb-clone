@@ -11,14 +11,17 @@ import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import useUser from "@/hooks/useUser";
 
 const LoginModal = () => {
-  const [isLoading, setLoading] = useState(false);
   const router = useRouter();
+  const { mutate } = useUser();
+
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
+
   const {
-    formState: { errors },
+    formState: { errors, isSubmitting },
     register,
     handleSubmit,
   } = useForm<FieldValues>({
@@ -27,9 +30,10 @@ const LoginModal = () => {
       password: "",
     },
   });
-  const submitHandler: SubmitHandler<FieldValues> = (data) => {
-    setLoading(true);
-    signIn("credentials", {
+  const isLoading = isSubmitting;
+
+  const submitHandler: SubmitHandler<FieldValues> = async (data) => {
+    await signIn("credentials", {
       ...data,
       redirect: false,
     })
@@ -38,16 +42,20 @@ const LoginModal = () => {
           toast.success("wellcome back");
           loginModal.onClose();
           router.refresh();
+          mutate();
         } else if (callback?.error) {
           toast.error(callback?.error);
         }
+        loginModal.onClose();
+        router.refresh();
+        mutate();
       })
       .catch((err) => {
         console.log(err);
         toast.error("something went wrong");
-      })
-      .finally(() => setLoading(false));
+      });
   };
+
   return (
     <Modal
       isOpen={loginModal.isOpen}
