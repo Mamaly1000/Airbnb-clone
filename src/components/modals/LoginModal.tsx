@@ -35,7 +35,8 @@ const LoginModal = () => {
   const submitHandler: SubmitHandler<FieldValues> = async (data) => {
     await signIn("credentials", {
       ...data,
-      redirect: false,
+      redirect: true,
+      callbackUrl: "/",
     })
       .then((callback) => {
         if (callback?.ok) {
