@@ -1,6 +1,6 @@
 "use client";
 import useCountry, { SingleCountryType } from "@/hooks/useCountry";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "next-themes";
 import React from "react";
 import Select from "react-select";
 import { twMerge } from "tailwind-merge";
@@ -14,7 +14,8 @@ const CountrySelect = ({
   value?: SingleCountryType;
   onChange: (value: SingleCountryType) => void;
 }) => {
-  const { mode } = useTheme();
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
   const { getAll } = useCountry();
   return (
     <div className={twMerge("", className)}>
@@ -73,8 +74,8 @@ const CountrySelect = ({
           borderRadius: 5,
           colors: {
             ...theme.colors,
-            primary: mode === "dark" ? "rgba(244 63 94/.5)" : "rgba(0 0 0/.2)",
-            primary25: mode === "dark" ? "rgba(244 63 94 / .2)" : "#ffe4e6",
+            primary: isDarkMode ? "rgba(244 63 94/.5)" : "rgba(0 0 0/.2)",
+            primary25: isDarkMode ? "rgba(244 63 94 / .2)" : "#ffe4e6",
           },
         })}
       />

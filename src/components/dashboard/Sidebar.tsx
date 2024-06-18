@@ -16,7 +16,6 @@ import useUser from "@/hooks/useUser";
 import SidebarItem from "./SidebarItem";
 import { usePathname, useRouter } from "next/navigation";
 import { IconType } from "react-icons";
-import { useTheme } from "@/hooks/useTheme";
 import { LuMoonStar } from "react-icons/lu";
 import { GoSun } from "react-icons/go";
 import useDashboardSidebar from "@/hooks/useDashboardSidebar";
@@ -25,6 +24,7 @@ import { signOut } from "next-auth/react";
 import { BiHome } from "react-icons/bi";
 import useRentModal from "@/hooks/useRentModal";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTheme } from "next-themes";
 
 export const sidebarItems: {
   label: string;
@@ -34,6 +34,7 @@ export const sidebarItems: {
   description: string;
   mobileOnly?: boolean;
   desktopOnly?: boolean;
+  isHidden?: boolean;
 }[] = [
   {
     label: "Home",
@@ -88,6 +89,13 @@ export const sidebarItems: {
       "The reviews page displays all the reviews that have been left for the user's properties. Users can view and respond to reviews, as well as mark reviews as helpful or unhelpful.",
   },
   {
+    label: "My Notifications",
+    Icon: IoAnalytics,
+    route: "/mydashboard/notifications",
+    description: "",
+    isHidden: true,
+  },
+  {
     label: "analytics",
     Icon: IoAnalytics,
     route: "/mydashboard/analytics",
@@ -102,7 +110,8 @@ const Sidebar = () => {
   const { user } = useUser();
   const { isCollapse, onExpand, onCollapse, isOpen, onClose } =
     useDashboardSidebar();
-  const { mode, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
   const pathname = usePathname();
   const { onOpen: openRentModal } = useRentModal();
 
@@ -127,31 +136,34 @@ const Sidebar = () => {
             isCollapse ? "justify-center items-center" : "justify-start"
           )}
         >
-          {sidebarItems.map((item, i, arr) => (
-            <Fragment key={i}>
-              <SidebarItem
-                user={user}
-                index={i}
-                size={25}
-                isActive={
-                  !!pathname?.match(item.route) && !!(pathname === item.route)
-                }
-                Icon={item.Icon}
-                label={item.label}
-                disabled={!!!user}
-                route={item.route}
-                mobileOnly={item.mobileOnly}
-              />
-              {i !== arr.length - 1 && (
-                <hr
-                  className={twMerge(
-                    "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
-                    isCollapse ? "block" : "block md:hidden"
-                  )}
+          {sidebarItems
+            .filter((item) => !!!item?.isHidden)
+            .map((item, i, arr) => (
+              <Fragment key={i}>
+                <SidebarItem
+                  isHidden={item?.isHidden}
+                  user={user}
+                  index={i}
+                  size={25}
+                  isActive={
+                    !!pathname?.match(item.route) && !!(pathname === item.route)
+                  }
+                  Icon={item.Icon}
+                  label={item.label}
+                  disabled={!!!user}
+                  route={item.route}
+                  mobileOnly={item.mobileOnly}
                 />
-              )}
-            </Fragment>
-          ))}
+                {i !== arr.length - 1 && (
+                  <hr
+                    className={twMerge(
+                      "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
+                      isCollapse ? "block" : "block md:hidden"
+                    )}
+                  />
+                )}
+              </Fragment>
+            ))}
           <hr
             className={twMerge(
               "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
@@ -177,10 +189,10 @@ const Sidebar = () => {
             user={user}
             index={5}
             size={25}
-            Icon={mode === "dark" ? LuMoonStar : GoSun}
-            label={mode === "dark" ? "Light Mode" : "Dark Mode"}
+            Icon={isDarkMode ? LuMoonStar : GoSun}
+            label={isDarkMode ? "Light Mode" : "Dark Mode"}
             mobileOnly={true}
-            onClick={() => setTheme()}
+            onClick={() => setTheme(isDarkMode ? "light" : "dark")}
             disabled={false}
           />
           <hr
@@ -255,40 +267,42 @@ const Sidebar = () => {
             isCollapse ? "justify-center items-center" : "justify-start"
           )}
         >
-          {sidebarItems.map((item, i, arr) => (
-            <Fragment key={i}>
-              <SidebarItem
-                user={user}
-                index={i}
-                size={25}
-                isActive={
-                  !!pathname?.match(item.route) && !!(pathname === item.route)
-                }
-                Icon={item.Icon}
-                label={item.label}
-                disabled={!!!user}
-                route={item.route}
-                mobileOnly={item.mobileOnly}
-                pcOnly={item.pcOnly}
-                onClick={() => {
-                  onClose();
-                  router.push(item.route);
-                }}
-              />
-              {i !== arr.length - 1 && (
-                <hr
-                  className={twMerge(
-                    "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
-                    item.pcOnly
-                      ? "hidden md:block"
-                      : isCollapse
-                      ? "block"
-                      : "block md:hidden"
-                  )}
+          {sidebarItems
+            .filter((item) => !!!item?.isHidden)
+            .map((item, i, arr) => (
+              <Fragment key={i}>
+                <SidebarItem
+                  user={user}
+                  index={i}
+                  size={25}
+                  isActive={
+                    !!pathname?.match(item.route) && !!(pathname === item.route)
+                  }
+                  Icon={item.Icon}
+                  label={item.label}
+                  disabled={!!!user}
+                  route={item.route}
+                  mobileOnly={item.mobileOnly}
+                  pcOnly={item.pcOnly}
+                  onClick={() => {
+                    onClose();
+                    router.push(item.route);
+                  }}
                 />
-              )}
-            </Fragment>
-          ))}
+                {i !== arr.length - 1 && (
+                  <hr
+                    className={twMerge(
+                      "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
+                      item.pcOnly
+                        ? "hidden md:block"
+                        : isCollapse
+                        ? "block"
+                        : "block md:hidden"
+                    )}
+                  />
+                )}
+              </Fragment>
+            ))}
           <hr
             className={twMerge(
               "min-w-full max-w-full min-h-[2px] border-none bg-neutral-300 dark:bg-neutral-600 rounded-full",
@@ -317,10 +331,10 @@ const Sidebar = () => {
             user={user}
             index={5}
             size={25}
-            Icon={mode === "dark" ? LuMoonStar : GoSun}
-            label={mode === "dark" ? "Light Mode" : "Dark Mode"}
+            Icon={isDarkMode ? LuMoonStar : GoSun}
+            label={isDarkMode ? "Light Mode" : "Dark Mode"}
             mobileOnly={true}
-            onClick={() => setTheme()}
+            onClick={() => setTheme(isDarkMode ? "light" : "dark")}
             disabled={false}
           />
           <hr

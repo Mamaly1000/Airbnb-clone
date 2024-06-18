@@ -29,7 +29,11 @@ const useReviews = (params?: ReviewQueryHookType) => {
       endDate: params?.endDate?.toISOString(),
     },
   });
-  const { data, isLoading, error, mutate } = useSWR(query, fetcher);
+  const { data, isLoading, error, mutate } = useSWR(query, fetcher, {
+    errorRetryCount: 1,
+    shouldRetryOnError: false,
+    revalidateOnFocus: false,
+  });
   return {
     reviews: (data?.reviews || []) as Feedback[],
     isLoading,

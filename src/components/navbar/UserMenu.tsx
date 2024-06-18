@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import { useProfileModal } from "@/hooks/useProfileModal";
 import { AnimatePresence, motion } from "framer-motion";
 import ToggleTheme from "./ToggleTheme";
-import { useTheme } from "@/hooks/useTheme";
 import { LuMoonStar } from "react-icons/lu";
 import { GoSun } from "react-icons/go";
 import { RiLogoutCircleLine } from "react-icons/ri";
@@ -26,11 +25,13 @@ import { PiTagSimple } from "react-icons/pi";
 import { VscSymbolProperty } from "react-icons/vsc";
 import { TbHomeCheck } from "react-icons/tb";
 import { FaAirbnb } from "react-icons/fa";
+import { useTheme } from "next-themes";
 
 const UserMenu = ({ user }: { user: safeUserType | null }) => {
   const [isOpen, setOpen] = useState(false);
   const { isScrolling } = useScrollAnimation({});
-  const { mode, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const rentmodal = useRentModal();
@@ -185,9 +186,10 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                           Icon: RiLogoutCircleLine,
                         },
                         {
-                          label: (mode === "dark" ? "light" : "dark") + " mode",
-                          onClick: () => setTheme(),
-                          Icon: mode !== "dark" ? LuMoonStar : GoSun,
+                          label: (isDarkMode ? "light" : "dark") + " mode",
+                          onClick: () =>
+                            setTheme(isDarkMode ? "light" : "dark"),
+                          Icon: !isDarkMode ? LuMoonStar : GoSun,
                           id: 23984219412039,
                           mobileOnly: true,
                         },
@@ -218,9 +220,10 @@ const UserMenu = ({ user }: { user: safeUserType | null }) => {
                           },
                         },
                         {
-                          label: (mode === "dark" ? "light" : "dark") + " mode",
-                          onClick: () => setTheme(),
-                          Icon: mode !== "dark" ? LuMoonStar : GoSun,
+                          label: (isDarkMode ? "light" : "dark") + " mode",
+                          onClick: () =>
+                            setTheme(isDarkMode ? "light" : "dark"),
+                          Icon: !isDarkMode ? LuMoonStar : GoSun,
                           id: 23984219412039,
                           mobileOnly: true,
                         },

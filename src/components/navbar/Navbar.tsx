@@ -7,27 +7,20 @@ import UserMenu from "./UserMenu";
 import { safeUserType } from "@/types/safeuser";
 import Categories from "../categories/Categories";
 import { twMerge } from "tailwind-merge";
-import useScrollAnimation from "@/hooks/useScroll";
+import NavbarWrapper from "./NavbarWrapper";
+import useUser from "@/hooks/useUser";
 
-const Navbar = ({
-  user,
-  className,
-}: {
-  className?: string;
-  user: safeUserType | null;
-}) => {
-  const { scrolled, isScrolling } = useScrollAnimation({});
+const Navbar = ({ className }: { className?: string }) => {
+  const { user } = useUser();
   return (
-    <div
-      className={twMerge(
-        "fixed top-0 left-0 min-w-full max-w-full min-h-[50px] z-10 bg-white dark:bg-neutral-800 shadow-sm shadow-gray-400 ",
-        !!Categories ? "py-0" : "py-4",
-        scrolled && isScrolling && "translate-y-[-70px]"
-      )}
+    <NavbarWrapper
+      user={user}
+      className={twMerge(!!Categories ? "py-0" : "py-4")}
     >
       <Container
         classname={twMerge(
-          `border-b-[1px] relative z-20 flex items-center justify-center border-neutral-200 dark:border-neutral-600 py-4 max-h-[80px] md:max-h-[70px]`,
+          ` relative z-20 flex items-center justify-center py-4 max-h-[80px] md:max-h-[70px]
+          border-b-[1px] border-neutral-200 dark:border-neutral-600`,
           className
         )}
       >
@@ -38,7 +31,7 @@ const Navbar = ({
         </div>
       </Container>
       <Categories />
-    </div>
+    </NavbarWrapper>
   );
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import fetcher from "@/libs/fetcher";
-import { safeUserType } from "@/types/safeuser"; 
+import { safeUserType } from "@/types/safeuser";
 import useSWR from "swr";
 
 const useUser = () => {

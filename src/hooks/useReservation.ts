@@ -6,7 +6,11 @@ import useSWR from "swr";
 
 const useReservation = (id?: string) => {
   const url = id ? `/api/reservations/${id}` : null;
-  const { data, error, isLoading, mutate } = useSWR(url, fetcher);
+  const { data, error, isLoading, mutate } = useSWR(url, fetcher, {
+    errorRetryCount: 1,
+    shouldRetryOnError: false,
+    revalidateOnFocus: false,
+  });
   return {
     reservation: data as safeReservationType | null,
     error,

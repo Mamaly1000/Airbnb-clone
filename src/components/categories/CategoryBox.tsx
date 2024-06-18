@@ -4,8 +4,6 @@ import React, { useCallback } from "react";
 import { IconType } from "react-icons";
 import { twMerge } from "tailwind-merge";
 import qs from "query-string";
-import { Tooltip } from "react-tooltip";
-import { AnimatePresence, motion } from "framer-motion";
 const CategoryBox = ({
   category,
   onClick,
@@ -28,6 +26,7 @@ const CategoryBox = ({
   const router = useRouter();
   const params = useSearchParams();
   const { icon: Icon } = category;
+
   const handleClick = useCallback(() => {
     if (!!!onClick) {
       let currentQuery = {};
@@ -53,8 +52,9 @@ const CategoryBox = ({
       onClick(category);
     }
   }, [params, router, onClick, category]);
+
   return (
-    <motion.button
+    <button
       id={category.label}
       onClick={() => {
         handleClick();
@@ -68,19 +68,8 @@ const CategoryBox = ({
       )}
     >
       <Icon size={26} />
-      <AnimatePresence>
-        {displayLabel && (
-          <motion.div
-            animate={{ opacity: 1, translateY: 0 }}
-            initial={{ opacity: 0, translateY: 5 }}
-            exit={{ opacity: 0, translateY: 5 }}
-            className="font-medium text-sm"
-          >
-            {category.label}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.button>
+      {displayLabel && <p className="font-medium text-sm">{category.label}</p>}
+    </button>
   );
 };
 

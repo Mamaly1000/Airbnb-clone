@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useCallback } from "react";
 import { TbPhotoPlus } from "react-icons/tb";
 import toast from "react-hot-toast";
-import { useTheme } from "@/hooks/useTheme";
 import { twMerge } from "tailwind-merge";
+import { useTheme } from "next-themes";
 declare global {
   var cloudinary: any;
 }
@@ -20,7 +20,8 @@ const ImageUpload = ({
   value: string;
   onChange: (value: string) => void;
 }) => {
-  const { mode } = useTheme();
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
   const handleUpload = useCallback(
     (results: any) => {
       onChange(results.info.secure_url);
@@ -35,38 +36,37 @@ const ImageUpload = ({
       options={{
         maxFiles: 1,
         styles: {
-          palette:
-            mode === "dark"
-              ? {
-                  window: "#262626",
-                  sourceBg: "#262626",
-                  windowBorder: "#898585",
-                  tabIcon: "#F43F5E",
-                  inactiveTabIcon: "#898585",
-                  menuIcons: "#F43F5E",
-                  link: "#F43F5E",
-                  action: "#F43F5E",
-                  inProgress: "#F43F5E",
-                  complete: "#33ff00",
-                  error: "#EA2727",
-                  textDark: "#262626",
-                  textLight: "#FFFFFF",
-                }
-              : {
-                  window: "#FFFFFF",
-                  sourceBg: "#FEFEFE",
-                  windowBorder: "#898585",
-                  tabIcon: "#F43F5E",
-                  inactiveTabIcon: "#898585",
-                  menuIcons: "#F43F5E",
-                  link: "#F43F5E",
-                  action: "#F43F5E",
-                  inProgress: "#F43F5E",
-                  complete: "#33ff00",
-                  error: "#EA2727",
-                  textDark: "#262626",
-                  textLight: "#FFFFFF",
-                },
+          palette: isDarkMode
+            ? {
+                window: "#262626",
+                sourceBg: "#262626",
+                windowBorder: "#898585",
+                tabIcon: "#F43F5E",
+                inactiveTabIcon: "#898585",
+                menuIcons: "#F43F5E",
+                link: "#F43F5E",
+                action: "#F43F5E",
+                inProgress: "#F43F5E",
+                complete: "#33ff00",
+                error: "#EA2727",
+                textDark: "#262626",
+                textLight: "#FFFFFF",
+              }
+            : {
+                window: "#FFFFFF",
+                sourceBg: "#FEFEFE",
+                windowBorder: "#898585",
+                tabIcon: "#F43F5E",
+                inactiveTabIcon: "#898585",
+                menuIcons: "#F43F5E",
+                link: "#F43F5E",
+                action: "#F43F5E",
+                inProgress: "#F43F5E",
+                complete: "#33ff00",
+                error: "#EA2727",
+                textDark: "#262626",
+                textLight: "#FFFFFF",
+              },
         },
         sources: ["local", "url", "camera"],
         resourceType: "image",

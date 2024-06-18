@@ -13,7 +13,7 @@ export type listingQueryHookType = {
   category?: string | undefined;
   location?: string | undefined;
   sort?: listingSortType | undefined;
-  filter ?: listingFilterType | undefined;
+  filter?: listingFilterType | undefined;
   userId?: string;
   isActive?: boolean;
   paginate?: boolean;
@@ -50,8 +50,9 @@ const useListings = (params?: listingQueryHookType) => {
     },
     fetcher,
     {
-      errorRetryCount: 2,
+      errorRetryCount: 1,
       shouldRetryOnError: false,
+      revalidateOnFocus: false,
     }
   );
   const onNextPage = useCallback(() => {

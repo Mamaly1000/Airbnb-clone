@@ -10,6 +10,7 @@ import ToggleTheme from "../navbar/ToggleTheme";
 import NotifToggle from "../navbar/NotifToggle";
 import useDashboardSidebar from "@/hooks/useDashboardSidebar";
 import SidebarToggle from "../navbar/SidebarToggle";
+
 const DashboardHeading = () => {
   const pathname = usePathname();
   const { isCollapse } = useDashboardSidebar();
@@ -26,7 +27,8 @@ const DashboardHeading = () => {
       className={twMerge(`
       min-w-full max-w-full p-3 md:p-5 z-10 bg-white dark:bg-neutral-800
       border-b-[1px] border-neutral-300 dark:border-neutral-600
-      sticky top-0 left-0 flex flex-col items-start justify-start gap-2 transition-all`)}
+      sticky top-0 left-0 flex flex-col items-start justify-start gap-2 transition-all
+      shadow-md shadow-gray-200 dark:shadow-gray-900`)}
       transition={{ duration: 1 }}
     >
       <section className="min-w-full max-w-full flex items-center justify-between flex-wrap gap-2">

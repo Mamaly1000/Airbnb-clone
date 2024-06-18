@@ -117,7 +117,7 @@ const Categories = () => {
         classname={twMerge(
           `pt-4 flex flex-row items-center 
           justify-between overflow-x-auto 
-          gap-1 md:gap-2 max-w-full py-0 md:py-3 scroll-hidden shadow-lg shadow-gray-400`,
+          gap-1 md:gap-2 max-w-full py-0 md:py-3 scroll-hidden`,
           scrolled && " z-10 py-0 md:py-2 "
         )}
       >

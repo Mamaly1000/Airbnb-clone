@@ -8,6 +8,21 @@ import { safeUserType } from "@/types/safeuser";
 import useLoginModal from "@/hooks/useLoginModal";
 import useDashboardSidebar from "@/hooks/useDashboardSidebar";
 
+interface props {
+  pcOnly?: boolean;
+  mobileOnly?: boolean;
+  user: safeUserType | null;
+  disabled?: boolean;
+  index?: number;
+  size?: number;
+  label: string;
+  route?: string;
+  isActive?: boolean;
+  Icon: IconType;
+  onClick?: () => void;
+  isHidden?: boolean;
+}
+
 const SidebarItem = ({
   label,
   route,
@@ -20,20 +35,9 @@ const SidebarItem = ({
   user,
   pcOnly,
   mobileOnly,
-}: {
-  pcOnly?: boolean;
-  mobileOnly?: boolean;
-  user: safeUserType | null;
-  disabled?: boolean;
-  index?: number;
-  size?: number;
-  label: string;
-  route?: string;
-  isActive?: boolean;
-  Icon: IconType;
-  onClick?: () => void;
-}) => {
-  const { isCollapse, isOpen, onClose } = useDashboardSidebar();
+  isHidden = false,
+}: props) => {
+  const { isCollapse } = useDashboardSidebar();
   const router = useRouter();
   const loginModal = useLoginModal();
   const OnclickHandler = useCallback(
@@ -69,6 +73,7 @@ const SidebarItem = ({
          dark:hover:text-white flex  gap-2`,
         isActive &&
           `text-white dark:text-white bg-black dark:bg-rose-500 font-bold`,
+        isHidden && "hidden md:hidden",
         mobileOnly && (isCollapse ? "flex" : "flex md:hidden"),
         pcOnly && "hidden md:flex",
         isCollapse

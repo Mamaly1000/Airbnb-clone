@@ -1,34 +1,12 @@
 "use client";
-import { useTheme } from "@/hooks/useTheme";
 import React from "react";
 import { IconType } from "react-icons";
 import { ActionMeta, FormatOptionLabelMeta, SingleValue } from "react-select";
 import { twMerge } from "tailwind-merge";
 import Select from "react-select";
+import { useTheme } from "next-themes";
 
-const CustomSelect = ({
-  onChange,
-  value,
-  className,
-  placeholder,
-  isClearable,
-  options,
-  formatOptionLabel = (data) => {
-    return (
-      <div className="min-w-full max-w-full flex items-center justify-start gap-2 capitalize">
-        <span
-          className={twMerge(
-            "text-sm max-w-full min-w-full  line-clamp-1 whitespace-nowrap overflow-x-hidden text-left",
-            "text-black dark:text-white"
-          )}
-        >
-          {data.label}
-        </span>
-      </div>
-    );
-  },
-  disabled,
-}: {
+interface props {
   formatOptionLabel?: (
     data: {
       label: string;
@@ -71,8 +49,35 @@ const CustomSelect = ({
       ) => void)
     | undefined;
   disabled?: boolean;
-}) => {
-  const { mode } = useTheme();
+}
+
+const CustomSelect = ({
+  onChange,
+  value,
+  className,
+  placeholder,
+  isClearable,
+  options,
+  formatOptionLabel = (data) => {
+    return (
+      <div className="min-w-full max-w-full flex items-center justify-start gap-2 capitalize">
+        <span
+          className={twMerge(
+            "text-sm max-w-full min-w-full  line-clamp-1 whitespace-nowrap overflow-x-hidden text-left",
+            "text-black dark:text-white"
+          )}
+        >
+          {data.label}
+        </span>
+      </div>
+    );
+  },
+  disabled,
+}: props) => {
+  
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
+
   return (
     <div className={twMerge("", className)}>
       <Select
@@ -106,8 +111,8 @@ const CustomSelect = ({
           borderRadius: 5,
           colors: {
             ...theme.colors,
-            primary: mode === "dark" ? "rgba(244 63 94/.5)" : "rgba(0 0 0/.2)",
-            primary25: mode === "dark" ? "rgba(244 63 94 / .2)" : "#ffe4e6",
+            primary: isDarkMode ? "rgba(244 63 94/.5)" : "rgba(0 0 0/.2)",
+            primary25: isDarkMode ? "rgba(244 63 94 / .2)" : "#ffe4e6",
           },
         })}
       />

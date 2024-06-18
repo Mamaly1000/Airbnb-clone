@@ -57,8 +57,9 @@ const useNotifications = (params?: notificationQueryParams) => {
     },
     fetcher,
     {
-      errorRetryCount: 2,
+      errorRetryCount: 1,
       shouldRetryOnError: false,
+      revalidateOnFocus: false,
     }
   );
   const onNextPage = useCallback(() => {
@@ -68,7 +69,7 @@ const useNotifications = (params?: notificationQueryParams) => {
   }, [pagination, isLoading, size, setSize]);
   useEffect(() => {
     if (data?.[0]?.pagination) {
-      const p = data ? data[data.length - 1].pagination : null; 
+      const p = data ? data[data.length - 1].pagination : null;
       if (p) {
         setPagination({
           hasMore: p.hasMore,

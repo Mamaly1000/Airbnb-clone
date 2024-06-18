@@ -1,18 +1,22 @@
 "use client";
-import { useTheme } from "@/hooks/useTheme";
 import React, { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { GoSun } from "react-icons/go";
 import { LuMoonStar } from "react-icons/lu";
 import { twMerge } from "tailwind-merge";
+import { useTheme } from "next-themes";
 const ToggleTheme = ({ className }: { className?: string }) => {
-  const { mode, setTheme } = useTheme();
+  
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
+  const isLightMode = resolvedTheme === "light";
   const size = 15;
+
   return (
     <motion.button
       onClick={(e) => {
         e.stopPropagation();
-        setTheme();
+        setTheme(isDarkMode ? "light" : "dark");
       }}
       className={twMerge(
         "p-2 min-w-[40px] min-h-[40px]  flex items-center justify-center rounded-full border-[1px] border-neutral-200 dark:border-neutral-600 text-inherit bg-inherit relative",
@@ -20,14 +24,14 @@ const ToggleTheme = ({ className }: { className?: string }) => {
       )}
     >
       <AnimatePresence>
-        {mode === "dark" && (
+        {isDarkMode && (
           <Icon>
             <LuMoonStar size={size} />
           </Icon>
         )}
       </AnimatePresence>{" "}
       <AnimatePresence>
-        {mode === "light" && (
+        {isLightMode && (
           <Icon>
             <GoSun size={size} />
           </Icon>

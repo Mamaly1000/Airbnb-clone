@@ -4,7 +4,7 @@ import { safeUserType } from "@/types/safeuser";
 import { format } from "date-fns";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import HeartButton from "../inputs/HeartButton";
 import Button from "../inputs/Button";
@@ -16,21 +16,7 @@ import placeholder from "../../images/placeholder-image.jpg";
 import { motion } from "framer-motion";
 import { listingActionsType } from "@/types/ListingActions";
 
-const ListingCard = ({
-  listing,
-  className,
-  reservation,
-  action,
-  disabled,
-  updateAction,
-  Outdated = false,
-  feedback = false,
-  Edit,
-  Remove,
-  Review,
-  Cancel,
-  index = 0,
-}: {
+interface props {
   favoritePage?: boolean;
   feedback?: boolean;
   Outdated?: boolean;
@@ -49,7 +35,24 @@ const ListingCard = ({
     onClick: () => void;
   };
   index?: number;
-} & listingActionsType) => {
+}
+const ListingCard = ({
+  listing,
+  className,
+  reservation,
+  action,
+  disabled,
+  updateAction,
+  Outdated = false,
+  feedback = false,
+  Edit,
+  Remove,
+  Review,
+  Cancel,
+  index = 0,
+}: props & listingActionsType) => {
+  const [mounted, setMounted] = useState(false);
+  const [ListingImage, setListingImage] = useState(listing.imageSrc);
   const { getByValue } = useCountry();
   const router = useRouter();
 
@@ -86,6 +89,14 @@ const ListingCard = ({
     return `${format(start, "PP")} - ${format(end, "PP")}`;
   }, [reservation]);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <motion.article
       initial={{ opacity: 0, translateX: 10 }}
@@ -105,7 +116,8 @@ const ListingCard = ({
         )}
         <div className="aspect-square w-full relative rounded-xl overflow-hidden z-0">
           <Image
-            src={!!listing.imageSrc ? listing.imageSrc : placeholder.src}
+            src={ListingImage}
+            onError={() => setListingImage(placeholder.src)}
             alt={listing.title}
             className="object-cover h-full group-hover:scale-110 transition w-full"
             fill

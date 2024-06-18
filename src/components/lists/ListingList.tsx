@@ -1,3 +1,4 @@
+"use client";
 import { isEmpty } from "lodash";
 import React from "react";
 import EmptyState from "../ui/EmptyState";
@@ -10,23 +11,7 @@ import { twMerge } from "tailwind-merge";
 import { listingActionsType } from "@/types/ListingActions";
 import Loader from "../ui/Loader";
 
-const ListingList = ({
-  listings,
-  emptyState,
-  header,
-  user,
-  className,
-  main,
-  pagination,
-  favoritePage,
-  Cancel,
-  Edit,
-  Remove,
-  Review,
-  deletingId,
-  containerClassName,
-  isLoading,
-}: {
+interface props {
   isLoading?: boolean;
   deletingId?: string;
   favoritePage?: boolean;
@@ -49,7 +34,25 @@ const ListingList = ({
   };
   listings: safeListingType[];
   containerClassName?: string;
-} & listingActionsType) => {
+}
+
+const ListingList = ({
+  listings,
+  emptyState,
+  header,
+  user,
+  className,
+  main,
+  pagination,
+  favoritePage,
+  Cancel,
+  Edit,
+  Remove,
+  Review,
+  deletingId,
+  containerClassName,
+  isLoading,
+}: props & listingActionsType) => {
   if (!isLoading && isEmpty(listings)) {
     return (
       <EmptyState

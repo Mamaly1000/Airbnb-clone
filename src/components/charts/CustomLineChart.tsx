@@ -11,7 +11,7 @@ import {
   Legend,
 } from "recharts";
 import { ChartType } from "./CustomChart";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "next-themes";
 
 const CustomLineChart = ({
   chartData: {
@@ -29,7 +29,8 @@ const CustomLineChart = ({
 }: {
   chartData: ChartType;
 }) => {
-  const { mode } = useTheme();
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
   return (
     <div
       style={{
@@ -63,8 +64,8 @@ const CustomLineChart = ({
                 fontSize={y?.fontSize || 20}
                 tickFormatter={y?.formatter}
                 type={y?.type}
-                color={mode === "dark" ? "#fff" : "#000"}
-                fill={mode === "dark" ? "#fff" : "#000"}
+                color={isDarkMode ? "#fff" : "#000"}
+                fill={isDarkMode ? "#fff" : "#000"}
                 tickLine={false}
                 tickMargin={10}
                 allowDecimals={y?.decimal}
@@ -82,8 +83,8 @@ const CustomLineChart = ({
               fontSize={YAxisProps?.fontSize || 20}
               tickFormatter={YAxisProps?.formatter}
               type={YAxisProps?.type}
-              color={mode === "dark" ? "#fff" : "#000"}
-              fill={mode === "dark" ? "#fff" : "#000"}
+              color={isDarkMode ? "#fff" : "#000"}
+              fill={isDarkMode ? "#fff" : "#000"}
               tickLine={false}
               tickMargin={10}
               allowDecimals={YAxisProps?.decimal}
@@ -97,12 +98,12 @@ const CustomLineChart = ({
           <Tooltip
             cursor={false}
             contentStyle={{
-              background:
-                mode === "dark" ? "rgba(0 0 0/.8)" : "rgba(255 255 255/.8)",
-              borderColor:
-                mode === "dark"
-                  ? "rgba(137 133 133/.6)"
-                  : "rgba(137 133 133/.3)",
+              background: isDarkMode
+                ? "rgba(0 0 0/.8)"
+                : "rgba(255 255 255/.8)",
+              borderColor: isDarkMode
+                ? "rgba(137 133 133/.6)"
+                : "rgba(137 133 133/.3)",
               borderRadius: 4,
               maxWidth: "200px",
               overflow: "hidden",
@@ -117,9 +118,7 @@ const CustomLineChart = ({
           {legendProps?.display && (
             <Legend
               fill={
-                mode === "dark"
-                  ? legendProps?.fill?.dark
-                  : legendProps?.fill?.light
+                isDarkMode ? legendProps?.fill?.dark : legendProps?.fill?.light
               }
               width={legendProps?.width}
               height={legendProps?.height}

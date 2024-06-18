@@ -52,7 +52,7 @@ const DashboardBottomBar = () => {
         "The analytics page displays data about the user's properties and reservations. Users can view statistics on revenue, occupancy, and other metrics, as well as track their performance over time.",
     },
     {
-      label: "notifications",
+      label: "notifs",
       Icon: IoNotificationsOutline,
       route: "/mydashboard/notifications",
       description:
@@ -71,7 +71,8 @@ const DashboardBottomBar = () => {
              border-t-[1px] border-neutral-300 dark:border-neutral-600 
              min-h-[70px] max-h-[70px]
              bg-white dark:bg-neutral-800
-             text-[#5B5B5B] dark:text-white`
+             text-[#5B5B5B] dark:text-white
+             shadow-2xl shadow-gray-800 dark:shadow-gray-950`
           )}
           animate={{ opacity: isScrolling && scrolled ? 0.5 : 1 }}
           exit={{ opacity: 0 }}
@@ -88,7 +89,7 @@ const DashboardBottomBar = () => {
               }
             >
               <i.Icon size={25} />
-              <span className="hidden sm:block">{i.label}</span>
+              <span className="max-[400px]:hidden">{i.label}</span>
               {user && user?.hasNotification && i.label.includes("notif") && (
                 <div className="absolute top-[-1px] right-[-1px] rounded-full min-w-[10px] min-h-[10px] bg-rose-500 drop-shadow-2xl" />
               )}

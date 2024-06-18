@@ -15,7 +15,16 @@ const useClients = (params?: clientsQueryParams) => {
     url: "/api/clients",
     query: params,
   });
-  const { data: clients, error, isLoading, mutate } = useSWR(query, fetcher);
+  const {
+    data: clients,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR(query, fetcher, {
+    errorRetryCount: 1,
+    shouldRetryOnError: false,
+    revalidateOnFocus: false,
+  });
   return {
     clients: (clients || []) as Array<
       safeUserType & {

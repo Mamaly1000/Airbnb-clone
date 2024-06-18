@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { motion } from "framer-motion";
 import { VscWarning } from "react-icons/vsc";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "next-themes";
 
 export type FootNotePropsType = {
   className?: string;
@@ -19,7 +19,7 @@ export type FootNotePropsType = {
 };
 
 const FootNote = ({ notes, ul, className }: FootNotePropsType) => {
-  const { mode } = useTheme();
+  const { resolvedTheme } = useTheme();
   const cls = twMerge(
     "min-w-full max-w-full flex flex-col items-start justify-start gap-1 p-2 capitalize",
     className
@@ -28,7 +28,9 @@ const FootNote = ({ notes, ul, className }: FootNotePropsType) => {
     if (!notes) return [];
     return notes.map((n, i) => (
       <motion.li
-        animate={{ color: mode === "dark" ? n.color?.dark : n?.color?.light }}
+        animate={{
+          color: resolvedTheme === "dark" ? n.color?.dark : n?.color?.light,
+        }}
         className="min-w-full flex items-start justify-start gap-3 max-w-full px-2 text-neutral-900 dark:text-neutral-200 text-sm font-light"
         key={i}
         onClick={n.onClick}
@@ -36,7 +38,7 @@ const FootNote = ({ notes, ul, className }: FootNotePropsType) => {
         <VscWarning size={15} /> {n.note}
       </motion.li>
     ));
-  }, [notes, mode]);
+  }, [notes, resolvedTheme]);
   return ul ? (
     <ul className={cls}>{items}</ul>
   ) : (

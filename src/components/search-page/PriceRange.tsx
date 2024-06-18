@@ -1,5 +1,5 @@
 "use client";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "next-themes";
 import * as React from "react";
 import { Range, getTrackBackground } from "react-range";
 
@@ -9,7 +9,7 @@ const PriceRange: React.FC<{
   MAX?: number;
   handlePriceRangeChange: (val: { min: number; max: number }) => void;
 }> = ({ MAX = 100, MIN = 0, STEP = 0.1, handlePriceRangeChange }) => {
-  const { mode } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [values, setValues] = React.useState([0, MAX / 2]);
   const emptyColor = "rgb(212 212 212 / var(--tw-border-opacity))";
   return (
@@ -40,7 +40,7 @@ const PriceRange: React.FC<{
                   background: getTrackBackground({
                     values,
                     colors:
-                      mode === "dark"
+                      resolvedTheme === "dark"
                         ? [emptyColor, "#F43F5E", emptyColor]
                         : [emptyColor, "#000000", emptyColor],
                     min: MIN,

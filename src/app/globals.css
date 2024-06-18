@@ -53,3 +53,10 @@ input {
 .leaflet-popup-content-wrapper {
   @apply bg-white dark:bg-neutral-800;
 }
+
+svg,
+path {
+  transition-duration: 0.01 !important;
+  transition-delay: 0 !important;
+  transition-timing-function: ease !important;
+}

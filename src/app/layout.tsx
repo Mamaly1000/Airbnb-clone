@@ -5,7 +5,7 @@ import ModalProvider from "@/providers/ModalProvider";
 import ToastProvider from "@/providers/ToastProvider";
 import "react-tooltip/dist/react-tooltip.css";
 import { twMerge } from "tailwind-merge";
-import Body from "@/components/shared/CustomBody";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 export const metadata: Metadata = {
   title: "Airbnb",
   description: "wellcome to Airbnb",
@@ -13,18 +13,20 @@ export const metadata: Metadata = {
 const font = Nunito({
   subsets: ["latin"],
 });
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <Body className={twMerge(font.className)}>
-        <ModalProvider />
-        {children}
-        <ToastProvider />
-      </Body>
+      <body className={twMerge(font.className)}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ModalProvider />
+          {children}
+          <ToastProvider />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

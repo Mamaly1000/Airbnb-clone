@@ -29,7 +29,11 @@ const useReservations = (params?: reservationQueryHookType) => {
       endDate: params?.endDate ? params.endDate.toISOString() : undefined,
     },
   });
-  const { data, error, isLoading, mutate } = useSWR(query, fetcher);
+  const { data, error, isLoading, mutate } = useSWR(query, fetcher, {
+    errorRetryCount: 1,
+    shouldRetryOnError: false,
+    revalidateOnFocus: false,
+  });
   return {
     reservations: (data?.reservations || []) as safeReservationType[],
     error,

@@ -11,7 +11,11 @@ const useOverView = (params: { category?: AnalyticsCategoryTypes }) => {
     url: "/api/overview",
     query: params,
   });
-  const { data, error, isLoading, mutate } = useSWR(query, fetcher);
+  const { data, error, isLoading, mutate } = useSWR(query, fetcher, {
+    errorRetryCount: 1,
+    shouldRetryOnError: false,
+    revalidateOnFocus: false,
+  });
   return {
     overViews: (data || []) as OverviewType[],
     error,

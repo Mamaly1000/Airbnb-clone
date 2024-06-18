@@ -14,7 +14,11 @@ const useLocations = () => {
     isLoading,
     mutate,
     error,
-  } = useSWR(`/api/locations`, fetcher);
+  } = useSWR(`/api/locations`, fetcher, {
+    errorRetryCount: 1,
+    shouldRetryOnError: false,
+    revalidateOnFocus: false,
+  });
   return {
     locations: (locations || []) as LocationDataType[],
     isLoading,

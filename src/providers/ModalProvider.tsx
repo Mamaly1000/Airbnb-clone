@@ -12,8 +12,13 @@ import UpdatePropertyModal from "@/components/modals/UpdatePropertyModal";
 import UpdateReservationModal from "@/components/modals/UpdateReservationModal";
 import React, { useEffect, useState } from "react";
 import ReviewFilterModal from "@/components/modals/ReviewFilterModal";
+import { usePathname } from "next/navigation";
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const pathname = usePathname();
+
+  const isDashboard = pathname?.includes("/mydashboard");
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -33,8 +38,8 @@ const ModalProvider = () => {
       <FeedbackModal />
       <EditprofileModal />
       <DateRangeModal />
-      <FilterReservationModal />
-      <ReviewFilterModal />
+      {isDashboard && <FilterReservationModal />}
+      {isDashboard && <ReviewFilterModal />}
     </>
   );
 };

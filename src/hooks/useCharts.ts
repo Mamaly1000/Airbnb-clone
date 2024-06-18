@@ -7,7 +7,7 @@ import qs from "query-string";
 import { ChartValueType } from "@/types/ChartTypes";
 
 const useCharts = (params?: {
-  topic?: SingleAnalyticType ;
+  topic?: SingleAnalyticType;
   endDate?: Date;
   startDate?: Date;
 }) => {
@@ -19,7 +19,11 @@ const useCharts = (params?: {
       endDate: params?.endDate?.toISOString(),
     },
   });
-  const { data, error, isLoading, mutate } = useSWR(query, fetcher);
+  const { data, error, isLoading, mutate } = useSWR(query, fetcher, {
+    errorRetryCount: 1,
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
+  });
   return {
     chartData: (data || null) as ChartValueType,
     error,
